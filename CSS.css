@@ -71,4 +71,56 @@ left:820px;
 top:205px
 }
 
-/**/
+/*Artikelbeschreibung*/
+
+#HeadArtikel{
+	position: absolute;
+	align:center;
+	left:50%;
+	top:2%;
+}
+#BildArtikel{
+	position: absolute;
+	top: 25%;
+	right: 20%;
+}
+
+#suchfeld{
+	position:absolute;
+	align:center;
+	top:10%;
+	left : 15%;
+	width:400px;
+}
+
+#SucheButton{
+	position:absolute;
+	top:10%;
+	left:41%;
+	
+}
+#LoginButton{
+	position: absolute;
+	top:10%;
+	right:10%;
+}
+#ArtikelBeschreibung{
+	position: absolute;
+	left:15%;
+	top:30%;
+}
+#ArtikelBezeichnung{
+	position:absolute;
+	top:20%;
+	right:45%;
+}
+#menueArtikel{
+	position: absolute;
+	top:10%;
+	left:5%;
+}
+#Rezessionen{
+	position: absolute;
+	bottom: 10%;
+	left:15%;
+}
