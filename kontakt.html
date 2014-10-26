@@ -4,6 +4,7 @@
 <head>
 <title>Kontakt</title>
 <meta charset="utf-8">
+<link rel="stylesheet" type = "text/css" href = "CSS.css">
 </head>
 </body> 
 <form>
@@ -14,7 +15,7 @@
 <ul style = "list-style-type:none;">
 <li>
 <div>
-<label">
+<label id ="nameuberschrift">
 Name:
 <span>
 *
@@ -22,23 +23,23 @@ Name:
 </label>
 </div>
 <div>
-<input id="name" type="text" value=""></input>
+<input id="name"  placeholder ="Name" type="text" value=""></input>
 </div>
 </li>
 <li>
 <div>
-<label>
+<label id="Kundennummeruberschrift">
 Kundennummer:
 </label>
 </div>
 <div>
-<input id="Kundennummer" type="text" value=""></input>
+<input id="Kundennummer"  placeholder ="4584584" type="text" value=""></input>
 </div>
 </li>
 <li>
 
 <div>
-<label>
+<label id = "Betreffuberschrift">
 Betreff:
 <span>
 *
@@ -46,8 +47,8 @@ Betreff:
 </label>
 </div>
 <div>
-<select>
-<option value="">Bitte Wählen</option>
+<select id = "Betreff">
+<option  value="" disabled selected>Bitte Wählen</option>
 <option value="">Fragen zum Produkt</option>
 <option value="">Meine Bestellung</option>
 <option value="">zur Lieferung</option>
@@ -59,17 +60,17 @@ Betreff:
 </li>
 <li>
 <div>
-<label>
+<label id ="Bestellnummeruberschrift">
 Bestellnummer:
 </label>
 </div>
 <div>
-<input id="Bestellnummer" type="text" value=""></input>
+<input id="Bestellnummer" placeholder = "1454845" type="text" value=""></input>
 </div>
 </li>
 <li>
 <div>
-<label>
+<label id ="E-Mail-Adresseuberschrift">
 E-Mail-Adresse:
 <span>
 *
@@ -77,23 +78,23 @@ E-Mail-Adresse:
 </label>
 </div>
 <div>
-<input id="Emailadresse" type="text" value=""></input>
+<input id="Emailadresse" placeholder ="Max.Mustermann@irgendwas.de" type="text" value=""></input>
 </div>
 </li>
 <li>
 <div>
-<label>
+<label id = "Telefonuberschrift">
 Telefon:
 </label>
 </div>
 <div>
-<input id="telefon" type="text" value=""></input>
+<input id="telefon"  placeholder ="14514/545514" type="text" value=""></input>
 </div>
 </li>
 </ul>
 <ul style = "list-style-type:none;">
 <li>
-<label>
+<label id = "kommentaruberschrift">
 Kommentar:
 <span>
 *
@@ -101,10 +102,10 @@ Kommentar:
 </label>
 </li>
 <li>
-<textarea id ="kommentar" name="komment" cols="5" rows="3" style="width: 285px; height: 129px;"></textarea>
+<textarea id ="kommentar"  placeholder ="Ihr Kommentar" name="komment" cols="5" rows="3" style="width: 285px; height: 129px;"></textarea>
 </li>
 </ul>
-<p id="pflicht">*Pflichtfelder</p>
+<p id="pflicht" ><span style="font-size: small ">*Pflichtfelder</span></p>
 </form>
 
 <body>

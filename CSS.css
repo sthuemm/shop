@@ -1,0 +1,74 @@
+
+/* Kontaktformular*/
+
+#name{
+position : absolute;
+left : 180px;
+top : 85px;
+}
+#nameuberschrift{
+position : absolute;
+top : 85px;
+}
+#Kundennummeruberschrift{
+position : absolute;
+top : 115px;
+}
+#Kundennummer{
+position : absolute;
+top : 115px;
+left : 180px
+}
+#Betreffuberschrift{
+position : absolute;
+top : 145px;
+}
+#Betreff{
+position:absolute;
+left:180px;
+top:145px
+}
+#Bestellnummeruberschrift{
+position : absolute;
+top : 175px;
+}
+#Bestellnummer{
+position:absolute;
+left:180px;
+top:175px
+}
+#E-Mail-Adresseuberschrift{
+position : absolute;
+top : 205px;
+}
+#Emailadresse{
+position:absolute;
+left:180px;
+top:205px
+}
+#Telefonuberschrift{
+position : absolute;
+top : 235px;
+}
+#telefon{
+position:absolute;
+left:180px;
+top:235px
+}
+#kommentaruberschrift{
+position : absolute;
+top : 85px;
+left : 500px;
+}
+#kommentar{
+position : absolute;
+top : 85px;
+left : 600px;
+}
+#pflicht{
+position:absolute;
+left:820px;
+top:205px
+}
+
+/**/
