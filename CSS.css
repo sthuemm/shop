@@ -68,7 +68,8 @@ left : 600px;
 #pflicht{
 position:absolute;
 left:820px;
-top:205px
+top:205px;
+font-size: small;
 }
 
 /*Artikelbeschreibung*/
@@ -131,4 +132,8 @@ top:205px
 #Widerrufsformular {
 	 style="border: 1px solid #000000; 
 	 padding: 10px;
+}
+
+.ohneAufzaehlung {
+	list-style-type: none;
 }

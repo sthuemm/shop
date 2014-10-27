@@ -4,79 +4,50 @@
 <head>
 <title>Kontakt</title>
 <meta charset="utf-8">
-<link rel="stylesheet" type="text/css" href="CSS.css">
+
 </head>
 </body>
 <form>
-	<p>Telefon Hotline: 0800-456954</p>
+	<p>Telefon Hotline: <a href="tel:+49800456954">0800-456954</a> Kontaktieren Sie uns </p>
 
-	<strong>Kontaktieren Sie uns</strong>
-
-	<ul style="list-style-type: none;">
+	<ul class="ohneAufzaehlung">
 		<li>
-			<div>
-				<label id="nameuberschrift"> Name: <span> * </span>
-				</label>
-			</div>
-			<div>
-				<input id="name" placeholder="Name" type="text" value=""></input>
-			</div>
+			<label id="nameuberschrift"> Name: *</label>
+			<input id="name" placeholder="Name" type="text" value=""></input>
 		</li>
 		<li>
-			<div>
-				<label id="Kundennummeruberschrift"> Kundennummer: </label>
-			</div>
-			<div>
-				<input id="Kundennummer" placeholder="4584584" type="text" value=""></input>
-			</div>
+			<label id="Kundennummeruberschrift"> Kundennummer: </label>
+			<input id="Kundennummer" placeholder="4584584" type="text" value=""></input>
 		</li>
 		<li>
-
-			<div>
-				<label id="Betreffuberschrift"> Betreff: <span> * </span>
-				</label>
-			</div>
-			<div>
-				<select id="Betreff">
-					<option value="" disabled selected>Bitte Wählen</option>
-					<option value="">Fragen zum Produkt</option>
-					<option value="">Meine Bestellung</option>
-					<option value="">zur Lieferung</option>
-					<option value="">Retour</option>
-					<option value="">Zahlung</option>
-					<option value="">Verbesserungen</option>
-				</select>
-			</div>
+			<label id="Betreffuberschrift"> Betreff: *</label>
+			<select id="Betreff">
+				<option value="" disabled selected>Bitte Wählen</option>
+				<option value="">Fragen zum Produkt</option>
+				<option value="">Meine Bestellung</option>
+				<option value="">zur Lieferung</option>
+				<option value="">Retour</option>
+				<option value="">Zahlung</option>
+				<option value="">Verbesserungen</option>
+			</select>
+			
 		</li>
 		<li>
-			<div>
-				<label id="Bestellnummeruberschrift"> Bestellnummer: </label>
-			</div>
-			<div>
-				<input id="Bestellnummer" placeholder="1454845" type="text" value=""></input>
-			</div>
+			<label id="Bestellnummeruberschrift"> Bestellnummer: </label>
+			<input id="Bestellnummer" placeholder="1454845" type="text" value=""></input>
 		</li>
 		<li>
-			<div>
-				<label id="E-Mail-Adresseuberschrift"> E-Mail-Adresse: <span>
-						* </span>
-				</label>
-			</div>
-			<div>
-				<input id="Emailadresse" placeholder="Max.Mustermann@irgendwas.de"
-					type="text" value=""></input>
-			</div>
+			
+			<label id="E-Mail-Adresseuberschrift"> E-Mail-Adresse: * </label>
+			<input id="Emailadresse" placeholder="Max.Mustermann@irgendwas.de" type="text" value=""></input>
+		
 		</li>
 		<li>
-			<div>
-				<label id="Telefonuberschrift"> Telefon: </label>
-			</div>
-			<div>
-				<input id="telefon" placeholder="14514/545514" type="text" value=""></input>
-			</div>
+			<label id="Telefonuberschrift"> Telefon: </label>
+			<input id="telefon" placeholder="14514/545514" type="text" value=""></input>
 		</li>
 	</ul>
-	<ul style="list-style-type: none;">
+	<ul class="ohneAufzaehlung">
 		<li><label id="kommentaruberschrift"> Kommentar: <span>
 					* </span>
 		</label></li>
@@ -84,9 +55,7 @@
 				name="komment" cols="5" rows="3"
 				style="width: 285px; height: 129px;"></textarea></li>
 	</ul>
-	<p id="pflicht">
-		<span style="font-size: small">*Pflichtfelder</span>
-	</p>
+	<p id="pflicht"> * Pflichtfelder </p>
 </form>
 
 <body>
