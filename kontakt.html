@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+	<script type="text/javascript" src="popup.js"></script>
 </head>
 </body>
 <nav class="navbar navbar-default navbar-inverse" role="navigation">
@@ -36,9 +37,9 @@
         </div>
         <button type="submit" class="btn btn-default">Los</button>
       </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="login.html">Login</a></li>
-         <li><a href="Registrierung.html">Registrieren</a></li>
+       <ul class="nav navbar-nav navbar-right">
+        <li><a href="login.html"target="_blank" onclick="return popup(this.href)">Login</a></li>
+         <li><a href="Registrierung.html"target="_blank" onclick="return popup(this.href)">Registrieren</a></li>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
