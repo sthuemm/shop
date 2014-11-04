@@ -9,9 +9,14 @@ html {
 	-ms-text-size-adjust: 100%
 }
 
-body {
-	margin: 0
+#Inhalt{
+	margin:15;
 }
+
+body {
+	margin: 0;
+}
+
 
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary
 	{
@@ -3393,7 +3398,8 @@ tbody.collapse.in {
 .dropup .dropdown-menu,.navbar-fixed-bottom .dropdown .dropdown-menu {
 	top: auto;
 	bottom: 100%;
-	margin-bottom: 1px
+	margin-bottom: 1px;
+	
 }
 
 @media ( min-width :768px) {

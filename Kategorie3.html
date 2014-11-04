@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-<title>Kontakt</title>
+<title>Kategorie</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="popup.js"></script>
 </head>
-<body>
-	<nav class="navbar navbar-default navbar-inverse" role="navigation">
+<body style="">
+	<nav class="navbar navbar-inverse" role="navigation">
 		<div class="container-fluid">
 			<!-- Titel und Schalter werden für eine bessere mobile Ansicht zusammengefasst -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Navigation ein-/ausblenden</span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
@@ -30,7 +29,7 @@
 					<li><a href="Neuheiten.html">Neuheiten</a></li>
 					<li><a href="kategorie1.html">Kategorie1</a></li>
 					<li><a href="kategorie2.html">Kategorie2</a></li>
-					<li><a href="kategorie3.html">Kategorie3</a></li>
+					<li class="active"><a href="kategorie3.html">Kategorie3</a></li>
 				</ul>
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">
@@ -49,55 +48,35 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<form>
-		<p>
-			Telefon Hotline: <a href="tel:+49800456954">0800-456954</a>
-			Kontaktieren Sie uns
-		</p>
-
-		<ul class="ohneAufzaehlung">
-			<li><label id="nameuberschrift"> Name: *</label> <input
-				id="name" placeholder="Name" type="text" value=""></li>
-			<li><label id="Kundennummeruberschrift"> Kundennummer: </label>
-				<input id="Kundennummer" placeholder="4584584" type="text" value="">
-			</li>
-			<li><label id="Betreffuberschrift"> Betreff: *</label> <select
-				id="Betreff">
-					<option value="" disabled selected>Bitte Wählen</option>
-					<option value="">Fragen zum Produkt</option>
-					<option value="">Meine Bestellung</option>
-					<option value="">zur Lieferung</option>
-					<option value="">Retour</option>
-					<option value="">Zahlung</option>
-					<option value="">Verbesserungen</option>
-			</select></li>
-			<li><label id="Bestellnummeruberschrift"> Bestellnummer:
-			</label> <input id="Bestellnummer" placeholder="1454845" type="text" value="">
-			</li>
-			<li><label id="E-Mail-Adresseuberschrift">
-					E-Mail-Adresse: * </label> <input id="Emailadresse"
-				placeholder="Max.Mustermann@irgendwas.de" type="text" value="">
-
-			</li>
-			<li><label id="Telefonuberschrift"> Telefon: </label> <input
-				id="telefon" placeholder="14514/545514" type="text" value="">
-			</li>
-		</ul>
-		<ul class="ohneAufzaehlung">
-			<li><label id="kommentaruberschrift"> Kommentar: <span>
-						* </span>
-			</label></li>
-			<li><textarea id="kommentar" placeholder="Ihr Kommentar"
-					name="komment" cols="5" rows="3"
-					style="width: 285px; height: 129px;"></textarea></li>
-		</ul>
-		<p id="pflicht">* Pflichtfelder</p>
-	</form>
+	<div>
+		<img src="Bilder/Bild.jpg" alt = "">
+		<wbr>
+		Dieses moderne Stück Holz beeindruckt vor allem durch seine
+		sorgfältige Verarbeitung. <a href="Artikel.html">mehr...</a>
+	</div>
+	<div>
+		<img src="Bilder/Bild.jpg" alt = "">
+		<wbr>
+		Dieses Stück Holz hat eine beeindruckende Brennbarkeit, vor allem wenn
+		es nicht gewollt ist. <a href="Artikel.html">mehr...</a>
+	</div>
+	<div>
+		<img src="Bilder/Bild.jpg" alt = "">
+		<wbr>
+		Eignet sich hervorragend als Unterlegkeil beim Reifenwechsel. <a
+			href="Artikel.html">mehr...</a>
+	</div>
+	<div>
+		<img src="Bilder/Bild.jpg" alt = "">
+		<wbr>
+		Mit viel Geduld und etwas handwerklichem Geschick, wird daraus ein
+		Schreibtisch. Man muss nur fest dran glauben. <a href="Artikel.html">mehr...</a>
+	</div>
 	<footer id="footer">
 		<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom"
 			role="tablist">
 			<li><a href="#">Kundencenter</a></li>
-			<li class="active"><a href="kontakt.html"> Kontakt</a></li>
+			<li><a href="kontakt.html"> Kontakt</a></li>
 			<li><a href="Impressum.html">Impressum</a></li>
 			<li><a href="Datenschutz.html">Datenschutz</a></li>
 			<li><a href="AGB.html">AGB</a></li>
