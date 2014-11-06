@@ -12,7 +12,7 @@ html {
 	-o-background-size: cover;
 	-moz-background-size:cover;
 	background-size:cover;
-	ocupy:0.5;
+	ocupy:0.3;
 	
 }
 
@@ -22,8 +22,9 @@ html {
 
 body {
 	margin: 0;
-	background: url(../Bilder/textur_holz.jpg) no-repeat center center fixed;
+	background: url(../Bilder/textur_holz.jpg) no-repeat center center fixed ; 
 	padding-bottom: 70px;
+	
 }
 
 .navbar-inner{

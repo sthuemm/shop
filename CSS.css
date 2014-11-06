@@ -4,71 +4,71 @@
 #name{
 position : absolute;
 left : 180px;
-top : 85px;
+top : 95px;
 }
 #nameuberschrift{
 position : absolute;
-top : 85px;
+top : 95px;
 }
 #Kundennummeruberschrift{
 position : absolute;
-top : 115px;
+top : 125px;
 }
 #Kundennummer{
 position : absolute;
-top : 115px;
+top : 125px;
 left : 180px
 }
 #Betreffuberschrift{
 position : absolute;
-top : 145px;
+top : 155px;
 }
 #Betreff{
 position:absolute;
 left:180px;
-top:145px
+top:155px
 }
 #Bestellnummeruberschrift{
 position : absolute;
-top : 175px;
+top : 185px;
 }
 #Bestellnummer{
 position:absolute;
 left:180px;
-top:175px
+top:185px
 }
 #E-Mail-Adresseuberschrift{
 position : absolute;
-top : 205px;
+top : 215px;
 }
 #Emailadresse{
 position:absolute;
 left:180px;
-top:205px
+top:215px
 }
 #Telefonuberschrift{
 position : absolute;
-top : 235px;
+top : 245px;
 }
 #telefon{
 position:absolute;
 left:180px;
-top:235px
+top:245px
 }
 #kommentaruberschrift{
 position : absolute;
-top : 85px;
+top : 95px;
 left : 500px;
 }
 #kommentar{
 position : absolute;
-top : 85px;
+top : 95px;
 left : 600px;
 }
 #pflicht{
 position:absolute;
-left:820px;
-top:205px;
+left:819px;
+top:225px;
 font-size: small;
 }
 
@@ -137,3 +137,4 @@ font-size: small;
 .ohneAufzaehlung {
 	list-style-type: none;
 }
+
