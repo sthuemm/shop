@@ -138,3 +138,20 @@ font-size: small;
 	list-style-type: none;
 }
 
+
+#mainMainpage{
+top:0;
+left:0;
+height:100%;
+width:100%;
+position:fixed;
+display:table;
+}
+.container{
+display:table-cell;
+vertical-align: middle;
+text-align:center;
+
+
+}
+
