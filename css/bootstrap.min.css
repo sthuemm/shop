@@ -15,6 +15,22 @@ html {
 	ocupy:0.3;
 	
 }
+#mainMainpage{
+height:100%;
+width:100%;
+position:fixed;
+display:table;
+}
+.bildertonne{
+display:table-cell;
+vertical-align: middle;
+text-align:center;
+
+
+}
+
+
+
 
 #Inhalt{
 	margin:15;
