@@ -14,7 +14,6 @@ GET     /kategorie3                 controllers.Application.kategorie3()
 GET     /kontakt                    controllers.Application.kontakt()
 GET     /login                      controllers.Application.login()
 GET     /mainPage                   controllers.Application.mainPage()
-GET     /mainShopTest               controllers.Application.mainShopTest()
 GET     /neuheiten                  controllers.Application.neuheiten()
 GET     /registrierung              controllers.Application.registrierung()
 

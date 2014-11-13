@@ -39,9 +39,6 @@
 		public static Result mainPage() {
 			return ok(mainPage.render());
 		}
-		public static Result mainShopTest() {
-			return ok(mainShopTest.render());
-		}
 		public static Result neuheiten() {
 			return ok(Neuheiten.render());
 		}	

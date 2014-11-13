@@ -4,10 +4,9 @@
 <head>
 <title>Impressum</title>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript" src="popup.js"></script>
+<link href=@routes.Assets.at("stylesheets/bootstrap.min.css") rel="stylesheet">
+	<script type="text/javascript" src=@routes.Assets.at("javascripts/popup.js")></script>
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-inverse" role="navigation">
@@ -20,17 +19,17 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="mainPage.html">Web-Shop</a>
+				<a class="navbar-brand" href="/mainPage">Web-Shop</a>
 			</div>
 
 			<!-- Alle Navigationslinks, Formulare und anderer Inhalt werden hier zusammengefasst und können dann ein- und ausgeblendet werden -->
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="Neuheiten.html">Neuheiten</a></li>
-					<li><a href="HolzAußen.html">Holz im Außenbereich</a></li>
-					<li><a href="kategorie2.html">Kategorie2</a></li>
-					<li><a href="kategorie3.html">Kategorie3</a></li>
+					<li><a href="/neuheiten">Neuheiten</a></li>
+					<li><a href="/holzaussen">Holz im Außenbereich</a></li>
+					<li><a href="/kategorie2">Kategorie2</a></li>
+					<li><a href="/kategorie3">Kategorie3</a></li>
 				</ul>
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">
@@ -39,10 +38,8 @@
 					<button type="submit" class="btn btn-default">Los</button>
 				</form>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="login.html" target="_blank"
-						onclick="return popup(this.href)">Login</a></li>
-					<li><a href="Registrierung.html" target="_blank"
-						onclick="return popup(this.href)">Registrieren</a></li>
+					<li><a href="/login" target="_blank" onclick="return popup(this.href)">Login</a></li>
+					<li><a href="/registrierung" target="_blank" onclick="return popup(this.href)">Registrieren</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -62,11 +59,11 @@
 	<footer id="footer">
 		<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom"
 			role="tablist">
-			<li><a href="#">Kundencenter</a></li>
-			<li><a href="kontakt.html"> Kontakt</a></li>
-			<li class="active"><a href="Impressum.html">Impressum</a></li>
-			<li><a href="Datenschutz.html">Datenschutz</a></li>
-			<li><a href="AGB.html">AGB</a></li>
+	  <li><a href="#">Kundencenter</a></li>
+	  <li><a href="/kontakt"> Kontakt</a></li>
+	  <li class="active"><a href="/impressum">Impressum</a></li>
+	  <li><a href="/datenschutz">Datenschutz</a></li>
+	  <li><a href="/agb">AGB</a></li>
 		</ul>
 	</footer>
 </body>
