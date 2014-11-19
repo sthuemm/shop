@@ -40,7 +40,12 @@
       </form>
        <ul class="nav navbar-nav navbar-right">
        		<li><a href="/konto" target="_blank" >Hallo @kunde.vorname</a></li>
-			<li><a href="/login" target="_blank" onclick="return popup(this.href)">Login</a></li>
+       		@if(kunde.kundenNummer == null){
+       			<li><a href="/login" target="_blank" onclick="return popup(this.href)">Login</a></li>
+       		} else {
+       			<li><a href="/logout" target="_blank" onclick="return popup(this.href)">Logout</a></li>
+       		}
+			
 			<li><a href="/registrierung" target="_blank" onclick="return popup(this.href)">Registrieren</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->

@@ -9,17 +9,15 @@ public class Kunde {
 		
 		public String vorname;
 		public String name;
-		public int kundenNummer;
+		public String kundenNummer;
 		
 		
 		public Kunde(){
-			this.name = "Mustermann";
-			this.vorname = "Max";
-			this.kundenNummer = 1337;
+			this.vorname = "Fremder";
 			
 		}
 		
-		public Kunde(String vorname, String name, int kundenNummer){
+		public Kunde(String vorname, String name, String kundenNummer){
 			this.name = name;
 			this.vorname = vorname;
 			this.kundenNummer = kundenNummer;

@@ -11,10 +11,10 @@
 	public class Application extends Controller {
 	
 		private static String name = "Basti";
-		private static String kundennummer = "1";
+		private static String kundennummer;
 		public static Produkt produkt = new Produkt();
-		public static Kunde guest = new Kunde("Fremder","",0);
-		public static Kunde kunde1 = new Kunde();
+		public static Kunde guest = new Kunde();
+		public static Kunde kunde1 = new Kunde("Max","Mustermann","1337");
 				
 		public static Result index() {
 			return ok(index.render("whats up!"));
