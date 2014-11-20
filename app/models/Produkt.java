@@ -9,22 +9,29 @@ public class Produkt {
 		
 		
 		public double price;
-		public int artikelNummer;
+		public String artikelNummer;
 		public String artikelBezeichnung;
+		public String bildPfad;
 		
 		public Produkt(){
 			this.price = 9.99;
-			this.artikelNummer = 1337;
+			this.artikelNummer = "1337";
 			this.artikelBezeichnung = "default";
 			
 		}
 		
-		public Produkt(double price, int artikelNummer, String artikelBezeichnung){
+		public Produkt(double price, String artikelNummer, String artikelBezeichnung, String pfad){
 			this.price = price;
 			this.artikelNummer = artikelNummer;
 			this.artikelBezeichnung = artikelBezeichnung;
+			this.bildPfad = pfad;
 		}
 		
-	
+		public Produkt(double price, String artikelNummer, String artikelBezeichnung){
+			this.price = price;
+			this.artikelNummer = artikelNummer;
+			this.artikelBezeichnung = artikelBezeichnung;
+			
+		}
 	
 }

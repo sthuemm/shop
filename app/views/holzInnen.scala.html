@@ -1,4 +1,4 @@
-@(kunde: Kunde)
+@(kunde: Kunde, produkte: Array[Produkt])
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href=@routes.Assets.at("stylesheets/bootstrap.min.css") rel="stylesheet">
-<script type="text/javascript" src=@routes.Assets.at("javascripts/popup.js")></script>
+	<script type="text/javascript" src=@routes.Assets.at("javascripts/popup.js")></script>
 </head>
 <body style="">
 	<nav class="navbar navbar-inverse" role="navigation">
@@ -28,9 +28,9 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="/neuheiten">Neuheiten</a></li>
-					<li><a href="/holzaussen">Holz im Außenbereich</a></li>
-					<li><a href="/kategorie2">Kategorie2</a></li>
-					<li class="active"><a href="/kategorie3">Kategorie3</a></li>
+					<li><a href="/holzAussen">Holz im Außenbereich</a></li>
+					<li><a href="/holzInnen">Holz im Innenraum</a></li>
+					<li><a href="/brennholz">Brennholz</a></li>
 				</ul>
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">
@@ -54,34 +54,19 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<div>
-		<img src=@routes.Assets.at("images/Bild.jpg") alt = "">
-		<wbr>
-		Dieses moderne Stück Holz beeindruckt vor allem durch seine
-		sorgfältige Verarbeitung. <a href="/artikel">mehr...</a>
-	</div>
-	<div>
-		<img src=@routes.Assets.at("images/Bild.jpg") alt = "">
-		<wbr>
-		Dieses Stück Holz hat eine beeindruckende Brennbarkeit, vor allem wenn
-		es nicht gewollt ist. <a href="/artikel">mehr...</a>
-	</div>
-	<div>
-		<img src=@routes.Assets.at("images/Bild.jpg") alt = "">
-		<wbr>
-		Eignet sich hervorragend als Unterlegkeil beim Reifenwechsel. <a
-			href="/artikel">mehr...</a>
-	</div>
-	<div>
-		<img src=@routes.Assets.at("images/Bild.jpg") alt = "">
-		<wbr>
-		Mit viel Geduld und etwas handwerklichem Geschick, wird daraus ein
-		Schreibtisch. Man muss nur fest dran glauben. <a href="/artikel">mehr...</a>
-	</div>
+	
+		@for(produkt <- produkte) {
+				<div>
+					<img src=@routes.Assets.at("images/bruecke.jpg") alt = "">
+					<wbr> @produkt.artikelBezeichnung
+					<a href="/artikel">mehr...</a>
+				</div>	
+			}
+			
 	<footer id="footer">
 		<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom"
 			role="tablist">
-	  <li><a href="/konto">Kundencenter</a></li>
+	  <li><a href="#">Kundencenter</a></li>
 	  <li><a href="/kontakt"> Kontakt</a></li>
 	  <li><a href="/impressum">Impressum</a></li>
 	  <li><a href="/datenschutz">Datenschutz</a></li>

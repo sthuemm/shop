@@ -5,14 +5,34 @@
 	import play.mvc.*;
 	import views.html.*;
 	import models.*;
-	
+	import java.util.List;
 	
 
 	public class Application extends Controller {
 	
 		private static String name = "Basti";
 		private static String kundennummer = "1";
-		public static Produkt produkt = new Produkt();
+	
+		public static Produkt gartenzaun = new Produkt(99.99,"1","ein Gartenzaun","images/Palissaden.jpg");
+		public static Produkt palisaden = new Produkt(119.99,"2","Palisaden fuer den Garten","images/Pfaehle.jpg");
+		public static Produkt terassenbelag = new Produkt(249.99,"3","Terassenbelaege","images/Terrasse.jpg");
+		public static Produkt moebel = new Produkt(49.99,"4","Terassenmoebel","images/bruecke.jpg");
+				
+		public static Produkt tisch = new Produkt(29.99,"5","Esstisch");
+		public static Produkt stuhl = new Produkt(19.99,"6","Stuhl");
+		public static Produkt vertaefelung = new Produkt(44.99,"7","Vertaefelung");
+		
+		public static Produkt kiefer = new Produkt(4.99,"8","Echtes Kiefernholz");
+		public static Produkt buche = new Produkt(5.99,"9","Echtes Buchenholz");
+		public static Produkt spanplatte = new Produkt(2.99,"10","Super brennbare Spanplatte");
+		
+		public static Produkt[] produkteAussen = {gartenzaun,palisaden,terassenbelag,moebel};
+		public static Produkt[] produkteInnen = {tisch,stuhl,vertaefelung};
+		public static Produkt[] produkteBrennholz = {kiefer,buche,spanplatte};
+		
+		
+		
+		
 		public static Kunde guest = new Kunde();
 		public static Kunde kunde1 = new Kunde("Max","Mustermann","1337");
 				
@@ -20,6 +40,8 @@
 			return ok(index.render("whats up!"));
 		}
 		public static Result agb() {
+			
+			
 			
 			if (kundennummer == null){
 				return ok(AGB.render(guest));
@@ -43,13 +65,11 @@
 				return ok(datenschutz.render(kunde1));
 			}
 		}
-		public static Result holzaussen() {
+		public static Result holzAussen() {
 			
-			if (kundennummer == null){
-				return ok(holzAussen.render(guest));
-			} else {
-				return ok(holzAussen.render(kunde1));
-			}
+			
+				return ok(holzAussen.render(kunde1,produkteAussen));
+			
 		}
 		public static Result impressum() {
 			
@@ -59,21 +79,17 @@
 				return ok(impressum.render(kunde1));
 			}
 		}
-		public static Result kategorie2() {
+		public static Result holzInnen() {
 			
-			if (kundennummer == null){
-				return ok(kategorie2.render(guest));
-			} else {
-				return ok(kategorie2.render(kunde1));
-			}
+			
+				return ok(holzInnen.render(kunde1,produkteInnen));
+			
 		}
-		public static Result kategorie3() {
+		public static Result brennholz() {
 			
-			if (kundennummer == null){
-				return ok(kategorie3.render(guest));
-			} else {
-				return ok(kategorie3.render(kunde1));
-			}
+			
+				return ok(brennholz.render(kunde1,produkteBrennholz));
+			
 		}
 		public static Result kontakt() {
 			
