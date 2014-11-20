@@ -11,7 +11,7 @@
 	public class Application extends Controller {
 	
 		private static String name = "Basti";
-		private static String kundennummer;
+		private static String kundennummer = "1";
 		public static Produkt produkt = new Produkt();
 		public static Kunde guest = new Kunde();
 		public static Kunde kunde1 = new Kunde("Max","Mustermann","1337");
@@ -30,49 +30,49 @@
 		public static Result artikel() {
 			
 			if (kundennummer == null){
-				return ok(Artikel.render(guest));
+				return ok(artikel.render(guest));
 			} else {
-				return ok(Artikel.render(kunde1));
+				return ok(artikel.render(kunde1));
 			}
 		}
 		public static Result datenschutz() {
 			
 			if (kundennummer == null){
-				return ok(Datenschutz.render(guest));
+				return ok(datenschutz.render(guest));
 			} else {
-				return ok(Datenschutz.render(kunde1));
+				return ok(datenschutz.render(kunde1));
 			}
 		}
 		public static Result holzaussen() {
 			
 			if (kundennummer == null){
-				return ok(HolzAussen.render(guest));
+				return ok(holzAussen.render(guest));
 			} else {
-				return ok(HolzAussen.render(kunde1));
+				return ok(holzAussen.render(kunde1));
 			}
 		}
 		public static Result impressum() {
 			
 			if (kundennummer == null){
-				return ok(Impressum.render(guest));
+				return ok(impressum.render(guest));
 			} else {
-				return ok(Impressum.render(kunde1));
+				return ok(impressum.render(kunde1));
 			}
 		}
 		public static Result kategorie2() {
 			
 			if (kundennummer == null){
-				return ok(Kategorie2.render(guest));
+				return ok(kategorie2.render(guest));
 			} else {
-				return ok(Kategorie2.render(kunde1));
+				return ok(kategorie2.render(kunde1));
 			}
 		}
 		public static Result kategorie3() {
 			
 			if (kundennummer == null){
-				return ok(Kategorie3.render(guest));
+				return ok(kategorie3.render(guest));
 			} else {
-				return ok(Kategorie3.render(kunde1));
+				return ok(kategorie3.render(kunde1));
 			}
 		}
 		public static Result kontakt() {
@@ -83,6 +83,16 @@
 				return ok(kontakt.render(kunde1));
 			}
 		}	
+		
+		public static Result konto() {
+			
+			if (kundennummer == null){
+				return ok(konto.render(guest));
+			} else {
+				return ok(konto.render(kunde1));
+			}
+		}
+		
 		public static Result login() {
 			return ok(login.render());
 		}
@@ -98,9 +108,9 @@
 		public static Result neuheiten() {
 			
 			if (kundennummer == null){
-				return ok(Neuheiten.render(guest));
+				return ok(neuheiten.render(guest));
 			} else {
-				return ok(Neuheiten.render(kunde1));
+				return ok(neuheiten.render(kunde1));
 			}
 		}	
 		public static Result registrierung() {
@@ -112,6 +122,8 @@
 			}
 			
 		}	
+		
+		
 		
 		
 	}
