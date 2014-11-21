@@ -6,12 +6,15 @@
 	import views.html.*;
 	import models.*;
 	import java.util.List;
+	import java.lang.*;
 	
 
 	public class Application extends Controller {
 	
 		private static String name = "Basti";
 		private static String kundennummer = "1";
+		
+		
 	
 		public static Produkt gartenzaun = new Produkt(99.99,"1","ein Gartenzaun","images/Palissaden.jpg");
 		public static Produkt palisaden = new Produkt(119.99,"2","Palisaden fuer den Garten","images/Pfaehle.jpg");
@@ -30,23 +33,23 @@
 		public static Produkt[] produkteInnen = {tisch,stuhl,vertaefelung};
 		public static Produkt[] produkteBrennholz = {kiefer,buche,spanplatte};
 		
+		public static Produkt[] alleProdukte = {gartenzaun,palisaden,terassenbelag,moebel,tisch,stuhl,vertaefelung,kiefer,buche,spanplatte};
+		static int zufallsZahl = (int)Math.random()*alleProdukte.length;
 		
 		
 		
 		public static Kunde guest = new Kunde();
 		public static Kunde kunde1 = new Kunde("Max","Mustermann","1337");
 				
-		public static Result index() {
-			return ok(index.render("whats up!"));
-		}
+	
 		public static Result agb() {
 			
 			
 			
 			if (kundennummer == null){
-				return ok(AGB.render(guest));
+				return ok(agb.render(guest));
 			} else {
-				return ok(AGB.render(kunde1));
+				return ok(agb.render(kunde1));
 			}
 		}
 		public static Result artikel() {
@@ -112,6 +115,7 @@
 		public static Result login() {
 			return ok(login.render());
 		}
+		
 		public static Result mainPage() {
 			
 			if (kundennummer == null){
@@ -123,11 +127,9 @@
 		}
 		public static Result neuheiten() {
 			
-			if (kundennummer == null){
-				return ok(neuheiten.render(guest));
-			} else {
-				return ok(neuheiten.render(kunde1));
-			}
+		
+				return ok(neuheiten.render(kunde1,alleProdukte));
+			
 		}	
 		public static Result registrierung() {
 			

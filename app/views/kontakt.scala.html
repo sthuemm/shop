@@ -1,60 +1,5 @@
 @(kunde: Kunde)
-<!DOCTYPE html>
-
-<html>
-<head>
-<title>Kontakt</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href=@routes.Assets.at("stylesheets/bootstrap.min.css") rel="stylesheet">
-<link href=@routes.Assets.at("CSS.css") rel="stylesheet">
-<script type="text/javascript" src=@routes.Assets.at("javascripts/popup.js")></script>
-</head>
-<body>
-	<nav class="navbar navbar-default navbar-inverse" role="navigation">
-		<div class="container-fluid">
-			<!-- Titel und Schalter werden für eine bessere mobile Ansicht zusammengefasst -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Navigation ein-/ausblenden</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/mainPage">Web-Shop</a>
-			</div>
-
-			<!-- Alle Navigationslinks, Formulare und anderer Inhalt werden hier zusammengefasst und können dann ein- und ausgeblendet werden -->
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="/neuheiten">Neuheiten</a></li>
-					<li><a href="/holzAussen">Holz im Außenbereich</a></li>
-					<li><a href="/holzInnen">Holz im Innenraum</a></li>
-					<li><a href="/brennholz">Brennholz</a></li>
-				</ul>
-				<form class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Suchen">
-					</div>
-					<button type="submit" class="btn btn-default">Los</button>
-				</form>
-				<ul class="nav navbar-nav navbar-right">
-					@if(kunde.kundenNummer == null){
-       					<li><a href="/login" target="_blank" onclick="return popup(this.href)">Hallo Fremder</a></li>
-       					<li><a href="/login" target="_blank" onclick="return popup(this.href)">Login</a></li>
-       			
-       				} else {
-       					<li><a href="/konto" >Hallo @kunde.vorname</a></li>
-       					<li><a href="/logout" target="_blank" onclick="return popup(this.href)">Logout</a></li>
-       				}
-       				<li><a href="/registrierung" target="_blank" onclick="return popup(this.href)">Registrieren</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
+@main("Holz im Aussenbereich")(kunde){
 	<main id="mainKontakt">
 	<form id="kontaktform">
 
@@ -71,7 +16,7 @@
 			</li>
 			<li><label id="Betreffuberschrift"> Betreff: *</label> <select
 				id="Betreff">
-					<option value="" disabled selected>Bitte Wählen</option>
+					<option value="" disabled selected>Bitte W�hlen</option>
 					<option value="">Fragen zum Produkt</option>
 					<option value="">Meine Bestellung</option>
 					<option value="">zur Lieferung</option>
@@ -102,15 +47,4 @@
 		<p id="pflicht">* Pflichtfelder</p>
 	</form>
 	</main>
-	<footer id="footer">
-		<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom"
-			role="tablist">
-	  <li><a href="#">Kundencenter</a></li>
-	  <li class = "active"><a href="/kontakt"> Kontakt</a></li>
-	  <li><a href="/impressum">Impressum</a></li>
-	  <li><a href="/datenschutz">Datenschutz</a></li>
-	  <li><a href="/agb">AGB</a></li>
-		</ul>
-	</footer>
-</body>
-</html>
+}

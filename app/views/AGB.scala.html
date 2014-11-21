@@ -1,87 +1,37 @@
 @(kunde: Kunde)
-	<!DOCTYPE html>
-	<html>
-	<title>AGB</title>
-	 <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href=@routes.Assets.at("stylesheets/bootstrap.min.css") media="screen" rel="stylesheet">
-		<script type="text/javascript" src=@routes.Assets.at("javascripts/popup.js")></script>
-	</head>
-	<body>
-	<nav class="navbar navbar-default navbar-inverse" role="navigation">
-	  <div class="container-fluid">
-		<!-- Titel und Schalter werden fÃ¼r eine bessere mobile Ansicht zusammengefasst -->
-		<div class="navbar-header">
-		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			<span class="sr-only">Navigation ein-/ausblenden</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		  </button>
-		  <a class="navbar-brand" href="/mainPage">Web-Shop</a>
-		</div>
-
-		<!-- Alle Navigationslinks, Formulare und anderer Inhalt werden hier zusammengefasst und kÃ¶nnen dann ein- und ausgeblendet werden -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		  <ul class="nav navbar-nav">
-			<li><a href="/neuheiten">Neuheiten</a></li>
-			<li><a href="/holzaussen">Holz im AuÃŸenbereich</a></li>
-			<li><a href="/kategorie2">Kategorie2</a></li>
-			<li><a href="/kategorie3">Kategorie3</a></li>
-		  </ul>
-		  <form class="navbar-form navbar-left" role="search">
-			<div class="form-group">
-			  <input type="text" class="form-control" placeholder="Suchen">
-			</div>
-			<button type="submit" class="btn btn-default">Los</button>
-		  </form>
-		   <ul class="nav navbar-nav navbar-right">
-		<li><a href="/konto" target="_blank" >Hallo @kunde.vorname</a></li>
-       		@if(kunde.kundenNummer == null){
-       			<li><a href="/login" target="_blank" onclick="return popup(this.href)">Hallo Fremder</a></li>
-       			<li><a href="/login" target="_blank" onclick="return popup(this.href)">Login</a></li>
-       			
-       		} else {
-       			<li><a href="/konto" >Hallo @kunde.vorname</a></li>
-       			<li><a href="/logout" target="_blank" onclick="return popup(this.href)">Logout</a></li>
-       		}
-			 <li><a href="/registrierung" target="_blank" onclick="return popup(this.href)">Registrieren</a></li>
-		  </ul>
-		</div><!-- /.navbar-collapse -->
-	  </div><!-- /.container-fluid -->
-	</nav>
+@main("Allgemeine Geschäftsbedingungen")(kunde){
 	<div class="container-fluid">
 
-		<h1>Allgemeine GeschÃ¤ftsbedingungen der Firma Web-Tech-Shop</h1>
+		<h1>Allgemeine Geschäftsbedingungen der Firma Web-Tech-Shop</h1>
 
-		<h2>Â§1 Geltung gegenÃ¼ber Unternehmern und Begriffsdefinitionen</h2>
+		<h2>§1 Geltung gegenüber Unternehmern und Begriffsdefinitionen</h2>
 		<ol type="i">
 			<li>
-				Die nachfolgenden Allgemeinen GeschÃ¤ftbedingungen gelten
-				fÃ¼r alle Lieferungen zwischen uns und einem Verbraucher in ihrer zum
-				Zeitpunkt der Bestellung gÃ¼ltigen Fassung.
-				Verbraucher ist jede natÃ¼rliche Person, die ein RechtsgeschÃ¤ft
-				zu Zwecken abschlieÃŸt, die Ã¼berwiegend weder ihrer gewerblichen noch
-				ihrer selbstÃ¤ndigen beruflichen TÃ¤tigkeit zugerechnet werden kÃ¶nnen (Â§
+				Die nachfolgenden Allgemeinen Geschäftbedingungen gelten
+				für alle Lieferungen zwischen uns und einem Verbraucher in ihrer zum
+				Zeitpunkt der Bestellung gültigen Fassung.
+				Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft
+				zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch
+				ihrer selbständigen beruflichen Tätigkeit zugerechnet werden können (§
 				13 BGB).
 			</li>	
 		</ol>
 
 
-		<h2>Â§2 Zustandekommen eines Vertrages, Speicherung des Vertragstextes</h2>
+		<h2>§2 Zustandekommen eines Vertrages, Speicherung des Vertragstextes</h2>
 		
 		<ol type="i">
 			<li>
-				Die folgenden Regelungen Ã¼ber den Vertragsabschluss gelten
-				fÃ¼r Bestellungen Ã¼ber unseren Internetshop
+				Die folgenden Regelungen über den Vertragsabschluss gelten
+				für Bestellungen über unseren Internetshop
 				http://www.beispielshop-online.de.
 			</li>
 			<li>
 				Im Falle des Vertragsschlusses kommt der Vertrag mit<br>
 				<ul class="ohneAufzaehlung">
 					<li>Web-Tech-Shop</li>
-					<li>Sebastian ThÃ¼mmel, Dumitru Mihu, Georg Mohr</li>
-					<li>BeispielstraÃŸe 42</li>
+					<li>Sebastian Thümmel, Dumitru Mihu, Georg Mohr</li>
+					<li>Beispielstraße 42</li>
 					<li>D-98765 Musterstadt</li>
 					<li>Registernummer 12131415</li>
 					<li>Registergericht Amtsgericht</li>
@@ -90,52 +40,52 @@
 				</ul>
 			</li>
 			<li>
-				Die PrÃ¤sentation der Waren in unserem Internetshop stellen
+				Die Präsentation der Waren in unserem Internetshop stellen
 				kein rechtlich bindendes Vertragsangebot unsererseits dar, sondern sind
 				nur eine unverbindliche Aufforderungen an den Verbraucher, Waren zu
-				bestellen. Mit der Bestellung der gewÃ¼nschten Ware gibt der Verbraucher
-				ein fÃ¼r ihn verbindliches Angebot auf Abschluss eines Kaufvertrages ab.
+				bestellen. Mit der Bestellung der gewünschten Ware gibt der Verbraucher
+				ein für ihn verbindliches Angebot auf Abschluss eines Kaufvertrages ab.
 			</li>
 			<li>
 				Bei Eingang einer Bestellung in unserem Internetshop
 				gelten folgende Regelungen: Der Verbraucher gibt ein bindendes
 				Vertragsangebot ab, indem er die in unserem Internetshop vorgesehene
-				Bestellprozedur erfolgreich durchlÃ¤uft.<br>
+				Bestellprozedur erfolgreich durchläuft.<br>
 				Die Bestellung erfolgt in folgenden Schritten:<br>
 			<ol>
-				<li>Auswahl der gewÃ¼nschten Ware</li>
-				<li>BestÃ¤tigen durch Anklicken der Buttons â€Bestellenâ€œ</li>
-				<li>PrÃ¼fung der Angaben im Warenkorb</li>
-				<li>BetÃ¤tigung des Buttons â€zur Kasseâ€œ</li>
+				<li>Auswahl der gewünschten Ware</li>
+				<li>Bestätigen durch Anklicken der Buttons „Bestellen“</li>
+				<li>Prüfung der Angaben im Warenkorb</li>
+				<li>Betätigung des Buttons „zur Kasse“</li>
 				<li>Anmeldung im Internetshop nach Registrierung und Eingabe der
 					Anmelderangaben (E-Mail-Adresse und Passwort).</li>
-				<li>Nochmalige PrÃ¼fung bzw. Berichtigung der jeweiligen
+				<li>Nochmalige Prüfung bzw. Berichtigung der jeweiligen
 					eingegebenen Daten.</li>
 				<li>Verbindliche Absendung der Bestellung durch Anklicken des
-					Buttons â€kostenpflichtig bestellenâ€œ bzw. â€kaufenâ€œ</li>
+					Buttons „kostenpflichtig bestellen“ bzw. „kaufen“</li>
 			</ol>
 				Der Verbraucher kann vor dem verbindlichen Absenden der
-				Bestellung durch BetÃ¤tigen der in dem von ihm verwendeten
-				Internet-Browser enthaltenen â€ZurÃ¼ckâ€œ-Taste nach Kontrolle seiner
+				Bestellung durch Betätigen der in dem von ihm verwendeten
+				Internet-Browser enthaltenen „Zurück“-Taste nach Kontrolle seiner
 				Angaben wieder zu der Internetseite gelangen, auf der die Angaben des
 				Kunden erfasst werden und Eingabefehler berichtigen bzw. durch
-				SchlieÃŸen des Internetbrowsers den Bestellvorgang abbrechen. Wir
-				bestÃ¤tigen den Eingang der Bestellung unmittelbar durch eine
-				automatisch generierte E-Mail (â€AuftragsbestÃ¤tigungâ€œ). Mit dieser
+				Schließen des Internetbrowsers den Bestellvorgang abbrechen. Wir
+				bestätigen den Eingang der Bestellung unmittelbar durch eine
+				automatisch generierte E-Mail („Auftragsbestätigung“). Mit dieser
 				nehmen wir Ihr Angebot an.
 			<li>
-				Speicherung des Vertragstextes bei Bestellungen Ã¼ber
+				Speicherung des Vertragstextes bei Bestellungen über
 				unseren Internetshop : Wir speichern den Vertragstext und senden Ihnen
-				die Bestelldaten und unsere AGB per E-Mail zu. Die AGB kÃ¶nnen Sie
+				die Bestelldaten und unsere AGB per E-Mail zu. Die AGB können Sie
 				jederzeit auch unter http://www.beispielshop-online.de/agb.html
-				einsehen. Ihre vergangenen Bestellungen kÃ¶nnen Sie in unserem
+				einsehen. Ihre vergangenen Bestellungen können Sie in unserem
 				Kunden-Bereich unter Mein Konto --> Meine Bestellungen einsehen.
 			</li>
 		</ol>
 
 		
 
-		<h2>Â§3 Preise, Versandkosten, Zahlung, FÃ¤lligkeit</h2>
+		<h2>§3 Preise, Versandkosten, Zahlung, Fälligkeit</h2>
 		<ol type="i">
 			<li>Die angegebenen Preise enthalten die gesetzliche
 			Umsatzsteuer und sonstige Preisbestandteile. Hinzu kommen etwaige
@@ -143,14 +93,14 @@
 			</li>
 		
 			<li>
-				Der Verbraucher hat die MÃ¶glichkeit der Zahlung per
+				Der Verbraucher hat die Möglichkeit der Zahlung per
 				Vorkasse, Nachnahme, Bankeinzug, PayPal, Kreditkarte( Visa ) .
 			</li>
 		
 			<li>
-				Hat der Verbraucher die Zahlung per Vorkasse gewÃ¤hlt, so
-				verpflichtet er sich, den Kaufpreis unverzÃ¼glich nach Vertragsschluss
-				zu zahlen.<br> Soweit wir per Nachnahme liefern, tritt die FÃ¤lligkeit der
+				Hat der Verbraucher die Zahlung per Vorkasse gewählt, so
+				verpflichtet er sich, den Kaufpreis unverzüglich nach Vertragsschluss
+				zu zahlen.<br> Soweit wir per Nachnahme liefern, tritt die Fälligkeit der
 			Kaufpreisforderung mit Erhalt der Ware ein.
 			</li>
 		
@@ -159,39 +109,39 @@
 		</ol>
 		
 
-		<h2>Â§4 Lieferung</h2>
+		<h2>§4 Lieferung</h2>
 		<ol type="i">
 			<li>
 				Sofern wir dies in der Produktbeschreibung nicht deutlich
 				anders angegeben haben, sind alle von uns angebotenen Artikel sofort
-				versandfertig. Die Lieferung erfolgt hier spÃ¤testen innerhalb von 5
-				Werktagen. Dabei beginnt die Frist fÃ¼r die Lieferung im Falle der
+				versandfertig. Die Lieferung erfolgt hier spätesten innerhalb von 5
+				Werktagen. Dabei beginnt die Frist für die Lieferung im Falle der
 				Zahlung per Vorkasse am Tag nach Zahlungsauftrag an die mit der
-				Ãœberweisung beauftragte Bank und bei allen anderen Zahlungsarten am Tag
-				nach Vertragsschluss zu laufen. FÃ¤llt das Fristende auf einen Samstag,
+				Überweisung beauftragte Bank und bei allen anderen Zahlungsarten am Tag
+				nach Vertragsschluss zu laufen. Fällt das Fristende auf einen Samstag,
 				Sonntag oder gesetzlichen Feiertag am Lieferort, so endet die Frist am
-				nÃ¤chsten Werktag.
+				nächsten Werktag.
 			</li>
 
 			<li>
-				Die Gefahr des zufÃ¤lligen Untergangs und der zufÃ¤lligen
+				Die Gefahr des zufälligen Untergangs und der zufälligen
 				Verschlechterung der verkauften Sache geht auch beim Versendungskauf
-				erst mit der Ãœbergabe der Sache an den KÃ¤ufer auf diesen Ã¼ber.
+				erst mit der Übergabe der Sache an den Käufer auf diesen über.
 			</li>
 		</ol>
-		<h2>Â§5 Eigentumsvorbehalt</h2>
+		<h2>§5 Eigentumsvorbehalt</h2>
 		Wir behalten uns das Eigentum an der Ware bis zur
-		vollstÃ¤ndigen Bezahlung des Kaufpreises vor.<br>
+		vollständigen Bezahlung des Kaufpreises vor.<br>
 
 
-		<h2>Â§6 Widerrufsrecht des Kunden als Verbraucher:</h2>
-		<h3>Widerrufsrecht fÃ¼r Verbraucher</h3>
+		<h2>§6 Widerrufsrecht des Kunden als Verbraucher:</h2>
+		<h3>Widerrufsrecht für Verbraucher</h3>
 
-		<wbr>Verbrauchern steht ein Widerrufsrecht nach folgender MaÃŸgabe
-		zu, wobei Verbraucher jede natÃ¼rliche Person ist, die ein
-		RechtsgeschÃ¤ft zu Zwecken abschlieÃŸt, die Ã¼berwiegend weder ihrer
-		gewerblichen noch ihrer selbstÃ¤ndigen beruflichen TÃ¤tigkeit zugerechnet
-		werden kÃ¶nnen:
+		<wbr>Verbrauchern steht ein Widerrufsrecht nach folgender Maßgabe
+		zu, wobei Verbraucher jede natürliche Person ist, die ein
+		Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer
+		gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet
+		werden können:
 		
 
 		<h3>Widerrufsbelehrung</h3>
@@ -199,17 +149,17 @@
 		<h4>Widerrufsrecht</h4>
 
 		<wbr>Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von
-		GrÃ¼nden diesen Vertrag zu widerrufen.
+		Gründen diesen Vertrag zu widerrufen.
 		
 
-		<wbr>Die Widerrufsfrist betrÃ¤gt vierzehn Tage, ab dem Tag, an dem
-		Sie oder ein von Ihnen benannter Dritter, der nicht der BefÃ¶rderer ist,
+		<wbr>Die Widerrufsfrist beträgt vierzehn Tage, ab dem Tag, an dem
+		Sie oder ein von Ihnen benannter Dritter, der nicht der Beförderer ist,
 		die Waren in Besitz genommen haben bzw. hat.
 		
 		<ul class="ohneAufzaehlung">
 			<li>Web-Tech-Shop</li>
-			<li>Sebastian ThÃ¼mmel, Dumitru Mihu, Georg Mohr</li>
-			<li>BeispielstraÃŸe 42</li>
+			<li>Sebastian Thümmel, Dumitru Mihu, Georg Mohr</li>
+			<li>Beispielstraße 42</li>
 			<li>D-98765 Musterstadt</li>
 			<li>Registernummer 12131415</li>
 			<li>Registergericht Amtsgericht</li>
@@ -217,9 +167,9 @@
 			<li>zustande.</li>
 		</ul>
 		
-		<wbr>mittels einer eindeutigen ErklÃ¤rung (z.B. ein mit der Post
-		versandter Brief, Telefax oder E-Mail) Ã¼ber Ihren Entschluss, diesen
-		Vertrag zu widerrufen, informieren. Sie kÃ¶nnen dafÃ¼r das beigefÃ¼gte
+		<wbr>mittels einer eindeutigen Erklärung (z.B. ein mit der Post
+		versandter Brief, Telefax oder E-Mail) über Ihren Entschluss, diesen
+		Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte
 		Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben
 		ist.
 		
@@ -227,32 +177,32 @@
 		<h4>Widerrufsfolgen</h4>
 
 		<wbr>Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle
-		Zahlungen, die wir von Ihnen erhalten haben, einschlieÃŸlich der
-		Lieferkosten (mit Ausnahme der zusÃ¤tzlichen Kosten, die sich daraus
+		Zahlungen, die wir von Ihnen erhalten haben, einschließlich der
+		Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus
 		ergeben, dass Sie eine andere Art der Lieferung als die von uns
-		angebotene, gÃ¼nstigste Standardlieferung gewÃ¤hlt haben), unverzÃ¼glich
-		und spÃ¤testens binnen vierzehn Tagen ab dem Tag zurÃ¼ckzuzahlen, an dem
-		die Mitteilung Ã¼ber Ihren Widerruf dieses Vertrags bei uns eingegangen
-		ist. FÃ¼r diese RÃ¼ckzahlung verwenden wir dasselbe Zahlungsmittel, das
-		Sie bei der ursprÃ¼nglichen Transaktion eingesetzt haben, es sei denn,
-		mit Ihnen wurde ausdrÃ¼cklich etwas anderes vereinbart; in keinem Fall
-		werden Ihnen wegen dieser RÃ¼ckzahlung Entgelte berechnet.
+		angebotene, günstigste Standardlieferung gewählt haben), unverzüglich
+		und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem
+		die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen
+		ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das
+		Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn,
+		mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall
+		werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.
 		
 
-		<wbr>Wir kÃ¶nnen die RÃ¼ckzahlung verweigern, bis wir die Waren
-		wieder zurÃ¼ckerhalten haben oder bis Sie den Nachweis erbracht haben,
-		dass Sie die Waren zurÃ¼ckgesandt haben, je nachdem, welches der frÃ¼here
+		<wbr>Wir können die Rückzahlung verweigern, bis wir die Waren
+		wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben,
+		dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere
 		Zeitpunkt ist.
 		
 
-		<wbr>Sie haben die Waren unverzÃ¼glich und in jedem Fall spÃ¤testens
-		binnen vierzehn Tagen ab dem Tag, an dem Sie uns Ã¼ber den Widerruf
-		dieses Vertrages unterrichten, an uns zurÃ¼ckzusenden oder zu Ã¼bergeben.
+		<wbr>Sie haben die Waren unverzüglich und in jedem Fall spätestens
+		binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den Widerruf
+		dieses Vertrages unterrichten, an uns zurückzusenden oder zu übergeben.
 		Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von
 		vierzehn Tagen absenden.
 		
 
-		<wbr>Wir tragen die Kosten der RÃ¼cksendung der Waren
+		<wbr>Wir tragen die Kosten der Rücksendung der Waren
 		
 
 		<wbr>Ende der Widerrufsbelehrung
@@ -261,17 +211,17 @@
 		
 		
 
-		<h2>Â§7 Widerrufsformular</h2>
+		<h2>§7 Widerrufsformular</h2>
 
 		<h4>Muster-Widerrufsformular</h4>
-		(Wenn Sie den Vertrag widerrufen wollen, dann fÃ¼llen Sie bitte dieses
-		Formular aus und senden Sie es zurÃ¼ck.)
+		(Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses
+		Formular aus und senden Sie es zurück.)
 		<br />
 		<div id="Widerrufsformular">
 		<ul class="ohneAufzaehlung">
 			<li>Web-Tech-Shop</li>
-			<li>Sebastian ThÃ¼mmel, Dumitru Mihu, Georg Mohr</li>
-			<li>BeispielstraÃŸe 42</li>
+			<li>Sebastian Thümmel, Dumitru Mihu, Georg Mohr</li>
+			<li>Beispielstraße 42</li>
 			<li>D-98765 Musterstadt</li>
 			<li>Registernummer 12131415</li>
 			<li>Registergericht Amtsgericht</li>
@@ -280,7 +230,7 @@
 		</ul>
 		
 			<wbr>Hiermit widerrufe(n)
-			ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag Ã¼ber den Kauf
+			ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf
 			der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung
 			(*)<br /> <br />
 			_____________________________________________________<br /> <br />
@@ -296,51 +246,39 @@
 		(*) Unzutreffendes streichen.
 		<br />
 
-		<h2>Â§8 GewÃ¤hrleistung</h2>
-		Es gelten die gesetzlichen GewÃ¤hrleistungsregelungen.
+		<h2>§8 Gewährleistung</h2>
+		Es gelten die gesetzlichen Gewährleistungsregelungen.
 
-		<h2>Â§9 Verhaltenskodex</h2>
+		<h2>§9 Verhaltenskodex</h2>
 		Wir haben uns den Verhaltenskodizes der folgenden Einrichtungen
 		unterworfen:
 		<h3>
-			Euro-Label Germany EHI-EuroHandelsinstitut GmbH SpichernstraÃŸe 55
-			50672 KÃ¶ln Den Euro-Label Verhaltenskodex kÃ¶nnen Sie durch Anklicken
+			Euro-Label Germany EHI-EuroHandelsinstitut GmbH Spichernstraße 55
+			50672 Köln Den Euro-Label Verhaltenskodex können Sie durch Anklicken
 			des auf unserer Webseite angebrachten Euro-Label-Siegels oder unter 
 			<a href="http://www.euro-label.com">www.euro-label.com</a> abrufen.
 		</h3>
 		<p>und</p>
 		<wbr>
-			Trusted Shops GmbH Colonius CarrÃ© Subbelrather StraÃŸe 15c 50823 KÃ¶ln
-			Den Trusted Shops Verhaltenskodex kÃ¶nnen Sie durch Anklicken des auf
+			Trusted Shops GmbH Colonius Carré Subbelrather Straße 15c 50823 Köln
+			Den Trusted Shops Verhaltenskodex können Sie durch Anklicken des auf
 			unserer Webseite angebrachten Trusted-Shops-Siegels oder unter 
 			<a href="http://www.trustedshops.de"> www.trustedshops.de</a> abrufen.
 		
-		<h2>Â§10 Vertragsprache</h2>
-		<wbr>Als Vertragssprache steht ausschlieÃŸlich Deutsch zur
-		VerfÃ¼gung.
+		<h2>§10 Vertragsprache</h2>
+		<wbr>Als Vertragssprache steht ausschließlich Deutsch zur
+		Verfügung.
 		
 		
-		<h2> Â§11 Kundendienst</h2>
+		<h2> §11 Kundendienst</h2>
 			<wbr>
-			Unser Kundendienst fÃ¼r Fragen, Reklamationen und Beanstandungen steht Ihnen
+			Unser Kundendienst für Fragen, Reklamationen und Beanstandungen steht Ihnen
 			werktags von 9:00 Uhr bis 17:30 Uhr unter Telefon: <a href="tel:+49512345678911">05123
 			45678911</a> Telefax: 05123 45678912<br> E-Mail:
-			<a href="email:service@@beispielshop.de">service@@beispielshop.de</a> zur VerfÃ¼gung.
+			<a href="email:service@@beispielshop.de">service@@beispielshop.de</a> zur Verfügung.
 		
 
 		<p>Stand der AGB Okt.2014</p>
 
 	</div>
-	<footer id="footer">
-		<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom" role="tablist">
-		  <li><a href="#">Kundencenter</a></li>
-		 <!--zuweisen auf ein HTML Datei geht entweder so...-->
-		 <li><a href="/kontakt"> Kontakt</a></li>
-		 <!--...oder so!-->
-		  <li><a href="@routes.Application.impressum()">Impressum</a></li>
-		  <li><a href="/datenschutz">Datenschutz</a></li>
-		  <li class="active"><a href="/agb">AGB</a></li>
-		</ul>
-	</footer>
-	</body>
-	</html>
+	}
