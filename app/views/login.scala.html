@@ -1,10 +1,7 @@
-<html>
-<head>
-<title>Login</title>
-<meta charset="utf-8">
-</head>
-<body>
-	<form action="undefined">
+@(kunde: Kunde)
+@main("Login")(kunde){
+
+	<form action="/main/">
 		<p>
 			Benutzer:<input type="text" name="user">
 		</p>
@@ -15,6 +12,4 @@
 			<input type="submit" value="Anmelden"><input type="reset"
 				value="Abbrechen">
 	</form>
-
-</body>
-</html>
+}

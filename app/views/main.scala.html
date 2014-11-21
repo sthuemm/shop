@@ -31,10 +31,10 @@
 					<div class="collapse navbar-collapse"
 						id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li><a href="/neuheiten">Neuheiten</a></li>
-							<li><a href="/holzAussen">Holz im Außenbereich</a></li>
-							<li><a href="/holzInnen">Holz im Innenraum</a></li>
-							<li><a href="/brennholz">Brennholz</a></li>
+							<li><a href=@routes.Application.neuheiten>Neuheiten</a></li>
+							<li><a href=@routes.Application.holzAussen>Holz im Außenbereich</a></li>
+							<li><a href=@routes.Application.holzInnen>Holz im Innenraum</a></li>
+							<li><a href=@routes.Application.brennholz>Brennholz</a></li>
 						</ul>
 						<form class="navbar-form navbar-left" role="search">
 							<div class="form-group">
@@ -43,13 +43,13 @@
 							<button type="submit" class="btn btn-default">Los</button>
 						</form>
 				   <ul class="nav navbar-nav navbar-right">
-				  	 	@if(kunde.kundenNummer == null){
-	       					<li><a href="/login" target="_blank" onclick="return popup(this.href)">Hallo Fremder</a></li>
-	       					<li><a href="/login" target="_blank" onclick="return popup(this.href)">Login</a></li>
+				  	 	@if(kunde == null){
+	       					<li><a href=@routes.Application.login>Hallo Fremder</a></li>
+	       					<li><a href=@routes.Application.login>Login</a></li>
 	       			
 	       				} else {
 	       				<li><a href="/konto" >Hallo @kunde.vorname</a></li>
-	       				<li><a href="/logout" target="_blank" onclick="return popup(this.href)">Logout</a></li>
+	       				<li><a href=@routes.Application.logout>Logout</a></li>
 	       				}
 	       				<li><a href="/registrierung" target="_blank" onclick="return popup(this.href)">Registrieren</a></li>
 				  </ul>
@@ -62,11 +62,11 @@
         <footer id="footer">
 			<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom"
 				role="tablist">
-	  <li><a href="/konto">Kundencenter</a></li>
-	  <li><a href="/kontakt"> Kontakt</a></li>
-	  <li><a href="/impressum">Impressum</a></li>
-	  <li><a href="/datenschutz">Datenschutz</a></li>
-	  <li><a href="/agb">AGB</a></li>
+	  <li><a href=@routes.Application.konto>Kundencenter</a></li>
+	  <li><a href=@routes.Application.kontakt> Kontakt</a></li>
+	  <li><a href=@routes.Application.impressum>Impressum</a></li>
+	  <li><a href=@routes.Application.datenschutz>Datenschutz</a></li>
+	  <li><a href=@routes.Application.agb>AGB</a></li>
 			</ul>
 		</footer>
     </body>

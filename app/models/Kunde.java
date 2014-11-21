@@ -10,6 +10,7 @@ public class Kunde {
 		public String vorname;
 		public String name;
 		public String kundenNummer;
+		public String passwort;
 		
 		
 		public Kunde(){
@@ -17,10 +18,11 @@ public class Kunde {
 			
 		}
 		
-		public Kunde(String vorname, String name, String kundenNummer){
+		public Kunde(String vorname, String name, String kundenNummer, String passwort){
 			this.name = name;
 			this.vorname = vorname;
 			this.kundenNummer = kundenNummer;
+			this.passwort = passwort;
 		}
 		
 	
