@@ -40,9 +40,11 @@
 		
 		
 		public static Kunde guest;
-		public static Kunde kunde = new Kunde("Max","Mustermann","1337","test");
-		public static Kunde kunde1;
-		public static Kunde[] kunden = {kunde};
+		public static Kunde Basti = new Kunde("Basti","Thuemmel","1000","test");
+		public static Kunde Georg = new Kunde("Georg","Mohr","1001","test");
+		public static Kunde Dumitru = new Kunde("Dumitru","Mihu","1002","test");
+		public static Kunde kunde1 = null;
+		public static Kunde[] kunden = {Basti,Georg,Dumitru};
 				
 	
 		public static Result agb() {
@@ -138,17 +140,19 @@
 		}	
 		
 		public static Result main(String user, String userPasswort) {
+			System.out.println("main");
 			for (Kunde kunde : kunden) {
-				if(kunde.vorname == user){
-					if(kunde.passwort == userPasswort){
-						kunde1 = kunde;
-						
+				if(user.equals(kunde.vorname)){
+					
+					if(userPasswort.equals(kunde.passwort)){
+						System.out.println("found kunde");
+						return ok(mainPage.render(kunde));
 					}
 				} else {
 					
 				}
 			}
-			return ok(mainPage.render(kunde1));
+			return ok(mainPage.render(guest));
 		}
 		
 		public static Result logout() {
