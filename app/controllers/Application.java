@@ -134,7 +134,7 @@
 		public static Result registrierung() {
 			
 		
-				return ok(Registrierung.render(kunde1));
+				return ok(registrierung.render(kunde1));
 			
 			
 		}	
