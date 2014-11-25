@@ -2,76 +2,44 @@
 	
 
 	import play.*;
-	import play.mvc.*;
-	import views.html.*;
-	import models.*;
-	import java.util.List;
-	import java.lang.*;
+import play.mvc.*;
+import views.html.*;
+import models.*;
+
+import java.util.List;
+import java.lang.*;
 	
 
 	public class Application extends Controller {
 	
-		
-		private static String kundennummer;
-		
-		
 	
-		public static Produkt gartenzaun = new Produkt(99.99,"1","ein Gartenzaun","images/Palissaden.jpg");
-		public static Produkt palisaden = new Produkt(119.99,"2","Palisaden fuer den Garten","images/Pfaehle.jpg");
-		public static Produkt terassenbelag = new Produkt(249.99,"3","Terassenbelaege","images/Terrasse.jpg");
-		public static Produkt moebel = new Produkt(49.99,"4","Terassenmoebel","images/bruecke.jpg");
-		
-		public static Produkt tisch = new Produkt(29.99,"5","Esstisch");
-		public static Produkt stuhl = new Produkt(19.99,"6","Stuhl");
-		public static Produkt vertaefelung = new Produkt(44.99,"7","Vertaefelung");
-		
-		public static Produkt kiefer = new Produkt(4.99,"8","Echtes Kiefernholz");
-		public static Produkt buche = new Produkt(5.99,"9","Echtes Buchenholz");
-		public static Produkt spanplatte = new Produkt(2.99,"10","Super brennbare Spanplatte");
-		
-		public static Produkt[] produkteAussen = {gartenzaun,palisaden,terassenbelag,moebel};
-		public static Produkt[] produkteInnen = {tisch,stuhl,vertaefelung};
-		public static Produkt[] produkteBrennholz = {kiefer,buche,spanplatte};
-		
-		public static Produkt[] alleProdukte = {gartenzaun,palisaden,terassenbelag,moebel,tisch,stuhl,vertaefelung,kiefer,buche,spanplatte};
-		static int zufallsZahl = (int)Math.random()*alleProdukte.length;
-		
-		
-		
-		
-		public static Kunde guest;
-		public static Kunde Basti = new Kunde("Basti","Thuemmel","1000","test");
-		public static Kunde Georg = new Kunde("Georg","Mohr","1001","test");
-		public static Kunde Dumitru = new Kunde("Dumitru","Mihu","1002","test");
-		public static Kunde kunde1 = null;
-		public static Kunde[] kunden = {Basti,Georg,Dumitru};
-				
+
 	
 		public static Result agb() {
 			
 		
 		
-				return ok(agb.render(kunde1));
+				return ok(agb.render(Model.sharedInstance.getGuest()));
 			
 		}
 		
 		public static Result artikel() {
 			
-				return ok(artikel.render(kunde1));
+				return ok(artikel.render(Model.sharedInstance.getGuest()));
 			
 		}
 		
 		public static Result datenschutz() {
 			
 		
-				return ok(datenschutz.render(kunde1));
+				return ok(datenschutz.render(Model.sharedInstance.getGuest()));
 			
 		}
 		
 		public static Result holzAussen() {
 			
 			
-				return ok(holzAussen.render(kunde1,produkteAussen));
+				return ok(holzAussen.render(Model.sharedInstance.getGuest(),Model.sharedInstance.getProdukteAussen()));
 			
 			
 		}
@@ -79,69 +47,71 @@
 		public static Result impressum() {
 			
 			
-				return ok(impressum.render(kunde1));
+				return ok(impressum.render(Model.sharedInstance.getGuest()));
 			
 		}
 		
 		public static Result holzInnen() {
 			
 			
-				return ok(holzInnen.render(kunde1,produkteInnen));
+				return ok(holzInnen.render(Model.sharedInstance.getGuest(),Model.sharedInstance.getProdukteInnen()));
 			
 		}
 		
 		public static Result brennholz() {
 			
 			
-				return ok(brennholz.render(kunde1,produkteBrennholz));
+				return ok(brennholz.render(Model.sharedInstance.getGuest(),Model.sharedInstance.getProdukteBrennholz()));
 			
 		}
 		
 		public static Result kontakt() {
 			
 			
-				return ok(kontakt.render(kunde1));
+				return ok(kontakt.render(Model.sharedInstance.getGuest()));
 			
 		}	
 		
 		public static Result konto() {
 			
 			
-				return ok(konto.render(kunde1));
+				return ok(konto.render(Model.sharedInstance.getGuest()));
 			
 		}
 		
 		public static Result login() {
 			
 		
-			return ok(login.render(kunde1));
+			return ok(login.render(Model.sharedInstance.getGuest()));
 		}
 		
 		public static Result mainPage() {
+				Model.sharedInstance.generateKunden();
+				Model.sharedInstance.generateProdukts();
 			
-			
-				return ok(mainPage.render(kunde1));
+				return ok(mainPage.render(Model.sharedInstance.getGuest()));
 			
 		}
 		
 		public static Result neuheiten() {	
-			
+				
+				
 		
-				return ok(neuheiten.render(kunde1,alleProdukte));
+				return ok(neuheiten.render(Model.sharedInstance.getGuest(),Model.sharedInstance.getProdukte()));
 			
 		}	
 		
 		public static Result registrierung() {
 			
 		
-				return ok(registrierung.render(kunde1));
+				return ok(Registrierung.render(Model.sharedInstance.getGuest()));
 			
 			
 		}	
 		
 		public static Result main(String user, String userPasswort) {
 			System.out.println("main");
-			for (Kunde kunde : kunden) {
+			for (Kunde kunde : Model.sharedInstance.getKunden()) {
 				if(user.equals(kunde.vorname)){
 					
 					if(userPasswort.equals(kunde.passwort)){
@@ -152,12 +122,12 @@
 					
 				}
 			}
-			return ok(mainPage.render(guest));
+			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		}
 		
 		public static Result logout() {
-			kunde1 = null;
-			return ok(mainPage.render(kunde1));
+			
+			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		}
 		
 		

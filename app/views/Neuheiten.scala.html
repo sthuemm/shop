@@ -12,12 +12,13 @@
 			
 			<div>
 				<h2 id="HeadAngebote">Angebote</h2>
-				<img src=@routes.Assets.at("images/Angebote.jpg") ALT="Angebote">
-				<wbr>
-				<p>
-					
-					@produkte(0).artikelBezeichnung <a href="/artikel">mehr...</a>
-				</p>
+				@for(produkt <- produkte) {
+				<div>
+					<img src=@routes.Assets.at("images/bruecke.jpg") alt = "">
+					<wbr> @produkt.artikelBezeichnung
+					<a href="/artikel">mehr...</a>
+				</div>	
+			}
 			</div>
 		</div>
 }
