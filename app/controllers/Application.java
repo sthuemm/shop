@@ -1,7 +1,7 @@
-	package controllers;
+package controllers;
 	
 
-	import play.*;
+import play.*;
 import play.mvc.*;
 import views.html.*;
 import models.*;
@@ -104,7 +104,7 @@ import java.lang.*;
 		public static Result registrierung() {
 			
 		
-				return ok(Registrierung.render(Model.sharedInstance.getGuest()));
+				return ok(registrierung.render(Model.sharedInstance.getGuest()));
 			
 			
 		}	

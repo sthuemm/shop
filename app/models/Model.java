@@ -97,7 +97,7 @@ public class Model {
 	public Kunde getGuest(){
 		for(Kunde kunde:Kunden){
 			if(kunde.vorname.equals("Guest")){
-				return kunde;
+				return null;
 			}
 		}
 		return null;
