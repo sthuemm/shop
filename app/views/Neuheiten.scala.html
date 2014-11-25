@@ -1,24 +1,55 @@
 @(kunde: Kunde, produkte: Array[Produkt])
 @main("Neuheiten")(kunde){
-		<div class="container-fluid">
-			<div >
-				<h2 id="HeadNeuheiten">Neuheiten</h2>
-				<img src=@routes.Assets.at("images/Artikel.jpg") ALT="Artikel">
-				<wbr>
-				<p>
-					Hier werden die neuen Artikel stehen. <a href="/artikel">mehr...</a>
-				</p>
-			</div>
-			
-			<div>
-				<h2 id="HeadAngebote">Angebote</h2>
-				@for(produkt <- produkte) {
-				<div>
-					<img src=@routes.Assets.at("images/bruecke.jpg") alt = "">
-					<wbr> @produkt.artikelBezeichnung
-					<a href="/artikel">mehr...</a>
-				</div>	
-			}
-			</div>
-		</div>
+		<div class="container-fluid" id=neuheiten>
+			<ul id=neuheitenUl>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(0).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(0).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(1).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(1).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(2).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(2).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(3).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(3).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(4).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(4).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(5).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(5).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(6).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(6).price </p>
+					</a>
+				</li>
+				<li id=neuheitenLi>
+					<a href='#' id=neuheitenA>
+						<h2 id=neuheitenH2>@produkte(7).artikelBezeichnung</h2>
+						<p id=neuheitenP>@produkte(7).price </p>
+					</a>
+				</li>
+			</ul>
+	</div>
 }

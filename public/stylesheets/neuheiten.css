@@ -1,0 +1,101 @@
+#neuheiten{
+  margin:0;
+  padding:0;
+}
+#neuheitenBody{
+  font-family:arial,sans-serif;
+  font-size:100%;
+  margin:3em;
+  background:#666;
+  color:#fff;
+}
+#neuheitenH2,#neuheitenP{
+  font-size:100%;
+  font-weight:normal;
+}
+#neuheitenUl,#neuheitenLi{
+  list-style:none;
+}
+#neuheitenUl{
+  overflow:hidden;
+  padding:3em;
+}
+#neuheitenUl #neuheitenLi #neuheitenA{
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:10em;
+  width:20em;
+  padding:1em;
+}
+#neuheitenUl #neuheitenLi{
+  margin:1em;
+  float:left;
+}
+
+#neuheitenUl #neuheitenLi #neuheitenH2{
+  font-size:140%;
+  font-weight:bold;
+  padding-bottom:10px;
+}
+
+#neuheitenUl #neuheitenLi #neuheitenP{
+  font-family:"Reenie Beanie",arial,sans-serif;
+  font-size:180%;
+}
+
+#neuheitenUl #neuheitenLi #neuheitenA{
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:10em;
+  width:20em;
+  padding:1em;
+  /* Firefox */
+  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
+  /* Safari+Chrome */
+  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  /* Opera */
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+}
+
+#neuheitenUl #neuheitenLi #neuheitenA{
+  -webkit-transform:rotate(-6deg);
+  -o-transform:rotate(-6deg);
+  -moz-transform:rotate(-6deg);
+}
+
+#neuheitenUl #neuheitenLi:nth-child(even) #neuheitenA{
+  -o-transform:rotate(4deg);
+  -webkit-transform:rotate(4deg);
+  -moz-transform:rotate(4deg);
+  position:relative;
+  top:5px;
+}
+#neuheitenUl #neuheitenLi:nth-child(3n) #neuheitena{
+  -o-transform:rotate(-3deg);
+  -webkit-transform:rotate(-3deg);
+  -moz-transform:rotate(-3deg);
+  position:relative;
+  top:-5px;
+}
+#neuheitenUl #neuheitenLi:nth-child(5n) #neuheitenA{
+  -o-transform:rotate(5deg);
+  -webkit-transform:rotate(5deg);
+  -moz-transform:rotate(5deg);
+  position:relative;
+  top:-10px;
+}
+
+#neuheitenUl #neuheitenLi #neuheitenA:hover,#neuheitenUl #neuheitenLi #neuheitenA:focus{
+  -moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  -o-transform: scale(1.25);
+  position:relative;
+  z-index:5;
+}
