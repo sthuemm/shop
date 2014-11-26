@@ -36,15 +36,7 @@ text-align:center;
 	margin:15;
 }
 
-body {
-	margin: 0;
-	background: url(../Bilder/textur_holz.jpg) no-repeat center center fixed ; 
-	padding-top: 70px;
-	padding-bottom: 70px;
-	padding-right: 20px;
-	padding-left: 20px;
-	
-}
+
 
 .navbar-inner{
 	background:transparent;
@@ -1138,7 +1130,11 @@ body {
 	font-size: 14px;
 	line-height: 1.42857143;
 	color: #333;
-	background-color: #fff
+	background-color: #fff;
+	padding-top: 70px;
+	padding-bottom: 70px;
+	padding-right: 20px;
+	padding-left: 20px;
 }
 
 input,button,select,textarea {

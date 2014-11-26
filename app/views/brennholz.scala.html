@@ -1,8 +1,9 @@
 @(kunde: Kunde, produkte: Array[Produkt])
 @main("Brennholz")(kunde){
 	@for(produkt <- produkte) {
-				<div>
-					<img src=@routes.Assets.at("images/bruecke.jpg") alt = "">
+				<div class="item">
+					<a href='#'><img src=@routes.Assets.at("images/bruecke.jpg") alt = ""></a>
+				
 					<wbr> @produkt.artikelBezeichnung
 					<a href="/artikel">mehr...</a>
 				</div>	

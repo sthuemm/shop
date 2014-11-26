@@ -15,6 +15,15 @@ import java.lang.*;
 	
 
 	
+		
+		public static Result index() {
+			Model.sharedInstance.generateKunden();
+			Model.sharedInstance.generateProdukts();
+		
+			return ok(mainPage.render(Model.sharedInstance.getGuest()));
+		
+	}
+		
 		public static Result agb() {
 			
 		
@@ -86,8 +95,7 @@ import java.lang.*;
 		}
 		
 		public static Result mainPage() {
-				Model.sharedInstance.generateKunden();
-				Model.sharedInstance.generateProdukts();
+				
 			
 				return ok(mainPage.render(Model.sharedInstance.getGuest()));
 			

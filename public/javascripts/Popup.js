@@ -26,7 +26,7 @@ $(window).load(function(){
 		$(this).parent().find('img:first').stop().animate({opacity:1}, 1000);
 	})
 	$('.img_grayscale').mouseout(function(){
-		$(this).stop().animate({opacity:0}, 1000);
+		$(this).stop().animate({opacity:0}, 00);
 	});		
 });
 
