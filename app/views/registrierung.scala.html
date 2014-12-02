@@ -1,14 +1,6 @@
 @(kunde: Kunde)
-<html>
-	<head>
-		<title>Registrierung</title>
-		<meta charset="utf-8">
-		
-		<script type="text/javascript" src="Registrierung.js"></script>
-	</head>
-	<body>
-		
-		
+@main("Registrierung")(kunde){
+
 			<p>Vorname*:<input id="Vorname" type="text" name="user"></p>
 			<p>Nachname*:<input id="Nachname" type="text" name="user"></p>
 			<p>E-Mail Adresse*:<input type="text" name="user"></p>
@@ -25,5 +17,5 @@
 			<div id="TelefonAusgabe"></div>
 		
 		
-	</body>
-</html>
+
+}
