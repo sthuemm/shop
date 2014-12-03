@@ -17,8 +17,7 @@ import java.lang.*;
 	
 		
 		public static Result index() {
-			Model.sharedInstance.generateKunden();
-			Model.sharedInstance.generateProdukts();
+
 		
 			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		

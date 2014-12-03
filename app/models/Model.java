@@ -55,6 +55,8 @@ public class Model {
 	
 	
 	private Model() {
+		generateKunden();
+		generateProdukts();
 	}
 	
 	
@@ -95,11 +97,7 @@ public class Model {
 	}
 	
 	public Kunde getGuest(){
-		for(Kunde kunde:Kunden){
-			if(kunde.vorname.equals("Guest")){
-				return null;
-			}
-		}
+		
 		return null;
 	}
 	
