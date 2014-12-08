@@ -129,6 +129,12 @@ import java.lang.*;
 			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		}
 		
+		public static Result autover(){
+		
+		return ok(main.render(Model.sharedInstance.))
+		
+		}
+		
 		
 	}
 	

@@ -20,6 +20,7 @@ GET 	/konto						controllers.Application.konto()
 GET		/main/						controllers.Application.main(user,userPasswort)
 GET		/logout						controllers.Application.logout()
 GET		/registrierung				controllers.Application.registrierung()
+GET		/autovervollstaendigung		controllers.Application.autover()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
