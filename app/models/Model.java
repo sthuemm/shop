@@ -14,7 +14,7 @@ public class Model {
 	private ArrayList<Produkt> produkteAussen = new ArrayList<>();
 	private ArrayList<Produkt> produkteInnen = new ArrayList<>();
 	private ArrayList<Produkt> produkteBrennholz = new ArrayList<>();
-	public ArrayList<Produkt> gesProdukte = new ArrayList<>();
+	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
 
 	private Model() {
 		dbAufruf();
@@ -67,29 +67,23 @@ public class Model {
 				"brennbar"));
 	}
 
-	public Produkt produktSuchen(double preis, String artikelBezeichnung,
-			String kategorie) {
+	public  Produkt[] produktSuchen(String gesuchterWert) {
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM produkt WHERE preice ='" + preis
-							+ "' OR artikelBezeichnung = '"
-							+ artikelBezeichnung + "' OR kategorie = '"
-							+ kategorie + "';");
-			double r1 = 0.0;
-			String r2 = "";
-			String r3 = "";
-			String r4 = "";
-			String r5 = "";
+					"SELECT * FROM produkt WHERE preice ='" + gesuchterWert
+							+ "' OR artikelBezeichnung = '"	+ gesuchterWert + "' OR kategorie = '"
+							+ gesuchterWert + "';");
+			
 			if (rs == null) {
 				return null;
 			} else {
 				while (rs.next()) {
-					r1 = rs.getDouble("preice");
-					r2 = rs.getString("artikelNummer");
-					r3 = rs.getString("artikelBezeichnung");
-					r4 = rs.getString("bildPfad");
-					r5 = rs.getString("kategorie");
-					gesProdukte.add(new Produkt(r1, r2, r3, r4, r5));
+					double r1 = rs.getDouble("preice");
+					String r2 = rs.getString("artikelNummer");
+					String r3 = rs.getString("artikelBezeichnung");
+					String r4 = rs.getString("bildPfad");
+					String r5 = rs.getString("kategorie");
+					gesuchteProdukte.add(new Produkt(r1, r2, r3, r4, r5));
 				}
 				rs.close();
 				dbAufruf().close();
@@ -100,13 +94,12 @@ public class Model {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-		return null;
+		return getGesuchteProdukte();
 
 	}
 
-	public Produkt[] getGesProdukte() {
-		Produkt[] gesuchteProd = gesProdukte
-				.toArray(new Produkt[gesProdukte.size()]);
+	public Produkt[] getGesuchteProdukte() {
+		Produkt[] gesuchteProd = gesuchteProdukte.toArray(new Produkt[gesuchteProdukte.size()]);
 		return gesuchteProd;
 	}
 	

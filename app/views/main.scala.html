@@ -46,8 +46,8 @@
 				  meinAjaxInit();
 				  if( req ) {
 					eingabetext = eingabe;
-					document.formular.eingabefeld.focus();
-					var url = "autovervollstaendigung.jsp?eingabe=" + escape( eingabetext );
+					document.formular.gesuchtesProdukt.focus();
+					var url = "/autovervollstaendigung/" + escape( eingabetext );
 					req.open( "GET", url, true );
 					req.onreadystatechange = meineCallbackFkt;
 					req.send( null );
@@ -111,10 +111,10 @@
 							<li><a href=@routes.Application.holzInnen>Holz im Innenraum</a></li>
 							<li><a href=@routes.Application.brennholz>Brennholz</a></li>
 						</ul>
-						<form name="formular" class="navbar-form navbar-left" role="search" action="#">
+						<form name="formular" class="navbar-form navbar-left" role="search" action="/suche/">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Suchen" id="eingabefeld" onKeyUp="meinAjaxAufruf( this.value )"
-                         style="width: 162px;" />
+								<input type="text" class="form-control" placeholder="Suchen" id="eingabefeld" name="gesuchtesProdukt" 
+								onKeyUp="meinAjaxAufruf( this.value )" style="width: 162px;" />
 						 <div id="auswahlbox" style="width: 160px; border: 1px solid #223377;"></div>
 							</div>
 							<button type="submit" class="btn btn-default">Los</button>
