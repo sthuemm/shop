@@ -128,6 +128,7 @@ import java.lang.*;
 			
 			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		}
+<<<<<<< HEAD
 		
 		public static Result autover(){
 		
@@ -135,6 +136,12 @@ import java.lang.*;
 		
 		}
 		
+=======
+		public static Result suchergebnisse() {
+			
+			return ok(suchergebnisse.render(Model.sharedInstance.getGuest(), Model.sharedInstance.getGesProdukte()));
+		}
+>>>>>>> origin/activator
 		
 	}
 	
