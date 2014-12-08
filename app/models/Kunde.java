@@ -9,7 +9,7 @@ public class Kunde {
 		
 		public String vorname;
 		public String name;
-		public String kundenNummer;
+		public int kundenNummer;
 		public String passwort;
 		public boolean isAdmin;
 		
@@ -19,7 +19,7 @@ public class Kunde {
 			
 		}
 		
-		public Kunde(String vorname, String name, String kundenNummer, String passwort, boolean isAdmin){
+		public Kunde(String vorname, String name, int kundenNummer, String passwort, boolean isAdmin){
 			this.name = name;
 			this.vorname = vorname;
 			this.kundenNummer = kundenNummer;

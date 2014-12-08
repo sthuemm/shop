@@ -3,6 +3,8 @@ package models;
 import java.util.ArrayList;
 
 import models.*;
+import play.db.*;
+import java.sql.*;
 
 public class Model {
 
@@ -43,20 +45,42 @@ public class Model {
 	}
 	
 	public void generateKunden(){
-		Kunden.add(new Kunde());
-		Kunden.add(new Kunde("Basti","Thuemmel","1000","test",true));
-		Kunden.add(new Kunde("Georg","Mohr","1001","test",true));
-		Kunden.add(new Kunde("Dumitru","Mihu","1002","test",true));	
+
+
 	}
 
 	
 	
-	
-	
+public Kunde loginUeberpruefung(String user, String userPass){
+		try{
+		Connection conn = DB.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE vorname ='"+user+"'AND pass = '"+userPass+"'");
+		String r1 = "";
+		String r2 = "";
+		int r3 = 0;
+		String r4 = "";
+		if(rs == null){
+		return null;}
+		else{
+		while (rs.next()) {
+				r1 = rs.getString("vorname");
+				r2 = rs.getString("vorname");
+				r3 = rs.getInt("kundid");
+				r4 = rs.getString("pass");}
+				rs.close(); stmt.close(); conn.close();
+				return new Kunde(r1,r2,r3,r4, true);
+				}
+		
+		}
+		catch (SQLException ex)
+		{ 
+		System.out.println("Fehler");
+		}
+	return null;
+	}
 	
 	private Model() {
-		generateKunden();
-		generateProdukts();
 	}
 	
 	
@@ -97,7 +121,6 @@ public class Model {
 	}
 	
 	public Kunde getGuest(){
-		
 		return null;
 	}
 	

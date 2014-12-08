@@ -3,12 +3,12 @@ package controllers;
 
 import play.*;
 import play.mvc.*;
+
 import views.html.*;
 import models.*;
-
 import java.util.List;
 import java.lang.*;
-	
+
 
 	public class Application extends Controller {
 	
@@ -17,7 +17,8 @@ import java.lang.*;
 	
 		
 		public static Result index() {
-
+//			Model.sharedInstance.generateKunden();
+			Model.sharedInstance.generateProdukts();
 		
 			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		
@@ -117,20 +118,11 @@ import java.lang.*;
 		}	
 		
 		public static Result main(String user, String userPasswort) {
-			System.out.println("main");
-			for (Kunde kunde : Model.sharedInstance.getKunden()) {
-				if(user.equals(kunde.vorname)){
-					
-					if(userPasswort.equals(kunde.passwort)){
-						System.out.println("found kunde");
-						return ok(mainPage.render(kunde));
-					}
-				} else {
-					
-				}
-			}
-			return ok(mainPage.render(Model.sharedInstance.getGuest()));
+	
+			return ok(mainPage.render(Model.sharedInstance.loginUeberpruefung(user, userPasswort)));
+			
 		}
+		
 		
 		public static Result logout() {
 			
