@@ -128,7 +128,10 @@ import java.lang.*;
 			
 			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		}
-		
+		public static Result suchergebnisse() {
+			
+			return ok(suchergebnisse.render(Model.sharedInstance.getGuest(), Model.sharedInstance.getGesProdukte()));
+		}
 		
 	}
 	
