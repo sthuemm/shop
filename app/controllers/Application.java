@@ -136,11 +136,17 @@ import java.lang.*;
 		
 		}
 		
+
 		
 		public static Result suche(String produkt) {
+
+	
+
 			
 			return ok(suchergebnisse.render(Model.sharedInstance.getGuest(), Model.sharedInstance.produktSuchen(produkt)));
 		}
+
+
 
 		
 	}
