@@ -7,7 +7,7 @@
   font-size:100%;
   margin:3em;
   background:#666;
-  color:#fff;
+  color:#ccc;
 }
 #neuheitenH2,#neuheitenP{
   font-size:100%;
@@ -81,7 +81,7 @@
   -moz-transform:rotate(-3deg);
   position:relative;
   top:-5px;
-  background:#ccf;
+  background:#cfc;
 }
 #neuheitenUl #neuheitenLi:nth-child(5n) #neuheitenA{
   -o-transform:rotate(5deg);

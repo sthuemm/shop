@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */ /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
-	background: url(../Bilder/textur_holz.jpg) no-repeat center center fixed;
+	background: url(../images/holz.jpg) no-repeat center center fixed;
 	font-family: sans-serif;
 	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%;
