@@ -128,10 +128,20 @@ import java.lang.*;
 			
 			return ok(mainPage.render(Model.sharedInstance.getGuest()));
 		}
+<<<<<<< HEAD
+		
+		public static Result autover(){
+		
+		return ok(main.render(Model.sharedInstance.))
+		
+		}
+		
+=======
 		public static Result suchergebnisse() {
 			
 			return ok(suchergebnisse.render(Model.sharedInstance.getGuest(), Model.sharedInstance.getGesProdukte()));
 		}
+>>>>>>> origin/activator
 		
 	}
 	
