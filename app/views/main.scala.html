@@ -47,7 +47,7 @@
 				  if( req ) {
 					eingabetext = eingabe;
 					document.formular.gesuchtesProdukt.focus();
-					var url = "/autovervollstaendigung/" + escape( eingabetext );
+					var url = "/autovervollstaendigung/?gesuchtesProdukt=" + escape( eingabetext );
 					req.open( "GET", url, true );
 					req.onreadystatechange = meineCallbackFkt;
 					req.send( null );

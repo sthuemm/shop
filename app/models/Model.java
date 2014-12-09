@@ -15,6 +15,13 @@ public class Model {
 	private ArrayList<Produkt> produkteInnen = new ArrayList<>();
 	private ArrayList<Produkt> produkteBrennholz = new ArrayList<>();
 	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
+	private Kunde kunde = null;
+
+	public void leermachen() {
+
+		gesuchteProdukte.clear();
+
+	}
 
 	private Model() {
 		dbAufruf();
@@ -67,13 +74,15 @@ public class Model {
 				"brennbar"));
 	}
 
-	public  Produkt[] produktSuchen(String gesuchterWert) {
+	public Produkt[] produktSuchen(String gesuchterWert) {
+		leermachen();
+
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE preice ='" + gesuchterWert
-							+ "' OR artikelBezeichnung = '"	+ gesuchterWert + "' OR kategorie = '"
-							+ gesuchterWert + "';");
-			
+							+ "' OR artikelBezeichnung = '" + gesuchterWert
+							+ "' OR kategorie = '" + gesuchterWert + "';");
+
 			if (rs == null) {
 				return null;
 			} else {
@@ -99,11 +108,11 @@ public class Model {
 	}
 
 	public Produkt[] getGesuchteProdukte() {
-		Produkt[] gesuchteProd = gesuchteProdukte.toArray(new Produkt[gesuchteProdukte.size()]);
+		Produkt[] gesuchteProd = gesuchteProdukte
+				.toArray(new Produkt[gesuchteProdukte.size()]);
 		return gesuchteProd;
 	}
-	
-	
+
 	public void produktInserieren(double preis, String artikelNummer,
 			String artikelBezeichnung, String bildPfad, String kategorie) {
 
@@ -145,7 +154,7 @@ public class Model {
 				}
 				rs.close();
 				dbAufruf().close();
-				return new Kunde(r1, r2, r3, r4, true);
+				return kunde = new Kunde(r1, r2, r3, r4, true);
 			}
 
 		} catch (SQLException ex) {
@@ -199,8 +208,14 @@ public class Model {
 		this.produkteBrennholz = produkteBrennholz;
 	}
 
-	public Kunde getGuest() {
-		return null;
+	public Kunde getKunde() {
+		return kunde;
+	}
+
+	public Kunde logout() {
+		kunde = null;
+
+		return getKunde();
 	}
 
 	public Produkt[] getProdukte() {
