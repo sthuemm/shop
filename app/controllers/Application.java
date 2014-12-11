@@ -11,9 +11,7 @@ import java.lang.*;
 public class Application extends Controller {
 
 	public static Result index() {
-		// Model.sharedInstance.generateKunden();
-		Model.sharedInstance.generateProdukts();
-
+		
 		return ok(mainPage.render(Model.sharedInstance.getKunde()));
 
 	}

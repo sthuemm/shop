@@ -17,7 +17,7 @@ public class Model {
 	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
 	private Kunde kunde = null;
 
-	public void leermachen() {
+	public void suchergebnisseResetten() {
 
 		gesuchteProdukte.clear();
 
@@ -39,7 +39,7 @@ public class Model {
 		return stmt;
 	}
 
-	public void addProdukt(Produkt produkt) {
+	public void produkteInDatenbankHinzufuegen(Produkt produkt) {						//die Methode löschen wenn Produkte in DB sind
 		Produkte.add(produkt);
 		switch (produkt.kategorie) {
 		case ("aussen"):
@@ -54,28 +54,28 @@ public class Model {
 		}
 	}
 
-	public void generateProdukts() {
-		addProdukt(new Produkt(99.99, "1", "ein Gartenzaun",
+	public void produkteAusDatenbankInListe() {						
+		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1", "ein Gartenzaun",
 				"images/Palissaden.jpg", "aussen"));
-		addProdukt(new Produkt(119.99, "2", "Palisaden fuer den Garten",
+		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2", "Palisaden fuer den Garten",
 				"images/Pfaehle.jpg", "aussen"));
-		addProdukt(new Produkt(249.99, "3", "Terassenbelaege",
+		produkteInDatenbankHinzufuegen(new Produkt(249.99, "3", "Terassenbelaege",
 				"images/Terrasse.jpg", "aussen"));
-		addProdukt(new Produkt(49.99, "4", "Terassenmoebel",
+		produkteInDatenbankHinzufuegen(new Produkt(49.99, "4", "Terassenmoebel",
 				"images/bruecke.jpg", "aussen"));
 
-		addProdukt(new Produkt(29.99, "5", "Esstisch", "innen"));
-		addProdukt(new Produkt(19.99, "6", "Stuhl", "innen"));
-		addProdukt(new Produkt(44.99, "7", "Vertaefelung", "innen"));
+		produkteInDatenbankHinzufuegen(new Produkt(29.99, "5", "Esstisch", "innen"));
+		produkteInDatenbankHinzufuegen(new Produkt(19.99, "6", "Stuhl", "innen"));
+		produkteInDatenbankHinzufuegen(new Produkt(44.99, "7", "Vertaefelung", "innen"));
 
-		addProdukt(new Produkt(4.99, "8", "Echtes Kiefernholz", "brennbar"));
-		addProdukt(new Produkt(5.99, "9", "Echtes Buchenholz", "brennbar"));
-		addProdukt(new Produkt(2.99, "10", "Super brennbare Spanplatte",
+		produkteInDatenbankHinzufuegen(new Produkt(4.99, "8", "Echtes Kiefernholz", "brennbar"));
+		produkteInDatenbankHinzufuegen(new Produkt(5.99, "9", "Echtes Buchenholz", "brennbar"));
+		produkteInDatenbankHinzufuegen(new Produkt(2.99, "10", "Super brennbare Spanplatte",
 				"brennbar"));
 	}
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
-		leermachen();
+		suchergebnisseResetten();
 
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
