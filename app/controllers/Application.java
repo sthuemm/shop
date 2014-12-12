@@ -5,13 +5,11 @@ import play.mvc.*;
 
 import views.html.*;
 import models.*;
-import java.util.List;
-import java.lang.*;
 
 public class Application extends Controller {
 
 	public static Result index() {
-		
+
 		return ok(mainPage.render(Model.sharedInstance.getKunde()));
 
 	}
@@ -113,6 +111,14 @@ public class Application extends Controller {
 
 		return ok(Model.sharedInstance.autovervollstaendigung(produkt));
 
+	}
+
+	public static Result neuerUser(String Vorname, String Nachname,
+			String Username, String Email, String Str, String Hausnr, String Plz,
+			String Ort, String Telefon, String Passwort) {
+		Model.sharedInstance.addKunden(Vorname,Nachname,Username,Email,Str,Hausnr,Plz,
+				Ort,Telefon,Passwort);
+		return ok(registrierung.render(Model.sharedInstance.getKunde()));
 	}
 
 	public static Result suche(String produkt) {

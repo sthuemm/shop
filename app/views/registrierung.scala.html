@@ -1,22 +1,17 @@
 @(kunde: Kunde)
 @main("Registrierung")(kunde){
-
-			<p>Vorname*:<input id="Vorname" type="text" name="user"></p>
-			<p>Nachname*:<input id="Nachname" type="text" name="user"></p>
-			<p>E-Mail Adresse*:<input type="text" name="user"></p>
-			<p>Straße / Hausnummer*:<input type="text" name="user"> <input type="text" name="user"></p>
-			<p>PLZ / Ort*:<input type="text" name="user"> <input type ="text" name="user"></p>
-			<p>Telefon:<input type="text" name="user"></p>
-			<p>Passwort:<input type="password" name="userPasswort"></p>
+<form action="/registrierung/">
+			<p>Vorname*:<input id="Vorname" type="text" name="Vorname"></p>
+			<p>Nachname*:<input id="Nachname" type="text" name="Nachname"></p>
+			<p>Benutzername*:<input id="Username" type="text" name="Username"></p>
+			<p>E-Mail Adresse*:<input type="text" name="Email"></p>
+			<p>Straße / Hausnummer*:<input type="text" name="Str"> <input type="text" name="Hausnr"></p>
+			<p>PLZ / Ort*:<input type="text" name="Plz"> <input type ="text" name="Ort"></p>
+			<p>Telefon:<input type="text" name="Telefon"></p>
+			<p>Passwort:<input type="password" name="Passwort"></p>
 			<p> mit * markierte Felder sind Pflichtfelder </p>
-			<p><input type="submit" onclick="senden(document.getElementById('Vorname').value)" value="Senden"><input type="reset" value="Abbrechen">
-			<div id="VornameAusgabe"></div>
-			<div id="NachnameAusgabe"></div>
-			<div id="EmailAusgabe"></div>
-			<div id="StrasseAusgabe"></div>
-			<div id="OrtAusgabe"></div>
-			<div id="TelefonAusgabe"></div>
-		
-		
+			<p><input type="submit" onclick="" value="Senden"><input type="reset" value="Abbrechen">
+</form>
+
 
 }
