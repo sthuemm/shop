@@ -111,7 +111,7 @@ public class Application extends Controller {
 
 	public static Result autover(String produkt) {
 
-		return ok(main.render(null, Model.sharedInstance.getKunde(), null));
+		return ok(Model.sharedInstance.autovervollstaendigung(produkt));
 
 	}
 

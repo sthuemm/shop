@@ -224,5 +224,50 @@ public class Model {
 				.toArray(new Produkt[Produkte.size()]);
 		return produkteArray;
 	}
+	
+	public String autovervollstaendigung(String produkt){
+	ArrayList<String> produktbezeichnungen = new ArrayList<>();
+	 suchergebnisseResetten();
+		try{
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT artikelBezeichnung FROM produkt;");
 
+				while (rs.next()) {
+				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
+				
+				}
+				rs.close();
+				dbAufruf().close();	
+				  boolean sorted = false;
+				  String[] meinTextArray = produktbezeichnungen
+								.toArray(new String[produktbezeichnungen.size()]);
+				  String eingabe = produkt;
+				  if( null != eingabe && 0 < eingabe.trim().length() ) {
+					if( !sorted ) {
+					  java.util.Arrays.sort( meinTextArray );
+					  sorted = true;
+					}
+					StringBuffer auswahl = new StringBuffer();
+					boolean resultFound = false;
+					for( int i=0; i<meinTextArray.length; i++ ) {
+					  if( meinTextArray[i].startsWith( eingabe ) ) {
+						auswahl.append( meinTextArray[i] ).append( ";" );
+						resultFound = true;
+					  } else {
+						if( resultFound ) break;
+					  }
+					}
+					if( 0 < auswahl.length() ) {
+					  auswahl.setLength( auswahl.length() - 1 );
+					}
+					return auswahl.toString() ;
+				  }
+					
+					
+				}catch(SQLException e){
+				System.out.println("Fehler beim Auslesen der Artikelbezeichnung");
+						e.printStackTrace();
+				}
+				return null;
+	}
 }
