@@ -72,7 +72,7 @@ public class Application extends Controller {
 	}
 
 	public static Result login() {
-
+		
 		return ok(login.render(Model.sharedInstance.getKunde()));
 	}
 
@@ -125,6 +125,15 @@ public class Application extends Controller {
 
 		return ok(suchergebnisse.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.produktSuchen(produkt)));
+	}
+	
+	public static Result produktInsert(String preis, String artikelNummer, String artikelBezeichnung, String bildPfad, String kategorie) {
+		Model.sharedInstance.produktInserieren(Double.parseDouble(preis), artikelNummer, artikelBezeichnung, bildPfad, kategorie);
+		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
+	}
+	
+	public static Result neuesProdukt(){
+		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
 
 }

@@ -119,6 +119,12 @@
 							</div>
 							<button type="submit" class="btn btn-default">Los</button>
 						</form>
+						@if(kunde!=null && kunde.isAdmin==true){
+							<ul class="nav navbar-nav">
+								<li><a href=@routes.Application.neuesProdukt>Produkte hinzufügen</a></li>
+							</ul>
+						}
+						
 				   <ul class="nav navbar-nav navbar-right">
 				  	 	@if(kunde==null){
 	       					<li><a href=@routes.Application.login>Hallo Fremder</a></li>

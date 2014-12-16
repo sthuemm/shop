@@ -24,7 +24,9 @@ public class Model {
 	}
 
 	private Model() {
-		dbAufruf();
+		//dbAufruf();      // brauch man den Aufruf?
+		produkteAusDatenbankInListe();
+		
 	}
 
 	private Statement dbAufruf() {
@@ -88,7 +90,7 @@ public class Model {
 
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM produkt WHERE preice ='" + gesuchterWert
+					"SELECT * FROM produkt WHERE preis ='" + gesuchterWert
 							+ "' OR artikelBezeichnung = '" + gesuchterWert
 							+ "' OR kategorie = '" + gesuchterWert + "';");
 
@@ -96,12 +98,12 @@ public class Model {
 				return null;
 			} else {
 				while (rs.next()) {
-					double r1 = rs.getDouble("preice");
-					String r2 = rs.getString("artikelNummer");
-					String r3 = rs.getString("artikelBezeichnung");
-					String r4 = rs.getString("bildPfad");
-					String r5 = rs.getString("kategorie");
-					gesuchteProdukte.add(new Produkt(r1, r2, r3, r4, r5));
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					gesuchteProdukte.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
 				}
 				rs.close();
 				dbAufruf().close();
@@ -127,10 +129,12 @@ public class Model {
 
 		try {
 
-			int rs = dbAufruf().executeUpdate(
-					"insert into produkt values (" + preis + ",'"
-							+ artikelNummer + "','" + artikelBezeichnung
-							+ "', '" + bildPfad + "','" + kategorie + "';");
+			dbAufruf().executeUpdate("insert into produkt values ("
+							+ preis + ",'"
+							+ artikelNummer + "','" 
+							+ artikelBezeichnung+ "', '" 
+							+ bildPfad + "','" 
+							+ kategorie + "';");
 			dbAufruf().close();
 
 		}
@@ -143,26 +147,33 @@ public class Model {
 
 	public Kunde loginUeberpruefung(String user, String userPass) {
 		try {
-
+			System.out.println("login");
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM users WHERE vorname ='" + user
 							+ "'AND pass = '" + userPass + "';");
-			String r1 = "";
-			String r2 = "";
-			int r3 = 0;
-			String r4 = "";
+			
+			String vorname = "";
+			String benutzerName = "";
+			int kundenNummer = 0;
+			String passwort = "";
+			boolean isAdmin = false;
 			if (rs == null) {
 				return null;
 			} else {
 				while (rs.next()) {
-					r1 = rs.getString("vorname");
-					r2 = rs.getString("vorname");
-					r3 = rs.getInt("kundID");
-					r4 = rs.getString("pass");
+					vorname = rs.getString("vorname");
+					benutzerName = rs.getString("vorname");
+					kundenNummer = rs.getInt("kundenNummer");
+					passwort = rs.getString("pass");
+					if(rs.getString("admin").equals("ja")){
+						isAdmin = true;
+					}
+					
 				}
 				rs.close();
 				dbAufruf().close();
-				return kunde = new Kunde(r1, r2, r3, r4, true);
+				System.out.println("Admin: "+isAdmin);
+				return kunde = new Kunde(vorname, benutzerName, kundenNummer, passwort, isAdmin);
 			}
 
 		} catch (SQLException ex) {
@@ -177,14 +188,18 @@ public class Model {
 		int kundennr = 0;
 		ResultSet rs;
 		try {
-			rs = dbAufruf().executeQuery("select MAX(kundID) from users;");
-			kundennr = rs.getInt("kundID") + 1;
+			rs = dbAufruf().executeQuery("select MAX(kundenNummer) from users");
+			if(rs.next()){
+				kundennr = rs.getInt("kundenNummer") + 1;
+			}
+			System.out.println(kundennr);
+			dbAufruf().close();
 //			kundennr = kundennr + 1;
 		} catch (SQLException e1) {
 			System.out.println("Fehler KundenID");
 			e1.printStackTrace();
 		}
-
+		
 		return kundennr;
 	}
 
@@ -197,7 +212,7 @@ public class Model {
 							+ Vorname + "', '" + Nachname + "', '" + Username
 							+ "', '" + Email + "', '" + Str + "', '" + Hausnr
 							+ "', '" + Plz + "', '" + Ort + "', '" + Telefon
-							+ "', '" + Passwort + "');");
+							+ "', '" + Passwort + "','nein');");
 			System.out.println(rs + "Kunde wurde hinzugefügt");
 			dbAufruf().close();
 		} catch (SQLException e) {
