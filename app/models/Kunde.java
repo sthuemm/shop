@@ -15,7 +15,6 @@ public class Kunde {
 		
 		
 		public Kunde(){
-			this.vorname = "Guest";
 			
 		}
 		
@@ -25,6 +24,13 @@ public class Kunde {
 			this.kundenNummer = kundenNummer;
 			this.passwort = passwort;
 			this.isAdmin = isAdmin;
+		}
+
+		@Override
+		public String toString() {
+			return "Kunde [vorname=" + vorname + ", name=" + name
+					+ ", kundenNummer=" + kundenNummer + ", passwort="
+					+ passwort + ", isAdmin=" + isAdmin + "]";
 		}
 		
 	

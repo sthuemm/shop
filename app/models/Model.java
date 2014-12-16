@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import models.*;
 import play.db.*;
 
+import java.security.MessageDigest;
 import java.sql.*;
 
 public class Model {
@@ -145,12 +146,12 @@ public class Model {
 		}
 	}
 
-	public Kunde loginUeberpruefung(String user, String userPass) {
+	public Kunde loginUeberpruefung(Kunde kunde) {
 		try {
 			System.out.println("login");
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM users WHERE vorname ='" + user
-							+ "'AND pass = '" + userPass + "';");
+					"SELECT * FROM users WHERE vorname ='" + kunde.vorname
+							+ "'AND pass = '" + kunde.passwort + "';");
 			
 			String vorname = "";
 			String benutzerName = "";
@@ -313,4 +314,17 @@ public class Model {
 				}
 				return null;
 	}
+//	public static void verschluesselPW(){
+//		MessageDigest md = MessageDigest.getInstance("SHA");
+//	
+//		 try {
+//		     md.update(toChapter1);
+//		     MessageDigest tc1 = md.clone();
+//		     byte[] toChapter1Digest = tc1.digest();
+//		     md.update(toChapter2);
+//		     ...etc.
+//		 } catch (CloneNotSupportedException cnse) {
+//		     throw new DigestException("couldn't make digest of partial content");
+//		 }
+//	}
 }

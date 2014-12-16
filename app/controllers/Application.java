@@ -2,12 +2,17 @@ package controllers;
 
 import play.*;
 import play.mvc.*;
+import play.data.*;
+import play.data.Form;
 
 import views.html.*;
 import models.*;
 
 public class Application extends Controller {
 
+	final static Form<Kunde> userForm = Form.form(Kunde.class); 
+	
+	
 	public static Result index() {
 
 		return ok(mainPage.render(Model.sharedInstance.getKunde()));
@@ -71,9 +76,19 @@ public class Application extends Controller {
 
 	}
 
+
 	public static Result login() {
 		
-		return ok(login.render(Model.sharedInstance.getKunde()));
+		return ok(login.render(userForm));
+	}
+	
+	public static Result submit(){
+		Form<Kunde> filledForm = userForm.bindFromRequest();
+		System.out.println("Formtest: "+filledForm);
+		Kunde created = filledForm.get();
+		
+		System.out.println(created);
+		return ok(mainPage.render(Model.sharedInstance.loginUeberpruefung(created)));
 	}
 
 	public static Result mainPage() {
@@ -92,13 +107,6 @@ public class Application extends Controller {
 	public static Result registrierung() {
 
 		return ok(registrierung.render(Model.sharedInstance.getKunde()));
-
-	}
-
-	public static Result main(String user, String userPasswort) {
-
-		return ok(mainPage.render(Model.sharedInstance.loginUeberpruefung(user,
-				userPasswort)));
 
 	}
 
