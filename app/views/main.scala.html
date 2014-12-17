@@ -86,11 +86,26 @@
 					document.getElementById( "auswahlbox" ).style.visibility = "hidden";
 				  }
 				}
-
+		 var $foo = $('#banner');
+					 
+					var $win = $(window).scroll(function() {
+						if($win.scrollTop() > 200) {
+							if(!$foo.is(':visible')) {
+								$foo.stop(true, true).fadeIn();
+							}
+						} else {
+							if(!$foo.is(':animated')) {
+								$foo.stop(true, true).fadeOut();
+							}
+						}
+					});
 			  </script>
+			
 	 </head>
     <body style="background-color: transparent;">
-	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<header>
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div id="banner"><img src=@routes.Assets.at("images/Banner-Neu2.jpg") width="100%" alt=""> </div>
 				<div class="container-fluid">
 					<!-- Titel und Schalter werden für eine bessere mobile Ansicht zusammengefasst -->
 					<div class="navbar-header">
@@ -135,8 +150,9 @@
 				</div>
 				<!-- /.container-fluid -->
 			</nav>
-			<div>
-        @content
+			</header>
+			<div style="position: relative; margin-top:10%;">
+			@content
 		</div>
         <footer id="footer">
 			<ul class="nav nav-pills  navbar-inverse navbar-fixed-bottom"

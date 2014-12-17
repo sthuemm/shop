@@ -239,8 +239,7 @@ public class Model {
 				rs.close();
 				dbAufruf().close();	
 				  boolean sorted = false;
-				  String[] meinTextArray = produktbezeichnungen
-								.toArray(new String[produktbezeichnungen.size()]);
+				  String[] meinTextArray = produktbezeichnungen.toArray(new String[produktbezeichnungen.size()]);
 				  String eingabe = produkt;
 				  if( null != eingabe && 0 < eingabe.trim().length() ) {
 					if( !sorted ) {
