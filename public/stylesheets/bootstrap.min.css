@@ -23,7 +23,10 @@ display:table;
 }
 .bildertonne{
 display:table-cell;
+vertical-align: middle;
 text-align:center;
+
+
 }
 
 
