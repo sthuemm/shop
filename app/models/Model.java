@@ -39,7 +39,12 @@ public class Model {
 		return stmt;
 	}
 
-	public void produkteInDatenbankHinzufuegen(Produkt produkt) {						//die Methode löschen wenn Produkte in DB sind
+	public void produkteInDatenbankHinzufuegen(Produkt produkt) { // die Methode
+																	// löschen
+																	// wenn
+																	// Produkte
+																	// in DB
+																	// sind
 		Produkte.add(produkt);
 		switch (produkt.kategorie) {
 		case ("aussen"):
@@ -54,24 +59,28 @@ public class Model {
 		}
 	}
 
-	public void produkteAusDatenbankInListe() {						
-		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1", "ein Gartenzaun",
-				"images/Palissaden.jpg", "aussen"));
-		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2", "Palisaden fuer den Garten",
-				"images/Pfaehle.jpg", "aussen"));
-		produkteInDatenbankHinzufuegen(new Produkt(249.99, "3", "Terassenbelaege",
-				"images/Terrasse.jpg", "aussen"));
-		produkteInDatenbankHinzufuegen(new Produkt(49.99, "4", "Terassenmoebel",
-				"images/bruecke.jpg", "aussen"));
+	public void produkteAusDatenbankInListe() {
+		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1",
+				"ein Gartenzaun", "images/Palissaden.jpg", "aussen"));
+		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2",
+				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "aussen"));
+		produkteInDatenbankHinzufuegen(new Produkt(249.99, "3",
+				"Terassenbelaege", "images/Terrasse.jpg", "aussen"));
+		produkteInDatenbankHinzufuegen(new Produkt(49.99, "4",
+				"Terassenmoebel", "images/bruecke.jpg", "aussen"));
 
-		produkteInDatenbankHinzufuegen(new Produkt(29.99, "5", "Esstisch", "innen"));
+		produkteInDatenbankHinzufuegen(new Produkt(29.99, "5", "Esstisch",
+				"innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(19.99, "6", "Stuhl", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(44.99, "7", "Vertaefelung", "innen"));
+		produkteInDatenbankHinzufuegen(new Produkt(44.99, "7", "Vertaefelung",
+				"innen"));
 
-		produkteInDatenbankHinzufuegen(new Produkt(4.99, "8", "Echtes Kiefernholz", "brennbar"));
-		produkteInDatenbankHinzufuegen(new Produkt(5.99, "9", "Echtes Buchenholz", "brennbar"));
-		produkteInDatenbankHinzufuegen(new Produkt(2.99, "10", "Super brennbare Spanplatte",
-				"brennbar"));
+		produkteInDatenbankHinzufuegen(new Produkt(4.99, "8",
+				"Echtes Kiefernholz", "brennbar"));
+		produkteInDatenbankHinzufuegen(new Produkt(5.99, "9",
+				"Echtes Buchenholz", "brennbar"));
+		produkteInDatenbankHinzufuegen(new Produkt(2.99, "10",
+				"Super brennbare Spanplatte", "brennbar"));
 	}
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
@@ -118,11 +127,10 @@ public class Model {
 
 		try {
 
-			ResultSet rs = dbAufruf().executeQuery(
+			int rs = dbAufruf().executeUpdate(
 					"insert into produkt values (" + preis + ",'"
 							+ artikelNummer + "','" + artikelBezeichnung
 							+ "', '" + bildPfad + "','" + kategorie + "';");
-			rs.close();
 			dbAufruf().close();
 
 		}
@@ -149,7 +157,7 @@ public class Model {
 				while (rs.next()) {
 					r1 = rs.getString("vorname");
 					r2 = rs.getString("vorname");
-					r3 = rs.getInt("kundid");
+					r3 = rs.getInt("kundID");
 					r4 = rs.getString("pass");
 				}
 				rs.close();
@@ -164,13 +172,33 @@ public class Model {
 		return null;
 	}
 
-	public void addKunden(String vorname, String name, int kundenNummer,
-			String passwort, boolean isAdmin) {
+	public int NewKundennr() {
+
+		int kundennr = 0;
+		ResultSet rs;
 		try {
-			ResultSet rs = dbAufruf().executeQuery(
-					"insert into users values('" + vorname + "','" + name
-							+ "', " + kundenNummer + ", '" + passwort + "');");
-			rs.close();
+			rs = dbAufruf().executeQuery("select MAX(kundID) from users;");
+			kundennr = rs.getInt("kundID") + 1;
+//			kundennr = kundennr + 1;
+		} catch (SQLException e1) {
+			System.out.println("Fehler KundenID");
+			e1.printStackTrace();
+		}
+
+		return kundennr;
+	}
+
+	public void addKunden(String Vorname, String Nachname, String Username,
+			String Email, String Str, String Hausnr, String Plz, String Ort,
+			String Telefon, String Passwort) {
+		try {
+			int rs = dbAufruf().executeUpdate(
+					"insert into users values(" + NewKundennr() + ", '"
+							+ Vorname + "', '" + Nachname + "', '" + Username
+							+ "', '" + Email + "', '" + Str + "', '" + Hausnr
+							+ "', '" + Plz + "', '" + Ort + "', '" + Telefon
+							+ "', '" + Passwort + "');");
+			System.out.println(rs + "Kunde wurde hinzugefügt");
 			dbAufruf().close();
 		} catch (SQLException e) {
 			System.out.println("Fehler Kunden inserieren");
