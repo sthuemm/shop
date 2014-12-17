@@ -313,6 +313,12 @@ public class Model {
 				}
 				return "";
 	}
+
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
+	}
+	
+	
 //	public static void verschluesselPW(){
 //		MessageDigest md = MessageDigest.getInstance("SHA");
 //	

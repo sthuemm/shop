@@ -86,6 +86,7 @@ public class Application extends Controller {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 		System.out.println("Formtest: "+filledForm);
 		Kunde created = filledForm.get();
+		Model.sharedInstance.setKunde(created);
 		
 		System.out.println(created);
 		return ok(mainPage.render(Model.sharedInstance.loginUeberpruefung(created)));
