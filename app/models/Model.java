@@ -283,8 +283,7 @@ public class Model {
 				rs.close();
 				dbAufruf().close();	
 				  boolean sorted = false;
-				  String[] meinTextArray = produktbezeichnungen
-								.toArray(new String[produktbezeichnungen.size()]);
+				  String[] meinTextArray = produktbezeichnungen.toArray(new String[produktbezeichnungen.size()]);
 				  String eingabe = produkt;
 				  if( null != eingabe && 0 < eingabe.trim().length() ) {
 					if( !sorted ) {
@@ -294,7 +293,7 @@ public class Model {
 					StringBuffer auswahl = new StringBuffer();
 					boolean resultFound = false;
 					for( int i=0; i<meinTextArray.length; i++ ) {
-					  if( meinTextArray[i].startsWith( eingabe ) ) {
+					  if( meinTextArray[i].toUpperCase().startsWith( eingabe.toUpperCase() ) ) {
 						auswahl.append( meinTextArray[i] ).append( ";" );
 						resultFound = true;
 					  } else {
@@ -312,7 +311,7 @@ public class Model {
 				System.out.println("Fehler beim Auslesen der Artikelbezeichnung");
 						e.printStackTrace();
 				}
-				return null;
+				return "";
 	}
 //	public static void verschluesselPW(){
 //		MessageDigest md = MessageDigest.getInstance("SHA");
