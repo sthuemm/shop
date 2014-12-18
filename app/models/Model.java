@@ -214,7 +214,7 @@ public class Model {
 			String Telefon, String Passwort) throws NoSuchAlgorithmException {
 		try {
 			int rs = dbAufruf().executeUpdate(
-				"insert into users values('', '"
+				"insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
 				+ Vorname + "', '" + Nachname + "', '" + Username
 				+ "', '" + Email + "', '" + Str + "', '" + Hausnr
 				+ "', '" + Plz + "', '" + Ort + "', '" + Telefon
