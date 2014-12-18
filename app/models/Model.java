@@ -1,11 +1,15 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import models.*;
 import play.db.*;
 
+import java.io.UnsupportedEncodingException;
+import java.security.DigestException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class Model {
@@ -39,6 +43,7 @@ public class Model {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("db aufruf");
 		return stmt;
 	}
 
@@ -146,42 +151,42 @@ public class Model {
 		}
 	}
 
-	public Kunde loginUeberpruefung(Kunde kunde) {
+	public void loginUeberpruefung(Kunde kunde) throws Exception {
 		try {
-			System.out.println("login");
+			
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM users WHERE vorname ='" + kunde.vorname
-							+ "'AND pass = '" + kunde.passwort + "';");
+							+ "'AND pass = '" + verschluesselPW(kunde.passwort) + "';");
 			
 			String vorname = "";
 			String benutzerName = "";
 			int kundenNummer = 0;
 			String passwort = "";
 			boolean isAdmin = false;
-			if (rs == null) {
-				return null;
-			} else {
-				while (rs.next()) {
-					vorname = rs.getString("vorname");
-					benutzerName = rs.getString("vorname");
-					kundenNummer = rs.getInt("kundenNummer");
-					passwort = rs.getString("pass");
-					if(rs.getString("admin").equals("ja")){
-						isAdmin = true;
-					}
-					
+			
+			
+			if (rs.next()) {
+				System.out.println("pw richtig");
+				vorname = rs.getString("vorname");
+				benutzerName = rs.getString("vorname");
+				kundenNummer = rs.getInt("kundenNummer");
+				passwort = rs.getString("pass");
+				if(rs.getString("admin").equals("ja")){
+					isAdmin = true;
 				}
-				rs.close();
-				dbAufruf().close();
-				System.out.println("Admin: "+isAdmin);
-				return kunde = new Kunde(vorname, benutzerName, kundenNummer, passwort, isAdmin);
+			} else {
+				System.out.println("pw falsch");
+				throw new wrongPasswordOrUsernameException();
 			}
-
+			rs.close();
+			dbAufruf().close();
+			System.out.println("Admin: "+isAdmin);
+			this.kunde = new Kunde(vorname, benutzerName, kundenNummer, passwort, isAdmin);
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler login");
 		}
-		return null;
 	}
 
 	public int NewKundennr() {
@@ -206,14 +211,14 @@ public class Model {
 
 	public void addKunden(String Vorname, String Nachname, String Username,
 			String Email, String Str, String Hausnr, String Plz, String Ort,
-			String Telefon, String Passwort) {
+			String Telefon, String Passwort) throws NoSuchAlgorithmException {
 		try {
 			int rs = dbAufruf().executeUpdate(
-					"insert into users values(" + NewKundennr() + ", '"
-							+ Vorname + "', '" + Nachname + "', '" + Username
-							+ "', '" + Email + "', '" + Str + "', '" + Hausnr
-							+ "', '" + Plz + "', '" + Ort + "', '" + Telefon
-							+ "', '" + Passwort + "','nein');");
+				"insert into users values('', '"
+				+ Vorname + "', '" + Nachname + "', '" + Username
+				+ "', '" + Email + "', '" + Str + "', '" + Hausnr
+				+ "', '" + Plz + "', '" + Ort + "', '" + Telefon
+				+ "', '" + verschluesselPW(Passwort) + "','nein');");
 			System.out.println(rs + "Kunde wurde hinzugefügt");
 			dbAufruf().close();
 		} catch (SQLException e) {
@@ -319,17 +324,16 @@ public class Model {
 	}
 	
 	
-//	public static void verschluesselPW(){
-//		MessageDigest md = MessageDigest.getInstance("SHA");
-//	
-//		 try {
-//		     md.update(toChapter1);
-//		     MessageDigest tc1 = md.clone();
-//		     byte[] toChapter1Digest = tc1.digest();
-//		     md.update(toChapter2);
-//		     ...etc.
-//		 } catch (CloneNotSupportedException cnse) {
-//		     throw new DigestException("couldn't make digest of partial content");
-//		 }
-//	}
+	public static String verschluesselPW(String pass) throws NoSuchAlgorithmException{
+		
+	
+		 MessageDigest md = MessageDigest.getInstance("SHA");
+		 md.update(pass.getBytes());
+		 String passwortString = "";
+			for ( byte b : md.digest()){
+				 passwortString += Byte.toString(b);
+			 }
+				 
+		 return passwortString;
+	}
 }

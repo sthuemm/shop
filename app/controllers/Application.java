@@ -1,10 +1,10 @@
 package controllers;
 
+import java.security.NoSuchAlgorithmException;
+
 import play.*;
 import play.mvc.*;
 import play.data.*;
-import play.data.Form;
-
 import views.html.*;
 import models.*;
 
@@ -84,12 +84,14 @@ public class Application extends Controller {
 	
 	public static Result submit(){
 		Form<Kunde> filledForm = userForm.bindFromRequest();
-		System.out.println("Formtest: "+filledForm);
-		Kunde created = filledForm.get();
-		Model.sharedInstance.setKunde(created);
 		
-		System.out.println(created);
-		return ok(mainPage.render(Model.sharedInstance.loginUeberpruefung(created)));
+		try {
+			Model.sharedInstance.loginUeberpruefung(filledForm.get());
+			System.out.println(Model.sharedInstance.getKunde());
+			return ok(mainPage.render(Model.sharedInstance.getKunde()));
+		} catch ( Exception e) {
+			return ok(loginFehler.render(null));
+		}	
 	}
 
 	public static Result mainPage() {
@@ -102,7 +104,6 @@ public class Application extends Controller {
 
 		return ok(neuheiten.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.getProdukte()));
-
 	}
 
 	public static Result registrierung() {
@@ -125,8 +126,13 @@ public class Application extends Controller {
 	public static Result neuerUser(String Vorname, String Nachname,
 			String Username, String Email, String Str, String Hausnr, String Plz,
 			String Ort, String Telefon, String Passwort) {
-		Model.sharedInstance.addKunden(Vorname,Nachname,Username,Email,Str,Hausnr,Plz,
-				Ort,Telefon,Passwort);
+		try {
+			Model.sharedInstance.addKunden(Vorname,Nachname,Username,Email,Str,Hausnr,Plz,
+					Ort,Telefon,Passwort);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ok(registrierung.render(Model.sharedInstance.getKunde()));
 	}
 
