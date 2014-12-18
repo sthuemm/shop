@@ -157,32 +157,35 @@ public class Model {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM users WHERE vorname ='" + kunde.vorname
 							+ "'AND pass = '" + verschluesselPW(kunde.passwort) + "';");
-			
-			String vorname = "";
-			String benutzerName = "";
-			int kundenNummer = 0;
-			String passwort = "";
-			boolean isAdmin = false;
-			
-			
+		
 			if (rs.next()) {
 				System.out.println("pw richtig");
-				vorname = rs.getString("vorname");
-				benutzerName = rs.getString("vorname");
-				kundenNummer = rs.getInt("kundenNummer");
-				passwort = rs.getString("pass");
+				
+				boolean isAdmin = false;
+				
 				if(rs.getString("admin").equals("ja")){
 					isAdmin = true;
 				}
+				this.kunde = new Kunde(							//instanziiert Kunden der aktuell eingeloggt ist
+						rs.getString("kundenNummer"),
+						rs.getString("vorname"), 
+						rs.getString("nachname"), 
+						rs.getString("username"), 
+						rs.getString("email"),
+						rs.getString("str"),
+						rs.getString("hausnr"), 
+						rs.getString("plz"), 
+						rs.getString("ort"), 
+						rs.getString("telefonnr"), 
+						rs.getString("pass"), 
+						isAdmin);
 			} else {
 				System.out.println("pw falsch");
 				throw new wrongPasswordOrUsernameException();
 			}
 			rs.close();
 			dbAufruf().close();
-			System.out.println("Admin: "+isAdmin);
-			this.kunde = new Kunde(vorname, benutzerName, kundenNummer, passwort, isAdmin);
-			
+		
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler login");

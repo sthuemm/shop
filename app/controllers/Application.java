@@ -72,7 +72,7 @@ public class Application extends Controller {
 
 	public static Result konto() {
 
-		return ok(konto.render(Model.sharedInstance.getKunde()));
+		return ok(konto.render(Model.sharedInstance.getKunde(),userForm));
 
 	}
 
@@ -82,7 +82,19 @@ public class Application extends Controller {
 		return ok(login.render(userForm));
 	}
 	
-	public static Result submit(){
+	public static Result submitLogin(){
+		Form<Kunde> filledForm = userForm.bindFromRequest();
+		
+		try {
+			Model.sharedInstance.loginUeberpruefung(filledForm.get());
+			System.out.println(Model.sharedInstance.getKunde());
+			return ok(mainPage.render(Model.sharedInstance.getKunde()));
+		} catch ( Exception e) {
+			return ok(loginFehler.render(null));
+		}	
+	}
+	
+	public static Result submitKundendaten(){
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 		
 		try {

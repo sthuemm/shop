@@ -3,7 +3,7 @@
 
 @main("Login")(null){
 
-	@helper.form(action = routes.Application.submit(), 'id -> "userForm") {
+	@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {
 		@helper.inputText(userForm("vorname"))
 		@helper.inputPassword(userForm("passwort"))
 		<input type ="submit" value="senden">
