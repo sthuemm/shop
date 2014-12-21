@@ -69,13 +69,13 @@ public class Model {
 
 	public void produkteAusDatenbankInListe() {
 		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1",
-				"ein Gartenzaun", "images/Palissaden.jpg", "aussen"));
+				"ein Gartenzaun", "images/Palissaden.jpg", "innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2",
-				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "aussen"));
+				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(249.99, "3",
-				"Terassenbelaege", "images/Terrasse.jpg", "aussen"));
+				"Terassenbelaege", "images/Terrasse.jpg", "innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(49.99, "4",
-				"Terassenmoebel", "images/bruecke.jpg", "aussen"));
+				"Terassenmoebel", "images/bruecke.jpg", "innen"));
 
 		produkteInDatenbankHinzufuegen(new Produkt(29.99, "5", "Esstisch",
 				"innen"));
@@ -155,8 +155,8 @@ public class Model {
 		try {
 			
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM users WHERE username ='" + kunde.benutzername
-							+ "'AND pass = '" + verschluesselPW(kunde.passwort) + "';");
+					"SELECT * FROM users WHERE username ='" + kunde.getBenutzername()
+							+ "'AND pass = '" + verschluesselPW(kunde.getPasswort()) + "';");
 		
 			if (rs.next()) {
 				System.out.println("pw richtig");
@@ -212,16 +212,14 @@ public class Model {
 		return kundennr;
 	}
 
-	public void addKunden(String Vorname, String Nachname, String Username,
-			String Email, String Str, String Hausnr, String Plz, String Ort,
-			String Telefon, String Passwort) throws NoSuchAlgorithmException {
+	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		try {
 			int rs = dbAufruf().executeUpdate(
 				"insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
-				+ Vorname + "', '" + Nachname + "', '" + Username
-				+ "', '" + Email + "', '" + Str + "', '" + Hausnr
-				+ "', '" + Plz + "', '" + Ort + "', '" + Telefon
-				+ "', '" + verschluesselPW(Passwort) + "','nein');");
+				+ kunde.getVorname() + "', '" + kunde.getNachname() + "', '" + kunde.getBenutzername()
+				+ "', '" + kunde.getEmail() + "', '" + kunde.getStrasse() + "', '" + kunde.getHausnummer()
+				+ "', '" + kunde.getPlz() + "', '" + kunde.getOrt() + "', '" + kunde.getTelefonnummer()
+				+ "', '" + verschluesselPW(kunde.getPasswort()) + "','nein');");
 			System.out.println(rs + "Kunde wurde hinzugefügt");
 			dbAufruf().close();
 		} catch (SQLException e) {

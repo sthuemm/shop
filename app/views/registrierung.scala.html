@@ -1,8 +1,11 @@
-@(userForm: Form[models.Kunde])
+@(userForm: Form[models.Kunde], kunde:Kunde)
 @import helper._
 
 
-@main("Registrierung")(null){
+@implicitField = @{ FieldConstructor(horizontalFormTB.f) }
+
+
+@main("Registrierung")(kunde){
 
 
 
@@ -12,43 +15,33 @@
 
 <div style="position:absolute; top:0px ;left:75%; background-color: #58FA82;box-sizing: border-box; width:15%; box-shadow:8px 8px 8px #666;" >
 <p style="padding-left:30px"> Sie sind bereits registriert?<br/>dann loggen Sie sich hier ein</p>
-<p style="padding-left:25%" ><form style="padding-left:25%" method="LINK" action= /login><input type="submit" value="Jetzt Einloggen"></form></p>
+<p style="padding-left:25%" ><form style="padding-left:25%" method="LINK" action= /login><input type="submit" value="Jetzt Einloggen"></form>
 </div>
 
-<!--  <form action="/registrierung/" style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:45%; position:absolute; top:0px ; right:45%;">
-		<center ><H3>REGISTRIERUNG</H3></center>
-		<p><span style="padding-left:45px"> Benutzername*: </span><input id="Username" type="text" name="Username"></p>
-		<p><span style="padding-left:85px"> Passwort: </span><input type="password" name="Passwort" style=""></p>
-		<p><span style="padding-left:95px">Anrede: </span> <input type="radio" name="anrede" value="Frau"> Frau <input type="radio" name="anrede" value="Herr"> Herr</p>
-		<p><span style="padding-left:39px">Vorname, Name*: </span><input id="Vorname" type="text" name="Vorname"> <input id="Nachname" type="text" name="Nachname"></p>
-		<p><span style="padding-left:">Straße / Hausnummer*: </span><input type="text" name="Str"> <input type="text" name="Hausnr"></p>
-		<p><span style="padding-left:80px">PLZ / Ort*: </span><input type="text" name="Plz"> <input type ="text" name="Ort"></p>	
-		<p><span style="padding-left:41px">E-Mail Adresse*: </span><input type="text" name="Email"></p>
-		<p><span style="padding-left:41px">E-Mail Adresse*: </span><input type="text" name="EmailBestaetigung">Zur Bestätigung</p>
-		<p><span style="padding-left:94px">Telefon: </span><input type="text" name="Telefon"></p>
-		<p><span style="padding-left:150px"> * Pflichtfeld</span></p>
-		<p><span style="padding-left:150px"><input type="submit" onclick="" value="Senden"><input type="reset" value="Abbrechen"></span></p>	
-</form>-->
-@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {
+<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:45%; position:absolute; top:0px ; right:45%; padding-left:2%; padding-top:1%; padding-bottom:5%">
+		@helper.form(action = routes.Application.neuerUser(), 'id -> "userForm", 'class -> "control-group") {
 	
 		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername")
 		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort")
-		@helper.inputRadioGroup(userForm("Anrede"), options = options("H" -> "Herr","F" -> "Frau"))
+		@helper.inputRadioGroup(userForm("anrede"), options = options("H" -> "Herr","F" -> "Frau"))
 		@helper.inputText(userForm("vorname"), '_label -> "Vorname")
 		@helper.inputText(userForm("nachname"), '_label -> "Nachname")
 		@helper.inputText(userForm("strasse"), '_label -> "Straße")
 		@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer")
 		@helper.inputText(userForm("plz"), '_label -> "Postleitzahl")
-		@helper.inputText(userForm("ort"), '_label -> "Wohnort")
+		@helper.inputText(userForm("ort"), '_label -> "Ort")
 		@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse")
-		@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse bestätigen")
-		@helper.inputText(userForm("telefon"), '_label -> "Telefonnummer")
-		<p><span style="padding-left:150px"> * Pflichtfeld</span></p>
-		<input type ="submit" value="senden">
+		@helper.inputText(userForm("telefonnummer"), '_label -> "Telefonnummer")
+
+		<p><span> * Pflichtfeld</span></p>
+		<input type ="submit" value="senden">	
+		}
+</div>
+
 		
 		
 	
-	}
+	
 	
 
 

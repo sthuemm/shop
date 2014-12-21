@@ -120,7 +120,7 @@ public class Application extends Controller {
 
 	public static Result registrierung() {
 
-		return ok(registrierung.render(userForm));
+		return ok(registrierung.render(userForm, Model.sharedInstance.getKunde()));
 
 	}
 
@@ -135,16 +135,16 @@ public class Application extends Controller {
 
 	}
 
-	public static Result neuerUser(String Vorname, String Nachname,
-			String Username, String Email, String Str, String Hausnr, String Plz,
-			String Ort, String Telefon, String Passwort) {
-		try {
-			Model.sharedInstance.addKunden(Vorname,Nachname,Username,Email,Str,Hausnr,Plz,
-					Ort,Telefon,Passwort);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static Result neuerUser() {
+		Form<Kunde> filledForm = userForm.bindFromRequest();
+		
+			try {
+				Model.sharedInstance.addKunden(filledForm.get());
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
 		return ok(mainPage.render(Model.sharedInstance.getKunde()));
 	}
 

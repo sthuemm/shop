@@ -14,6 +14,10 @@ public class Produkt {
 		public String bildPfad;
 		public String kategorie;
 		
+		
+		
+		
+		
 		public Produkt(){
 			this.preis = 9.99;
 			this.artikelNummer = "1337";

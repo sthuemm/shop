@@ -3,20 +3,20 @@
 
 @main("Login")(kunde){
 
-	<a href><button>Kundendaten ändern</button></a>
+	<a href><button>Kundendaten ï¿½ndern</button></a>
 	<a href><button>offene Bestellungen ansehen</button></a>
 	<a href><button>abgeschlossene Bestellungen ansehen</button></a>
 
 	@helper.form(action = routes.Application.submitKundendaten(), 'id -> "userForm") {
 		@helper.inputPassword(userForm("passwort"))
-		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text" value="@kunde.vorname" @toHtmlArgs(args)>}
-		@helper.input(userForm("nachname")){ (id, name, value, args) => <input type="text" value="@kunde.nachname" @toHtmlArgs(args)>}
-		@helper.input(userForm("benutzername")){ (id, name, value, args) => <input type="text" value="@kunde.benutzername" @toHtmlArgs(args)>}
-		@helper.input(userForm("email")){ (id, name, value, args) => <input type="text" value="@kunde.email" @toHtmlArgs(args)>}
-		@helper.input(userForm("strasse")){ (id, name, value, args) => <input type="text" value="@kunde.strasse" @toHtmlArgs(args)>}
-		@helper.input(userForm("hausnummer")){ (id, name, value, args) => <input type="text" value="@kunde.hausnummer" @toHtmlArgs(args)>}
-		@helper.input(userForm("ort")){ (id, name, value, args) => <input type="text" value="@kunde.ort" @toHtmlArgs(args)>}
-		@helper.input(userForm("telefonnummer")){ (id, name, value, args) => <input type="text" value="@kunde.telefonnummer" @toHtmlArgs(args)>}
+		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text" value="@kunde.getVorname()" @toHtmlArgs(args)>}
+		@helper.input(userForm("nachname")){ (id, name, value, args) => <input type="text" value="@kunde.getNachname()" @toHtmlArgs(args)>}
+		@helper.input(userForm("benutzername")){ (id, name, value, args) => <input type="text" value="@kunde.getBenutzername()" @toHtmlArgs(args)>}
+		@helper.input(userForm("email")){ (id, name, value, args) => <input type="text" value="@kunde.getEmail()" @toHtmlArgs(args)>}
+		@helper.input(userForm("strasse")){ (id, name, value, args) => <input type="text" value="@kunde.getStrasse()" @toHtmlArgs(args)>}
+		@helper.input(userForm("hausnummer")){ (id, name, value, args) => <input type="text" value="@kunde.getHausnummer()" @toHtmlArgs(args)>}
+		@helper.input(userForm("ort")){ (id, name, value, args) => <input type="text" value="@kunde.getOrt()" @toHtmlArgs(args)>}
+		@helper.input(userForm("telefonnummer")){ (id, name, value, args) => <input type="text" value="@kunde.getTelefonnummer()" @toHtmlArgs(args)>}
 		
 		<input type ="submit" value="senden">
 	

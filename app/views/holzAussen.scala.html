@@ -4,9 +4,9 @@
 		
 		
 			@for(produkt <- produkte) {
-				
+				@produkt.bildPfad
 				<div>
-					<img src=@routes.Assets.at("images/bruecke.jpg") alt = "">
+					<img src=assets/@produkt.bildPfad>
 					<wbr> @produkt.artikelBezeichnung
 					<a href="/artikel">mehr...</a>
 				</div>	
