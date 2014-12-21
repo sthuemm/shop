@@ -1,16 +1,24 @@
 @(kunde: Kunde)
 @main("Registrierung")(kunde){
-<form action="/registrierung/">
-			<p>Vorname*:<input id="Vorname" type="text" name="Vorname"></p>
-			<p>Nachname*:<input id="Nachname" type="text" name="Nachname"></p>
-			<p>Benutzername*:<input id="Username" type="text" name="Username"></p>
-			<p>E-Mail Adresse*:<input type="text" name="Email"></p>
-			<p>Straße / Hausnummer*:<input type="text" name="Str"> <input type="text" name="Hausnr"></p>
-			<p>PLZ / Ort*:<input type="text" name="Plz"> <input type ="text" name="Ort"></p>
-			<p>Telefon:<input type="text" name="Telefon"></p>
-			<p>Passwort:<input type="password" name="Passwort"></p>
-			<p> mit * markierte Felder sind Pflichtfelder </p>
-			<p><input type="submit" onclick="" value="Senden"><input type="reset" value="Abbrechen">
+
+
+<div style="position:absolute; top:0px ;left:75%; background-color: #58FA82;box-sizing: border-box; width:15%; box-shadow:8px 8px 8px #666;" >
+<p style="padding-left:30px"> Sie sind bereits registriert?<br/>dann logen Sie sich hier ein</p>
+<p style="padding-left:25%" ><input type="button" onclick="href='/login'" value="Jetzt Einlogen"></p>
+</div>
+
+<form action="/registrierung/" style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:45%; position:absolute; top:0px ; right:45%;">
+		<center ><H3>REGISTRIERUNG</H3></center>
+		<p><span style="padding-left:45px"> Benutzername*: </span><input id="Username" type="text" name="Username"></p>
+		<p><span style="padding-left:85px"> Passwort: </span><input type="password" name="Passwort" style=""></p>
+		<p><span style="padding-left:95px">Anrede: </span> <input type="radio" name="anrede" value="Frau"> Frau <input type="radio" name="anrede" value="Herr"> Herr</p>
+		<p><span style="padding-left:39px">Vorname, Name*: </span><input id="Vorname" type="text" name="Vorname"> <input id="Nachname" type="text" name="Nachname"></p>
+		<p><span style="padding-left:">Straße / Hausnummer*: </span><input type="text" name="Str"> <input type="text" name="Hausnr"></p>
+		<p><span style="padding-left:80px">PLZ / Ort*: </span><input type="text" name="Plz"> <input type ="text" name="Ort"></p>	
+		<p><span style="padding-left:41px">E-Mail Adresse*: </span><input type="text" name="Email"></p>
+		<p><span style="padding-left:94px">Telefon: </span><input type="text" name="Telefon"></p>
+		<p><span style="padding-left:150px"> * Pflichtfeld</span></p>
+		<p><span style="padding-left:150px"><input type="submit" onclick="" value="Senden"><input type="reset" value="Abbrechen"></span></p>	
 </form>
 
 

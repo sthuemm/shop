@@ -1,23 +1,39 @@
 @(kunde: Kunde)
 @main("Startseite")(kunde){
-	<div id="mainMainpage">
-		
 	
-		<div class="bildertonne" style="position: relative">
-			<div>
-				<a href="/neuheiten" class="img-rounded" alt=""> 
-				<img data-src="holder.js/100%x180/sky" src=@routes.Assets.at("images/Neuheiten1.jpg") alt="" ></a>
-				<a href="/holzAussen" class="img-rounded"> 
-				<img data-src="holder.js/100%x180/sky" src=@routes.Assets.at("images/Kategorie1.jpg") alt=""></a>
-			</div>
-			<div>
-				<a href="/holzInnen" class="img-rounded"> 
-				<img data-src="holder.js/100%x180/sky" src=@routes.Assets.at("images/Kategorie1.jpg") alt=""></a>
-				<a href="/brennholz" class="img-rounded"> 
-				<img data-src="holder.js/100%x180/sky" src=@routes.Assets.at("images/Kategorie1.jpg") alt=""></a>
-			</div>
-		</div>
-	
-	
+	<center>
+	<div class="container-fluid" id=mainp>
+			<ul id=mainUl>
+				<li id=mainLi>
+					<a href='/neuheiten' id=mainA>
+						<h2 id=mainH2>Neuheiten</h2>
+						<p id=mainP> </p>
+					</a>
+				</li>
+				<li id=mainLi>
+					<a href='/holzAussen' id=mainA>
+					<img src=@routes.Assets.at("images/HolzimAußenbereich.jpg")  width="250" height="110">
+						<h2 id=mainH2>Holz im Außenbereich</h2>
+						<p id=mainP> </p>
+					</a>
+				</li>
+				<li id=mainLi>
+					<a href='/holzInnen' id=mainA>
+					<img src=@routes.Assets.at("images/HolzimInnenraum.jpg")  width="250" height="110">
+						<h2 id=mainH2>Holz im Innenraum</h2>
+						<p id=mainP></p>
+					</a>
+				</li>
+				<li id=mainLi>
+					<a href='/brennholz' id=mainA>
+						<img src=@routes.Assets.at("images/Brennholz.jpg")  width="250" height="110">
+						<h2 id=mainH2>Brennstoffe</h2>
+						<p id=mainP> </p>
+					</a>
+				</li>
+			</ul>
 	</div>
+	</center>
 }
+
+
