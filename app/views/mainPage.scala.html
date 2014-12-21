@@ -1,11 +1,29 @@
 @(kunde: Kunde)
 @main("Startseite")(kunde){
 	
-	<center>
+			
+	
+ <center>
 	<div class="container-fluid" id=mainp>
 			<ul id=mainUl>
 				<li id=mainLi>
 					<a href='/neuheiten' id=mainA>
+					<div id=mainAA> 	<script type="text/javascript">
+					// <![CDATA[
+					var bilder = new Array(
+					  'images/HolzimAußenbereich.jpg',
+					  'images/HolzimAußenbereich.jpg',
+					  'images/HolzimInnenraum.jpg',
+					  'images/bruecke.jpg',
+					  'images/Holzstuhl.jpg',
+					  'images/Brennholz.jpg',
+					  'images/Brennholz.jpg'
+					);
+					var nr = Math.floor(Math.random()*bilder.length);
+					var bild = bilder[nr];
+					document.getElementById("mainAA").innerHTML = '<img src=assets/'+bild+'  width="250"; height="110"/>';
+					// ]]>
+				</script></div>
 						<h2 id=mainH2>Neuheiten</h2>
 						<p id=mainP> </p>
 					</a>
@@ -34,6 +52,8 @@
 			</ul>
 	</div>
 	</center>
+	
+	 
 }
 
 

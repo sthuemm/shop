@@ -2,11 +2,14 @@
 @import helper._
 
 @main("Login")(null){
-
+<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; height:200px;">
+	<div style="position:relative; padding-left:25% ; padding-top: 5%">
 	@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {
 		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername")
 		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort")
 		<input type ="submit" value="senden">
 	
 	}
+	</div>
+	</div>
 }
