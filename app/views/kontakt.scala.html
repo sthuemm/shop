@@ -1,13 +1,12 @@
 @(kunde: Kunde)
 @main("Holz im Aussenbereich")(kunde){
-	<main id="mainKontakt">
+<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:60%; height:300px; position:absolute; top:0px ; right:30%;">
 	<form id="kontaktform">
-
 		<p>
 			Telefon Hotline: <a href="tel:+49800456954">0800-456954</a>
 			Kontaktieren Sie uns
 		</p>
-
+		<div>
 		<ul class="ohneAufzaehlung">
 			<li><label id="nameuberschrift"> Name: *</label> <input
 				id="name" placeholder="Name" type="text" value=""></li>
@@ -30,7 +29,6 @@
 			<li><label id="E-Mail-Adresseuberschrift">
 					E-Mail-Adresse: * </label> <input id="Emailadresse"
 				placeholder="Max.Mustermann@@irgendwas.de" type="text" value="">
-
 			</li>
 			<li><label id="Telefonuberschrift" value= ""> Telefon: </label> <input
 				id="telefon" placeholder="14514/545514" type="text" value="">
@@ -44,7 +42,9 @@
 					name="komment" cols="5" rows="3"
 					style="width: 285px; height: 129px;"></textarea></li>
 		</ul>
+		<input type="submit" value="Senden" id="submit">
+		</div>
 		<p id="pflicht">* Pflichtfelder</p>
 	</form>
-	</main>
+	</div>
 }
