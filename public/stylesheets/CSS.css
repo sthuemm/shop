@@ -71,6 +71,12 @@ left:819px;
 top:225px;
 font-size: small;
 }
+#submit{
+position : absolute;
+top : 245px;
+left : 600px;
+}
+
 
 /*Artikelbeschreibung*/
 
