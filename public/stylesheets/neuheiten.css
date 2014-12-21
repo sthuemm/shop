@@ -73,7 +73,7 @@
   -moz-transform:rotate(4deg);
   position:relative;
   top:5px;
-   background:#cfc;
+   background:#58FA82;
 }
 #neuheitenUl #neuheitenLi:nth-child(3n) #neuheitena{
   -o-transform:rotate(-3deg);
@@ -89,7 +89,7 @@
   -moz-transform:rotate(5deg);
   position:relative;
   top:-10px;
-  background:#fcc;
+  background:#ffc;
 }
 
 #neuheitenUl #neuheitenLi #neuheitenA:hover,#neuheitenUl #neuheitenLi #neuheitenA:focus{
