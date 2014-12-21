@@ -4,8 +4,8 @@
 @main("Login")(null){
 
 	@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {
-		@helper.inputText(userForm("vorname"))
-		@helper.inputPassword(userForm("passwort"))
+		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername")
+		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort")
 		<input type ="submit" value="senden">
 	
 	}

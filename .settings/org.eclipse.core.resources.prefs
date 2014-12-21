@@ -2,4 +2,5 @@ eclipse.preferences.version=1
 encoding//app/views/agb.scala.html=UTF-8
 encoding//app/views/konto.scala.html=UTF-8
 encoding//app/views/loginFehler.scala.html=UTF-8
+encoding//app/views/registrierung.scala.html=UTF-8
 encoding/<project>=UTF-8

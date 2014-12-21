@@ -120,7 +120,7 @@ public class Application extends Controller {
 
 	public static Result registrierung() {
 
-		return ok(registrierung.render(Model.sharedInstance.getKunde()));
+		return ok(registrierung.render(userForm));
 
 	}
 
@@ -145,7 +145,7 @@ public class Application extends Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return ok(registrierung.render(Model.sharedInstance.getKunde()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde()));
 	}
 
 	public static Result suche(String produkt) {

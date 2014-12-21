@@ -155,7 +155,7 @@ public class Model {
 		try {
 			
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM users WHERE vorname ='" + kunde.vorname
+					"SELECT * FROM users WHERE username ='" + kunde.benutzername
 							+ "'AND pass = '" + verschluesselPW(kunde.passwort) + "';");
 		
 			if (rs.next()) {
