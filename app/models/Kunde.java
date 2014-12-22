@@ -25,9 +25,10 @@ public class Kunde {
 		public String ort;
 		public String passwort;
 	
-		public Kunde(String kundenNummer, String vorname, String nachname, String username, String email, String strasse,
+		public Kunde(String kundenNummer, String vorname, String anrede, String nachname, String username, String email, String strasse,
 				String hausnummer, String plz, String ort, String telefonnummer, String passwort, boolean isAdmin){
 		this.kundenNummer = kundenNummer;
+		this.anrede = anrede;
 		this.nachname = nachname;
 		this.vorname = vorname;
 		this.benutzername = username;
@@ -41,15 +42,20 @@ public class Kunde {
 		this.isAdmin = isAdmin;
 		}
 
+		
+
 		@Override
 		public String toString() {
-			return "Kunde [kundenNummer=" + kundenNummer + ", vorname="
-					+ vorname + ", nachname=" + nachname + ", username="
-					+ benutzername + ", email=" + email + ", strasse=" + strasse
+			return "Kunde [kundenNummer=" + kundenNummer + ", telefon="
+					+ telefon + ", isAdmin=" + isAdmin + ", anrede=" + anrede
+					+ ", vorname=" + vorname + ", nachname=" + nachname
+					+ ", benutzername=" + benutzername + ", email=" + email
+					+ ", email2=" + email2 + ", strasse=" + strasse
 					+ ", hausnummer=" + hausnummer + ", plz=" + plz + ", ort="
-					+ ort + ", telefonnummer=" + telefon + ", passwort="
-					+ passwort + ", isAdmin=" + isAdmin + "]";
+					+ ort + ", passwort=" + passwort + "]";
 		}
+
+
 
 		public String getKundenNummer() {
 			return kundenNummer;

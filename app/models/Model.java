@@ -168,6 +168,7 @@ public class Model {
 				}
 				this.kunde = new Kunde(							//instanziiert Kunden der aktuell eingeloggt ist
 						rs.getString("kundenNummer"),
+						rs.getString("anrede"),
 						rs.getString("vorname"), 
 						rs.getString("nachname"), 
 						rs.getString("username"), 

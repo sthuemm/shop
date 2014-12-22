@@ -18,9 +18,9 @@
 		if(document.getElementById('passwort').value == null || document.getElementById('passwort').value == ""){
 			document.getElementById('passwort').style.backgroundColor = "#FF6A6A";
 		} 
-		if(document.getElementById('anrede').value == null || document.getElementById('anrede').value == ""){
+		if(!document.getElementById('anrede_F').checked && !document.getElementById('anrede_H').checked ){
 			document.getElementById('anrede').style.backgroundColor = "#FF6A6A";
-		} 
+		}		
 		if(document.getElementById('vorname').value == null || document.getElementById('vorname').value == ""){
 			document.getElementById('vorname').style.backgroundColor = "#FF6A6A";
 		} 
@@ -89,16 +89,16 @@
 <div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:45%; position:absolute; top:0px ; right:45%; padding-left:2%; padding-top:1%; padding-bottom:5%">
 		@helper.form(action = routes.Application.neuerUser(), 'id -> "userForm", 'class -> "control-group") {
 	
-		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername", '_id -> "benutzername")
-		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort", '_id -> "passwort")
-		@helper.inputRadioGroup(userForm("anrede"), options = options("H" -> "Herr","F" -> "Frau"), '_id -> "anrede")
-		@helper.inputText(userForm("vorname"), '_label -> "Vorname", '_id -> "vorname")
-		@helper.inputText(userForm("nachname"), '_label -> "Nachname", '_id -> "nachname")
-		@helper.inputText(userForm("strasse"), '_label -> "Straße", '_id -> "strasse")
-		@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer", '_id -> "hausnummer")
-		@helper.inputText(userForm("plz"), '_label -> "Postleitzahl", '_id -> "plz")
-		@helper.inputText(userForm("ort"), '_label -> "Ort", '_id -> "ort")
-		@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse", '_id -> "email")
+		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*", '_id -> "benutzername")
+		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort*", '_id -> "passwort")
+		@helper.inputRadioGroup(userForm("anrede"), options = Seq("H" -> "Herr","F" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")
+		@helper.inputText(userForm("vorname"), '_label -> "Vorname*", '_id -> "vorname")
+		@helper.inputText(userForm("nachname"), '_label -> "Nachname*", '_id -> "nachname")
+		@helper.inputText(userForm("strasse"), '_label -> "Straße*", '_id -> "strasse")
+		@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer*", '_id -> "hausnummer")
+		@helper.inputText(userForm("plz"), '_label -> "Postleitzahl*", '_id -> "plz")
+		@helper.inputText(userForm("ort"), '_label -> "Ort*", '_id -> "ort")
+		@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse*", '_id -> "email")
 		@helper.inputText(userForm("telefonnummer"), '_label -> "Telefonnummer", 'id -> "telefonnummerID")
 
 		<p><span> * Pflichtfeld</span></p>
