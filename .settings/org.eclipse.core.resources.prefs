@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//app/views/agb.scala.html=UTF-8
 encoding//app/views/brennholz.scala.html=UTF-8
+encoding//app/views/kontakt.scala.html=UTF-8
 encoding//app/views/konto.scala.html=UTF-8
 encoding//app/views/loginFehler.scala.html=UTF-8
 encoding//app/views/mainPage.scala.html=UTF-8
