@@ -165,7 +165,7 @@ public class Application extends Controller {
 	
 	public static Result warenkorb() {
 
-		return ok(impressum.render(Model.sharedInstance.getKunde()));
+		return ok(Warenkorb.render(Model.sharedInstance.getKunde()));
 
 	}
 
