@@ -117,7 +117,8 @@
 						}
 						
 				   <ul class="nav navbar-nav navbar-right">
-				  	 	@if(kunde==null){
+				  	 	<li><a href=@routes.Application.warenkorb>Warenkorb</a></li>
+						@if(kunde==null){
 	       					<li><a href=@routes.Application.login>Hallo Fremder</a></li>
 	       					<li><a href=@routes.Application.login>Login</a></li>
 	       			

@@ -162,5 +162,11 @@ public class Application extends Controller {
 	public static Result neuesProdukt(){
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
+	
+	public static Result warenkorb() {
+
+		return ok(impressum.render(Model.sharedInstance.getKunde()));
+
+	}
 
 }
