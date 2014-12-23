@@ -3,10 +3,11 @@
 	@for(produkt <- produkte) {
 	
 				<div class="item">
-					<a href='#'><img src=@routes.Assets.at("images/bruecke.jpg") alt = ""></a>
-				
-					<wbr> @produkt.artikelBezeichnung
-					<a href="/artikel">mehr...</a>
+					<p> @produkt.artikelBezeichnung</p>
+					<a href="/artikel">
+					<img src=@routes.Assets.at("images/bruecke.jpg") alt = "">
+					</a>
+					</br>
 				</div>	
 	}
 }

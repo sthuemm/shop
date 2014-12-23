@@ -16,10 +16,10 @@ public class Model {
 
 	public static Model sharedInstance = new Model();
 	private ArrayList<Produkt> Produkte = new ArrayList<>();
-	private ArrayList<Produkt> produkteAussen = new ArrayList<>();
 	private ArrayList<Produkt> produkteInnen = new ArrayList<>();
 	private ArrayList<Produkt> produkteBrennholz = new ArrayList<>();
 	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
+	private ArrayList<Produkt> artikel =  new ArrayList<>();
 	private Kunde kunde = null;
 
 	public void suchergebnisseResetten() {
@@ -55,9 +55,6 @@ public class Model {
 																	// sind
 		Produkte.add(produkt);
 		switch (produkt.kategorie) {
-		case ("aussen"):
-			produkteAussen.add(produkt);
-			break;
 		case ("innen"):
 			produkteInnen.add(produkt);
 			break;
@@ -69,7 +66,7 @@ public class Model {
 
 	public void produkteAusDatenbankInListe() {
 		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1",
-				"ein Gartenzaun", "images/Palissaden.jpg", "innen"));
+				"Gartenzaun", "images/Palissaden.jpg", "innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2",
 				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(249.99, "3",
@@ -230,13 +227,36 @@ public class Model {
 	}
 
 	public Produkt[] getProdukteAussen() {
-		Produkt[] produkteAussenArray = produkteAussen
-				.toArray(new Produkt[produkteAussen.size()]);
-		return produkteAussenArray;
-	}
+		 ArrayList<Produkt> produkteAussen = new ArrayList<>();
+		 Produkt[] produkteAussenArray;
+		try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
 
-	public void setProdukteAussen(ArrayList<Produkt> produkteAussen) {
-		this.produkteAussen = produkteAussen;
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					produkteAussen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+				}
+				produkteAussenArray = produkteAussen
+				.toArray(new Produkt[produkteAussen.size()]);
+					
+				rs.close();
+				dbAufruf().close();
+			return produkteAussenArray;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+		return null;
 	}
 
 	public Produkt[] getProdukteInnen() {
@@ -338,4 +358,36 @@ public class Model {
 				 
 		 return passwortString;
 	}
+	
+	
+	public Produkt[] Artikel(){
+			try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt;");
+
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					artikel.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+				}
+				rs.close();
+				dbAufruf().close();
+			
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+	
+	Produkt[] artikelAll = artikel.toArray(new Produkt[artikel.size()]);
+	return artikelAll;
+	}
+	
 }

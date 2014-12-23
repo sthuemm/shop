@@ -27,7 +27,8 @@ public class Application extends Controller {
 
 	public static Result artikel() {
 
-		return ok(artikel.render(Model.sharedInstance.getKunde()));
+		return ok(artikel.render(Model.sharedInstance.getKunde(), 
+					Model.sharedInstance.Artikel()));
 
 	}
 
