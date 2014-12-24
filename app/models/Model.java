@@ -28,8 +28,9 @@ public class Model {
 	}
 
 	private Model() {
-		 dbAufruf(); // brauch man den Aufruf? ja macht die DB auf
-		produkteAusDatenbankInListe();
+//		 dbAufruf(); // nee, die Methode gibt nur ein Statement zurück, der Aufruf geschieht immer dann
+					// wenn getProdukte() usw aufgerufen wird. Da hängt dbAufruf() immer davor
+//		produkteAusDatenbankInListe();
 
 	}
 
@@ -46,48 +47,48 @@ public class Model {
 		return stmt;
 	}
 
-	public void produkteInDatenbankHinzufuegen(Produkt produkt) { // die Methode
-																	// löschen
-																	// wenn
-																	// Produkte
-																	// in DB
-																	// sind
-		Produkte.add(produkt);
-		switch (produkt.kategorie) {
-		case ("innen"):
-			produkteInnen.add(produkt);
-			break;
-		case ("brennbar"):
-			produkteBrennholz.add(produkt);
-			break;
-		}
-	}
-
-	public void produkteAusDatenbankInListe() {
-		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun",
-				"images/Palissaden.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1,
-				"Gartenzaun", "images/Palissaden.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(119.99, 2,
-				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(249.99, 3,
-				"Terassenbelaege", "images/Terrasse.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(49.99, 4, "Terassenmoebel",
-				"images/bruecke.jpg", "innen"));
-
-		produkteInDatenbankHinzufuegen(new Produkt(29.99, 5, "Esstisch",
-				"innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(19.99, 6, "Stuhl", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(44.99, 7, "Vertaefelung",
-				"innen"));
-
-		produkteInDatenbankHinzufuegen(new Produkt(4.99, 8,
-				"Echtes Kiefernholz", "brennbar"));
-		produkteInDatenbankHinzufuegen(new Produkt(5.99, 9,
-				"Echtes Buchenholz", "brennbar"));
-		produkteInDatenbankHinzufuegen(new Produkt(2.99, 10,
-				"Super brennbare Spanplatte", "brennbar"));
-	}
+//	public void produkteInDatenbankHinzufuegen(Produkt produkt) { // die Methode
+//																	// löschen
+//																	// wenn
+//																	// Produkte
+//																	// in DB
+//																	// sind
+//		Produkte.add(produkt);
+//		switch (produkt.kategorie) {
+//		case ("innen"):
+//			produkteInnen.add(produkt);
+//			break;
+//		case ("brennbar"):
+//			produkteBrennholz.add(produkt);
+//			break;
+//		}
+//	}
+//
+//	public void produkteAusDatenbankInListe() {
+//		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun",
+//				"images/Palissaden.jpg", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1,
+//				"Gartenzaun", "images/Palissaden.jpg", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(119.99, 2,
+//				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(249.99, 3,
+//				"Terassenbelaege", "images/Terrasse.jpg", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(49.99, 4, "Terassenmoebel",
+//				"images/bruecke.jpg", "innen"));
+//
+//		produkteInDatenbankHinzufuegen(new Produkt(29.99, 5, "Esstisch",
+//				"innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(19.99, 6, "Stuhl", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(44.99, 7, "Vertaefelung",
+//				"innen"));
+//
+//		produkteInDatenbankHinzufuegen(new Produkt(4.99, 8,
+//				"Echtes Kiefernholz", "brennbar"));
+//		produkteInDatenbankHinzufuegen(new Produkt(5.99, 9,
+//				"Echtes Buchenholz", "brennbar"));
+//		produkteInDatenbankHinzufuegen(new Produkt(2.99, 10,
+//				"Super brennbare Spanplatte", "brennbar"));
+//	}
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
 		suchergebnisseResetten();
@@ -206,25 +207,25 @@ public class Model {
 		}
 	}
 
-	public int NewKundennr() {
-
-		int kundennr = 0;
-		ResultSet rs;
-		try {
-			rs = dbAufruf().executeQuery("select MAX(kundenNummer) from users");
-			if (rs.next()) {
-				kundennr = rs.getInt("kundenNummer") + 1;
-			}
-			System.out.println(kundennr);
-			dbAufruf().close();
-			// kundennr = kundennr + 1;
-		} catch (SQLException e1) {
-			System.out.println("Fehler KundenID");
-			e1.printStackTrace();
-		}
-
-		return kundennr;
-	}
+//	public int NewKundennr() {
+//
+//		int kundennr = 0;
+//		ResultSet rs;
+//		try {
+//			rs = dbAufruf().executeQuery("select MAX(kundenNummer) from users");			nicht mehr nötig da KN-Nr in addKunde() bestimmt wird
+//			if (rs.next()) {
+//				kundennr = rs.getInt("kundenNummer") + 1;
+//			}
+//			System.out.println(kundennr);
+//			dbAufruf().close();
+//			// kundennr = kundennr + 1;
+//		} catch (SQLException e1) {
+//			System.out.println("Fehler KundenID");
+//			e1.printStackTrace();
+//		}
+//
+//		return kundennr;
+//	}
 
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		try {
@@ -365,9 +366,36 @@ public class Model {
 
 	public Produkt[] getProdukte() {
 
-		Produkt[] produkteArray = Produkte
-				.toArray(new Produkt[Produkte.size()]);
-		return produkteArray;
+		 ArrayList<Produkt> produkteAlleList = new ArrayList<>();
+		 Produkt[] produkteAlleArray;
+		try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt;");
+
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					int artikelNummer = rs.getInt("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					produkteAlleList.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+				}
+				produkteAlleArray = produkteAlleList
+				.toArray(new Produkt[produkteAlleList.size()]);
+					
+				rs.close();
+				dbAufruf().close();
+			return produkteAlleArray;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+		return null;
 	}
 
 	public String autovervollstaendigung(String produkt) {
