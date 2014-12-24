@@ -6669,3 +6669,7 @@ button.close {
 		display: none !important
 	}
 }
+
+.top-buffer { 
+	margin-top:20px; 
+	}
