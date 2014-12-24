@@ -46,23 +46,7 @@ public class Model {
 		return stmt;
 	}
 
-	public void produkteInDatenbankHinzufuegen(Produkt produkt) { // die Methode
-																	// löschen
-																	// wenn
-																	// Produkte
-																	// in DB
-																	// sind
-		Produkte.add(produkt);
-		switch (produkt.kategorie) {
-		case ("innen"):
-			produkteInnen.add(produkt);
-			break;
-		case ("brennbar"):
-			produkteBrennholz.add(produkt);
-			break;
-		}
-	}
-
+	
 //	public void produkteAusDatenbankInListe() {
 //
 //		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun","images/Palissaden.jpg", "innen"));
@@ -357,10 +341,36 @@ public class Model {
 	}
 
 	public Produkt[] getProdukte() {
+		ArrayList<Produkt> produkteAlleListe = new ArrayList<>();
+		 Produkt[] produkteAlleArray;
+		try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt;");
 
-		Produkt[] produkteArray = Produkte
-				.toArray(new Produkt[Produkte.size()]);
-		return produkteArray;
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					produkteAlleListe.add(new Produkt(preis, Integer.parseInt(artikelNummer), artikelBezeichnung, bildPfad, kategorie));
+				}
+				produkteAlleArray = produkteAlleListe
+				.toArray(new Produkt[produkteAlleListe.size()]);
+					
+				rs.close();
+				dbAufruf().close();
+			return produkteAlleArray;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+		return null;
 	}
 
 	public String autovervollstaendigung(String produkt) {

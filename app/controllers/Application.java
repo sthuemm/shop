@@ -113,8 +113,7 @@ public class Application extends Controller {
 
 	public static Result neuheiten() {
 
-		return ok(neuheiten.render(Model.sharedInstance.getKunde(),
-				Model.sharedInstance.getProdukte()));
+		return ok(neuheiten.render(Model.sharedInstance.getKunde(),	Model.sharedInstance.getProdukte()));
 	}
 
 	public static Result registrierung() {
