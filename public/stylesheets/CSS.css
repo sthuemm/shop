@@ -161,3 +161,30 @@ text-align:center;
 
 }
 
+#test.imageHold {
+  padding: 55px 85px; /* damit der container die höhe des großen bildes annimmt */
+  /* andere formatierung, z.B. zentrieren/etc: */
+  /* .... */
+}
+
+#test.imageHold div {
+  float: left;
+  width: 230px;
+  height: 150px;
+  /* ab hier kann man die abstände
+  und sonstiges der bilder eintragen */
+  margin-left: 50px;
+}
+
+#test.imageHold img {
+  width: 230px;  /* wir skalieren das große bild auf die kleine größe */
+  height: 150px; /* um verpixelung beim vergößern zu verhindern       */
+}
+
+#test.imageHold img:hover {
+  position: absolute;
+  margin-left: -85px; /* die hälfte des größenunterschiedes der bilder */
+  margin-top: -55px;  /* hier genau so */
+  width: 400px;       /* die weite beim vergrößern */
+  height: 260px;      /* die höhe beim vergrößern */
+}
