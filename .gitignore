@@ -17,3 +17,4 @@ server.pid
 .cache
 public/javascripts/countries.js
 app/db/test.de
+.classpath
