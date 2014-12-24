@@ -28,7 +28,7 @@ public class Model {
 	}
 
 	private Model() {
-		// dbAufruf(); // brauch man den Aufruf?
+		 dbAufruf(); // brauch man den Aufruf? ja macht die DB auf
 		produkteAusDatenbankInListe();
 
 	}
@@ -64,15 +64,11 @@ public class Model {
 	}
 
 	public void produkteAusDatenbankInListe() {
-<<<<<<< HEAD
 		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun",
 				"images/Palissaden.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(119.99, 2,
-=======
-		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1",
+		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1,
 				"Gartenzaun", "images/Palissaden.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2",
->>>>>>> origin/master
+		produkteInDatenbankHinzufuegen(new Produkt(119.99, 2,
 				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
 		produkteInDatenbankHinzufuegen(new Produkt(249.99, 3,
 				"Terassenbelaege", "images/Terrasse.jpg", "innen"));
@@ -262,7 +258,7 @@ public class Model {
 			} else {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
-					String artikelNummer = rs.getString("artikelNummer");
+					int artikelNummer = rs.getInt("artikelNummer");
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
@@ -295,7 +291,7 @@ public class Model {
 			} else {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
-					String artikelNummer = rs.getString("artikelNummer");
+					int artikelNummer = rs.getInt("artikelNummer");
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
@@ -332,7 +328,7 @@ public class Model {
 			} else {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
-					String artikelNummer = rs.getString("artikelNummer");
+					int artikelNummer = rs.getInt("artikelNummer");
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
@@ -449,7 +445,7 @@ public class Model {
 			} else {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
-					String artikelNummer = rs.getString("artikelNummer");
+					int artikelNummer = rs.getInt("artikelNummer");
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
