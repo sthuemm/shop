@@ -1,14 +1,20 @@
 @(kunde: Kunde, produkte: Array[Produkt])
 @main("Holz im Innenraum")(kunde){
 	
-		@for(produkt <- produkte) {
-				<div class="item">
-					<p> @produkt.artikelBezeichnung</p>
-					<a href="/artikel">
-					<img style="width:179px;height:179px " src=assets/@produkt.bildPfad alt = "">
+		<div class="container-fluid" id=mainp>
+			<ul id=mainUl>
+		
+			@for(produkt <- produkte) {
+			<div class="item">
+				<li id=mainLi>
+					<a href='/artikel' id=mainA>
+					<img src=assets/@produkt.bildPfad width="250" height="110" style="padding-left:-500px">
+						<h2 id=mainH2>@produkt.artikelBezeichnung</h2>
 					</a>
-					</br>
-				</div>	
+				</li>
+			</div>
 			}
 
+		</div>
+		</ul>
 }

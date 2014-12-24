@@ -284,9 +284,36 @@ public class Model {
 	}
 
 	public Produkt[] getProdukteInnen() {
-		Produkt[] produkteInnenArray = produkteInnen
+			 ArrayList<Produkt> produkteInnen = new ArrayList<>();
+		 Produkt[] produkteInnenArray;
+		try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt WHERE kategorie = 'innen' ;");
+
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					produkteInnen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+				}
+				produkteInnenArray = produkteInnen
 				.toArray(new Produkt[produkteInnen.size()]);
-		return produkteInnenArray;
+					
+				rs.close();
+				dbAufruf().close();
+			return produkteInnenArray;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+		return null;
 	}
 
 	public void setProdukteInnen(ArrayList<Produkt> produkteInnen) {
@@ -294,9 +321,36 @@ public class Model {
 	}
 
 	public Produkt[] getProdukteBrennholz() {
-		Produkt[] brennholzArray = produkteBrennholz
-				.toArray(new Produkt[produkteBrennholz.size()]);
-		return brennholzArray;
+					 ArrayList<Produkt> produkteBrennstoff = new ArrayList<>();
+		 Produkt[] produkteBrennstoffe;
+		try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
+
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					produkteBrennstoff.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+				}
+				produkteBrennstoffe = produkteBrennstoff
+				.toArray(new Produkt[produkteBrennstoff.size()]);
+					
+				rs.close();
+				dbAufruf().close();
+			return produkteBrennstoffe;
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+		return null;
 	}
 
 	public void setProdukteBrennholz(ArrayList<Produkt> produkteBrennholz) {
