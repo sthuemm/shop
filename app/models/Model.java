@@ -47,48 +47,6 @@ public class Model {
 		return stmt;
 	}
 
-//	public void produkteInDatenbankHinzufuegen(Produkt produkt) { // die Methode
-//																	// löschen
-//																	// wenn
-//																	// Produkte
-//																	// in DB
-//																	// sind
-//		Produkte.add(produkt);
-//		switch (produkt.kategorie) {
-//		case ("innen"):
-//			produkteInnen.add(produkt);
-//			break;
-//		case ("brennbar"):
-//			produkteBrennholz.add(produkt);
-//			break;
-//		}
-//	}
-//
-//	public void produkteAusDatenbankInListe() {
-//		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun",
-//				"images/Palissaden.jpg", "innen"));
-//		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1,
-//				"Gartenzaun", "images/Palissaden.jpg", "innen"));
-//		produkteInDatenbankHinzufuegen(new Produkt(119.99, 2,
-//				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
-//		produkteInDatenbankHinzufuegen(new Produkt(249.99, 3,
-//				"Terassenbelaege", "images/Terrasse.jpg", "innen"));
-//		produkteInDatenbankHinzufuegen(new Produkt(49.99, 4, "Terassenmoebel",
-//				"images/bruecke.jpg", "innen"));
-//
-//		produkteInDatenbankHinzufuegen(new Produkt(29.99, 5, "Esstisch",
-//				"innen"));
-//		produkteInDatenbankHinzufuegen(new Produkt(19.99, 6, "Stuhl", "innen"));
-//		produkteInDatenbankHinzufuegen(new Produkt(44.99, 7, "Vertaefelung",
-//				"innen"));
-//
-//		produkteInDatenbankHinzufuegen(new Produkt(4.99, 8,
-//				"Echtes Kiefernholz", "brennbar"));
-//		produkteInDatenbankHinzufuegen(new Produkt(5.99, 9,
-//				"Echtes Buchenholz", "brennbar"));
-//		produkteInDatenbankHinzufuegen(new Produkt(2.99, 10,
-//				"Super brennbare Spanplatte", "brennbar"));
-//	}
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
 		suchergebnisseResetten();
@@ -207,25 +165,6 @@ public class Model {
 		}
 	}
 
-//	public int NewKundennr() {
-//
-//		int kundennr = 0;
-//		ResultSet rs;
-//		try {
-//			rs = dbAufruf().executeQuery("select MAX(kundenNummer) from users");			nicht mehr nötig da KN-Nr in addKunde() bestimmt wird
-//			if (rs.next()) {
-//				kundennr = rs.getInt("kundenNummer") + 1;
-//			}
-//			System.out.println(kundennr);
-//			dbAufruf().close();
-//			// kundennr = kundennr + 1;
-//		} catch (SQLException e1) {
-//			System.out.println("Fehler KundenID");
-//			e1.printStackTrace();
-//		}
-//
-//		return kundennr;
-//	}
 
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		try {
