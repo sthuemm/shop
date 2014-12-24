@@ -4,11 +4,12 @@
 		
 		
 			@for(produkt <- produkte) {
-				@produkt.bildPfad
-				<div>
-					<img src=assets/@produkt.bildPfad>
-					<wbr> @produkt.artikelBezeichnung
-					<a href="/artikel">mehr...</a>
+				<div class="item">
+				<p> @produkt.artikelBezeichnung</p>
+				<a href="/artikel">
+					<img style="width:179px;height:179px "  src=assets/@produkt.bildPfad>
+					</a>
+					</br>
 				</div>	
 			}
 		

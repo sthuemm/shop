@@ -1,22 +1,32 @@
-	@(kunde: Kunde)
+	@(kunde: Kunde, produkte: Array[Produkt])
+	
 	@main("Artikel")(kunde){
 
-		<h2 id="HeadArtikel">Artikeldetails</h2>
-		<main id="mainArtikel">
-		<p id="BildArtikel">
-			<img src=@routes.Assets.at("images/images.jpg") alt="">
-		</p>
-		<div id="ArtikelBezeichnung">
-			<h4>Artikel Bezeichnung</h4>
-		</div>
-		<div id="ArtikelBeschreibung">
-			<ul>
-				<li>Deutsche Eiche Rustikal</li>
-				<li>Ideal für die Wandtafelung</li>
-				<li>HxBxT in cm: 200x200x2</li>
-
-			</ul>
-		</div>
-		<p id="Rezessionen">Rezessionen</p>
-		</main>
-}
+		
+		
+			@for(produkt <- produkte) {
+				
+				<div>
+					<img src=assets/@produkt.bildPfad>
+					<wbr> @produkt.artikelBezeichnung
+				</div>	
+			}
+			
+	<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; height:120px;">
+	<form style="position:relative; padding-top:10%; padding-left:5%">
+	<select name="menge">
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option>5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	<option>9</option>
+	<option>10</option>
+	</select></br></br>
+	<input type="submit" value="In den Warenkorb">
+	</form>
+	</div>
+			}

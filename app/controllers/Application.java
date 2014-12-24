@@ -26,7 +26,8 @@ public class Application extends Controller {
 
 	public static Result artikel() {
 
-		return ok(artikel.render(Model.sharedInstance.getKunde()));
+		return ok(artikel.render(Model.sharedInstance.getKunde(), 
+					Model.sharedInstance.Artikel()));
 
 	}
 
@@ -161,6 +162,12 @@ public class Application extends Controller {
 
 	public static Result neuesProdukt() {
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
+	}
+	
+	public static Result warenkorb() {
+
+		return ok(Warenkorb.render(Model.sharedInstance.getKunde()));
+
 	}
 
 }
