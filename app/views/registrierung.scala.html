@@ -1,4 +1,5 @@
-@(userForm: Form[models.Kunde], kunde:Kunde) @import helper._
+@(userForm: Form[models.Kunde], kunde:Kunde)
+@import helper._
 
 
 @implicitField = @{ FieldConstructor(horizontalFormTB.f) }
@@ -7,136 +8,106 @@
 @main("Registrierung")(kunde){
 
 <script type="text/javascript">
-	function farbe() {
-		if (document.getElementById('benutzername').value == null
-				|| document.getElementById('benutzername').value == "") {
+
+	
+
+	function farbe(){
+		if(document.getElementById('benutzername').value == null || document.getElementById('benutzername').value == ""){
 			document.getElementById('benutzername').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('passwort').value == null
-				|| document.getElementById('passwort').value == "") {
+		} 
+		if(document.getElementById('passwort').value == null || document.getElementById('passwort').value == ""){
 			document.getElementById('passwort').style.backgroundColor = "#FF6A6A";
-		}
-		if (!document.getElementById('anrede_F').checked
-				&& !document.getElementById('anrede_H').checked) {
+		} 
+		if(!document.getElementById('anrede_F').checked && !document.getElementById('anrede_H').checked ){
 			document.getElementById('anrede').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('vorname').value == null
-				|| document.getElementById('vorname').value == "") {
+		}		
+		if(document.getElementById('vorname').value == null || document.getElementById('vorname').value == ""){
 			document.getElementById('vorname').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('nachname').value == null
-				|| document.getElementById('nachname').value == "") {
+		} 
+		if(document.getElementById('nachname').value == null || document.getElementById('nachname').value == ""){
 			document.getElementById('nachname').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('strasse').value == null
-				|| document.getElementById('strasse').value == "") {
+		} 
+		if(document.getElementById('strasse').value == null || document.getElementById('strasse').value == ""){
 			document.getElementById('strasse').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('hausnummer').value == null
-				|| document.getElementById('hausnummer').value == "") {
+		} 
+		if(document.getElementById('hausnummer').value == null || document.getElementById('hausnummer').value == ""){
 			document.getElementById('hausnummer').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('plz').value == null
-				|| document.getElementById('plz').value == "") {
+		} 
+		if(document.getElementById('plz').value == null || document.getElementById('plz').value == ""){
 			document.getElementById('plz').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('ort').value == null
-				|| document.getElementById('ort').value == "") {
+		} 
+		if(document.getElementById('ort').value == null || document.getElementById('ort').value == ""){
 			document.getElementById('ort').style.backgroundColor = "#FF6A6A";
-		}
-		if (document.getElementById('email').value == null
-				|| document.getElementById('email').value == "") {
+		} 
+		if(document.getElementById('email').value == null || document.getElementById('email').value == ""){
 			document.getElementById('email').style.backgroundColor = "#FF6A6A";
-		}
-
+		} 
+		
 	}
-
-	function farbeStandard() {
-		if (document.getElementById('benutzername').value == null
-				|| document.getElementById('benutzername').value == "") {
+	
+	function farbeStandard(){
+		if(document.getElementById('benutzername').value == null || document.getElementById('benutzername').value == ""){
 			document.getElementById('benutzername').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('passwort').value == null
-				|| document.getElementById('passwort').value == "") {
+		} 
+		if(document.getElementById('passwort').value == null || document.getElementById('passwort').value == ""){
 			document.getElementById('passwort').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('anrede').value == null
-				|| document.getElementById('anrede').value == "") {
+		} 
+		if(document.getElementById('anrede').value == null || document.getElementById('anrede').value == ""){
 			document.getElementById('anrede').style.backgroundColor = "#58FA82";
-		}
-		if (document.getElementById('vorname').value == null
-				|| document.getElementById('vorname').value == "") {
+		} 
+		if(document.getElementById('vorname').value == null || document.getElementById('vorname').value == ""){
 			document.getElementById('vorname').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('nachname').value == null
-				|| document.getElementById('nachname').value == "") {
+		} 
+		if(document.getElementById('nachname').value == null || document.getElementById('nachname').value == ""){
 			document.getElementById('nachname').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('strasse').value == null
-				|| document.getElementById('strasse').value == "") {
+		} 
+		if(document.getElementById('strasse').value == null || document.getElementById('strasse').value == ""){
 			document.getElementById('strasse').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('hausnummer').value == null
-				|| document.getElementById('hausnummer').value == "") {
+		} 
+		if(document.getElementById('hausnummer').value == null || document.getElementById('hausnummer').value == ""){
 			document.getElementById('hausnummer').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('plz').value == null
-				|| document.getElementById('plz').value == "") {
+		} 
+		if(document.getElementById('plz').value == null || document.getElementById('plz').value == ""){
 			document.getElementById('plz').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('ort').value == null
-				|| document.getElementById('ort').value == "") {
+		} 
+		if(document.getElementById('ort').value == null || document.getElementById('ort').value == ""){
 			document.getElementById('ort').style.backgroundColor = "#FFFFFF";
-		}
-		if (document.getElementById('email').value == null
-				|| document.getElementById('email').value == "") {
+		} 
+		if(document.getElementById('email').value == null || document.getElementById('email').value == ""){
 			document.getElementById('email').style.backgroundColor = "#FFFFFF";
-		}
+		} 
 	}
+	
 </script>
 
 
-<div
-	style="position: absolute; top: 0px; left: 75%; background-color: #58FA82; box-sizing: border-box; width: 15%; box-shadow: 8px 8px 8px #666;">
-	<p style="padding-left: 30px">
-		Sie sind bereits registriert?<br />dann loggen Sie sich hier ein
-	</p>
-	<p style="padding-left: 25%">
-	<form style="padding-left: 25%" method="LINK" action=/login>
-		<input type="submit" value="Jetzt Einloggen">
-	</form>
+<div style="position:absolute; top:0px ;left:75%; background-color: #58FA82;box-sizing: border-box; width:15%; box-shadow:8px 8px 8px #666;" >
+<p style="padding-left:30px"> Sie sind bereits registriert?<br/>dann loggen Sie sich hier ein</p>
+<p style="padding-left:25%" ><form style="padding-left:25%" method="LINK" action= /login><input type="submit" value="Jetzt Einloggen"></form>
 </div>
 
-<div
-	style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; width: 45%; position: absolute; top: 0px; right: 45%; padding-left: 2%; padding-top: 1%; padding-bottom: 5%">
-	@helper.form(action = routes.Application.neuerUser(), 'id ->
-	"userForm", 'class -> "control-group") {
+<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:45%; position:absolute; top:0px ; right:45%; padding-left:2%; padding-top:1%; padding-bottom:5%">
+		@helper.form(action = routes.Application.neuerUser(), 'id -> "userForm", 'class -> "control-group") {
+	
+		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*", '_id -> "benutzername")
+		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort*", '_id -> "passwort")
+		@helper.inputRadioGroup(userForm("anrede"), options = Seq("H" -> "Herr","F" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")
+		@helper.inputText(userForm("vorname"), '_label -> "Vorname*", '_id -> "vorname")
+		@helper.inputText(userForm("nachname"), '_label -> "Nachname*", '_id -> "nachname")
+		@helper.inputText(userForm("strasse"), '_label -> "Straße*", '_id -> "strasse")
+		@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer*", '_id -> "hausnummer")
+		@helper.inputText(userForm("plz"), '_label -> "Postleitzahl*", '_id -> "plz")
+		@helper.inputText(userForm("ort"), '_label -> "Ort*", '_id -> "ort")
+		@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse*", '_id -> "email")
+		@helper.inputText(userForm("telefonnummer"), '_label -> "Telefonnummer", 'id -> "telefonnummerID")
 
-	@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*",
-	'_id -> "benutzername") @helper.inputPassword(userForm("passwort"),
-	'_label -> "Passwort*", '_id -> "passwort")
-	@helper.inputRadioGroup(userForm("anrede"), options = Seq("Herr" ->
-	"Herr","Frau" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")
-	@helper.inputText(userForm("vorname"), '_label -> "Vorname*", '_id ->
-	"vorname") @helper.inputText(userForm("nachname"), '_label ->
-	"Nachname*", '_id -> "nachname") @helper.inputText(userForm("strasse"),
-	'_label -> "Straße*", '_id -> "strasse")
-	@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer*",
-	'_id -> "hausnummer") @helper.inputText(userForm("plz"), '_label ->
-	"Postleitzahl*", '_id -> "plz") @helper.inputText(userForm("ort"),
-	'_label -> "Ort*", '_id -> "ort") @helper.inputText(userForm("email"),
-	'_label -> "E-Mail Adresse*", '_id -> "email")
-	@helper.inputText(userForm("telefonnummer"), '_label ->
-	"Telefonnummer", 'id -> "telefonnummerID")
-
-	<p>
-		<span> * Pflichtfeld</span>
-	</p>
-	<input type="submit" value="senden" onmouseover="farbe()"
-		onmouseout="farbeStandard()"> }
+		<p><span> * Pflichtfeld</span></p>
+		<input type ="submit" value="senden" onmouseover="farbe()" onmouseout="farbeStandard()">
+			
+		}
 </div>
 
 }
 
 
-
+	

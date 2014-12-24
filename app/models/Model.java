@@ -29,7 +29,7 @@ public class Model {
 
 	private Model() {
 		// dbAufruf(); // brauch man den Aufruf?
-		produkteAusDatenbankInListe();
+//		produkteAusDatenbankInListe();
 
 	}
 
@@ -63,35 +63,22 @@ public class Model {
 		}
 	}
 
-	public void produkteAusDatenbankInListe() {
-<<<<<<< HEAD
-		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun",
-				"images/Palissaden.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(119.99, 2,
-=======
-		produkteInDatenbankHinzufuegen(new Produkt(99.99, "1",
-				"Gartenzaun", "images/Palissaden.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(119.99, "2",
->>>>>>> origin/master
-				"Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(249.99, 3,
-				"Terassenbelaege", "images/Terrasse.jpg", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(49.99, 4, "Terassenmoebel",
-				"images/bruecke.jpg", "innen"));
-
-		produkteInDatenbankHinzufuegen(new Produkt(29.99, 5, "Esstisch",
-				"innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(19.99, 6, "Stuhl", "innen"));
-		produkteInDatenbankHinzufuegen(new Produkt(44.99, 7, "Vertaefelung",
-				"innen"));
-
-		produkteInDatenbankHinzufuegen(new Produkt(4.99, 8,
-				"Echtes Kiefernholz", "brennbar"));
-		produkteInDatenbankHinzufuegen(new Produkt(5.99, 9,
-				"Echtes Buchenholz", "brennbar"));
-		produkteInDatenbankHinzufuegen(new Produkt(2.99, 10,
-				"Super brennbare Spanplatte", "brennbar"));
-	}
+//	public void produkteAusDatenbankInListe() {
+//
+//		produkteInDatenbankHinzufuegen(new Produkt(99.99, 1, "ein Gartenzaun","images/Palissaden.jpg", "innen"));
+//		
+//		produkteInDatenbankHinzufuegen(new Produkt(119.99,2, "Palisaden fuer den Garten", "images/Pfaehle.jpg", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(249.99, 3,"Terassenbelaege", "images/Terrasse.jpg", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(49.99, 4, "Terassenmoebel","images/bruecke.jpg", "innen"));
+//
+//		produkteInDatenbankHinzufuegen(new Produkt(29.99, 5, "Esstisch","innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(19.99, 6, "Stuhl", "innen"));
+//		produkteInDatenbankHinzufuegen(new Produkt(44.99, 7, "Vertaefelung","innen"));
+//
+//		produkteInDatenbankHinzufuegen(new Produkt(4.99, 8,	"Echtes Kiefernholz", "brennbar"));
+//		produkteInDatenbankHinzufuegen(new Produkt(5.99, 9,	"Echtes Buchenholz", "brennbar"));
+//		produkteInDatenbankHinzufuegen(new Produkt(2.99, 10,"Super brennbare Spanplatte", "brennbar"));
+//	}
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
 		suchergebnisseResetten();
@@ -134,24 +121,24 @@ public class Model {
 		return gesuchteProd;
 	}
 
-	public int NewArtikelNr() {
-
-		int nr = 0;
-		ResultSet rs;
-		try {
-			rs = dbAufruf().executeQuery("SELECT MAX(artikelNummer) from produkt;");
-			if (rs.next()) {
-				nr = rs.getInt("max(artikelNummer)") + 1;
-			}
-			System.out.println(nr);
-			rs.close();
-			dbAufruf().close();
-		} catch (SQLException e1) {
-			System.out.println("Fehler ArtikelNR");
-			e1.printStackTrace();
-		}
-		return nr;
-	}
+//	public int NewArtikelNr() {
+//
+//		int nr = 0;
+//		ResultSet rs;
+//		try {
+//			rs = dbAufruf().executeQuery("SELECT MAX(artikelNummer) from produkt;");
+//			if (rs.next()) {
+//				nr = rs.getInt("max(artikelNummer)") + 1;
+//			}
+//			System.out.println(nr);
+//			rs.close();
+//			dbAufruf().close();
+//		} catch (SQLException e1) {
+//			System.out.println("Fehler ArtikelNR");
+//			e1.printStackTrace();
+//		}
+//		return nr;
+//	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, int lagermenge) {
@@ -160,7 +147,7 @@ public class Model {
 
 			dbAufruf().executeUpdate(
 					"insert into produkt values (" + preis + ",'"
-							+ NewArtikelNr() + "','" + artikelBezeichnung
+							+ ("SELECT MAX(artikelNummer) from produkt")+1 + "','" + artikelBezeichnung
 							+ "', '" + bildPfad + "','" + kategorie + "','" +lagermenge+"');");
 			dbAufruf().close();
 			System.out.println("Produkt wurde hinzugefügt");
@@ -210,25 +197,25 @@ public class Model {
 		}
 	}
 
-	public int NewKundennr() {
-
-		int kundennr = 0;
-		ResultSet rs;
-		try {
-			rs = dbAufruf().executeQuery("select MAX(kundenNummer) from users");
-			if (rs.next()) {
-				kundennr = rs.getInt("kundenNummer") + 1;
-			}
-			System.out.println(kundennr);
-			dbAufruf().close();
-			// kundennr = kundennr + 1;
-		} catch (SQLException e1) {
-			System.out.println("Fehler KundenID");
-			e1.printStackTrace();
-		}
-
-		return kundennr;
-	}
+//	public int NewKundennr() {
+//
+//		int kundennr = 0;
+//		ResultSet rs;
+//		try {
+//			rs = dbAufruf().executeQuery("select MAX(kundenNummer) from users");
+//			if (rs.next()) {
+//				kundennr = rs.getInt("kundenNummer") + 1;
+//			}
+//			System.out.println(kundennr);
+//			dbAufruf().close();
+//			// kundennr = kundennr + 1;
+//		} catch (SQLException e1) {
+//			System.out.println("Fehler KundenID");
+//			e1.printStackTrace();
+//		}
+//
+//		return kundennr;
+//	}
 
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		try {
@@ -266,7 +253,7 @@ public class Model {
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
-					produkteAussen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+					produkteAussen.add(new Produkt(preis, Integer.parseInt(artikelNummer), artikelBezeichnung, bildPfad, kategorie));
 				}
 				produkteAussenArray = produkteAussen
 				.toArray(new Produkt[produkteAussen.size()]);
@@ -299,7 +286,7 @@ public class Model {
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
-					produkteInnen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+					produkteInnen.add(new Produkt(preis, Integer.parseInt(artikelNummer), artikelBezeichnung, bildPfad, kategorie));
 				}
 				produkteInnenArray = produkteInnen
 				.toArray(new Produkt[produkteInnen.size()]);
@@ -315,6 +302,8 @@ public class Model {
 		}
 		return null;
 	}
+	
+	
 
 	public void setProdukteInnen(ArrayList<Produkt> produkteInnen) {
 		this.produkteInnen = produkteInnen;
@@ -336,7 +325,7 @@ public class Model {
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
-					produkteBrennstoff.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+					produkteBrennstoff.add(new Produkt(preis, Integer.parseInt(artikelNummer), artikelBezeichnung, bildPfad, kategorie));
 				}
 				produkteBrennstoffe = produkteBrennstoff
 				.toArray(new Produkt[produkteBrennstoff.size()]);
@@ -453,7 +442,7 @@ public class Model {
 					String artikelBezeichnung = rs.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
-					artikel.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie));
+					artikel.add(new Produkt(preis, Integer.parseInt(artikelNummer), artikelBezeichnung, bildPfad, kategorie));
 				}
 				rs.close();
 				dbAufruf().close();
