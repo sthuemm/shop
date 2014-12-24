@@ -8,25 +8,26 @@ import play.data.validation.Constraints;
 import play.data.*;
 
 public class Kunde {
-		
-	
-		public String kundenNummer;
-		public String telefon;
-		public boolean isAdmin;
-		public String anrede;
-		public String vorname;
-		public String nachname;
-		public String benutzername;
-		public String email;
-		public String email2;
-		public String strasse;
-		public String hausnummer;
-		public String plz;
-		public String ort;
-		public String passwort;
-	
-		public Kunde(String kundenNummer, String vorname, String anrede, String nachname, String username, String email, String strasse,
-				String hausnummer, String plz, String ort, String telefonnummer, String passwort, boolean isAdmin){
+
+	public String kundenNummer;
+	public String telefon;
+	public boolean isAdmin;
+	public String anrede;
+	public String vorname;
+	public String nachname;
+	public String benutzername;
+	public String email;
+	public String email2;
+	public String strasse;
+	public String hausnummer;
+	public String plz;
+	public String ort;
+	public String passwort;
+
+	public Kunde(String kundenNummer, String vorname, String anrede,
+			String nachname, String username, String email, String strasse,
+			String hausnummer, String plz, String ort, String telefonnummer,
+			String passwort, boolean isAdmin) {
 		this.kundenNummer = kundenNummer;
 		this.anrede = anrede;
 		this.nachname = nachname;
@@ -40,134 +41,125 @@ public class Kunde {
 		this.telefon = telefonnummer;
 		this.passwort = passwort;
 		this.isAdmin = isAdmin;
-		}
+	}
 
-		
+	@Override
+	public String toString() {
+		return "Kunde [kundenNummer=" + kundenNummer + ", telefon=" + telefon
+				+ ", isAdmin=" + isAdmin + ", anrede=" + anrede + ", vorname="
+				+ vorname + ", nachname=" + nachname + ", benutzername="
+				+ benutzername + ", email=" + email + ", email2=" + email2
+				+ ", strasse=" + strasse + ", hausnummer=" + hausnummer
+				+ ", plz=" + plz + ", ort=" + ort + ", passwort=" + passwort
+				+ "]";
+	}
 
-		@Override
-		public String toString() {
-			return "Kunde [kundenNummer=" + kundenNummer + ", telefon="
-					+ telefon + ", isAdmin=" + isAdmin + ", anrede=" + anrede
-					+ ", vorname=" + vorname + ", nachname=" + nachname
-					+ ", benutzername=" + benutzername + ", email=" + email
-					+ ", email2=" + email2 + ", strasse=" + strasse
-					+ ", hausnummer=" + hausnummer + ", plz=" + plz + ", ort="
-					+ ort + ", passwort=" + passwort + "]";
-		}
+	public String getKundenNummer() {
+		return kundenNummer;
+	}
 
+	public void setKundenNummer(String kundenNummer) {
+		this.kundenNummer = kundenNummer;
+	}
 
+	public String getTelefonnummer() {
+		return telefon;
+	}
 
-		public String getKundenNummer() {
-			return kundenNummer;
-		}
+	public void setTelefonnummer(String telefonnummer) {
+		this.telefon = telefonnummer;
+	}
 
-		public void setKundenNummer(String kundenNummer) {
-			this.kundenNummer = kundenNummer;
-		}
+	public boolean isAdmin() {
+		return isAdmin;
+	}
 
-		public String getTelefonnummer() {
-			return telefon;
-		}
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 
-		public void setTelefonnummer(String telefonnummer) {
-			this.telefon = telefonnummer;
-		}
+	public String getVorname() {
+		return vorname;
+	}
 
-		public boolean isAdmin() {
-			return isAdmin;
-		}
+	public void setVorname(String vorname) {
+		this.vorname = vorname;
+	}
 
-		public void setAdmin(boolean isAdmin) {
-			this.isAdmin = isAdmin;
-		}
+	public String getNachname() {
+		return nachname;
+	}
 
-		public String getVorname() {
-			return vorname;
-		}
+	public void setNachname(String nachname) {
+		this.nachname = nachname;
+	}
 
-		public void setVorname(String vorname) {
-			this.vorname = vorname;
-		}
+	public String getBenutzername() {
+		return benutzername;
+	}
 
-		public String getNachname() {
-			return nachname;
-		}
+	public void setBenutzername(String benutzername) {
+		this.benutzername = benutzername;
+	}
 
-		public void setNachname(String nachname) {
-			this.nachname = nachname;
-		}
+	public String getEmail() {
+		return email;
+	}
 
-		public String getBenutzername() {
-			return benutzername;
-		}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-		public void setBenutzername(String benutzername) {
-			this.benutzername = benutzername;
-		}
+	public String getStrasse() {
+		return strasse;
+	}
 
-		public String getEmail() {
-			return email;
-		}
+	public void setStrasse(String strasse) {
+		this.strasse = strasse;
+	}
 
-		public void setEmail(String email) {
-			this.email = email;
-		}
+	public String getHausnummer() {
+		return hausnummer;
+	}
 
-		public String getStrasse() {
-			return strasse;
-		}
+	public void setHausnummer(String hausnummer) {
+		this.hausnummer = hausnummer;
+	}
 
-		public void setStrasse(String strasse) {
-			this.strasse = strasse;
-		}
+	public String getPlz() {
+		return plz;
+	}
 
-		public String getHausnummer() {
-			return hausnummer;
-		}
+	public void setPlz(String plz) {
+		this.plz = plz;
+	}
 
-		public void setHausnummer(String hausnummer) {
-			this.hausnummer = hausnummer;
-		}
+	public String getOrt() {
+		return ort;
+	}
 
-		public String getPlz() {
-			return plz;
-		}
+	public void setOrt(String ort) {
+		this.ort = ort;
+	}
 
-		public void setPlz(String plz) {
-			this.plz = plz;
-		}
+	public String getPasswort() {
+		return passwort;
+	}
 
-		public String getOrt() {
-			return ort;
-		}
+	public void setPasswort(String passwort) {
+		this.passwort = passwort;
+	}
 
-		public void setOrt(String ort) {
-			this.ort = ort;
-		}
+	public Kunde() {
 
-		public String getPasswort() {
-			return passwort;
-		}
+	}
 
-		public void setPasswort(String passwort) {
-			this.passwort = passwort;
-		}
+	public String getAnrede() {
+		return anrede;
+	}
 
-		public Kunde(){
-			
-		}
+	public void setAnrede(String anrede) {
+		this.anrede = anrede;
+	}
 
-		public String getAnrede() {
-			return anrede;
-		}
-
-		public void setAnrede(String anrede) {
-			this.anrede = anrede;
-		}
-		
-		
-		
-		
-	
-	
 }

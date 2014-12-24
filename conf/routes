@@ -23,7 +23,7 @@ GET		/logout						controllers.Application.logout()
 POST	/registrierung/				controllers.Application.neuerUser()
 GET		/autovervollstaendigung/	controllers.Application.autover(gesuchtesProdukt)
 GET		/suche/						controllers.Application.suche(gesuchtesProdukt)
-GET		/produktInsert/				controllers.Application.produktInsert(preis,artikelNummer,artikelBezeichnung,bildPfad,kategorie)
+GET		/produktInsert/				controllers.Application.produktInsert(preis,artikelBezeichnung,bildPfad,kategorie,lagerm)
 GET 	/neuesProdukt				controllers.Application.neuesProdukt()
 
 # Map static resources from the /public folder to the /assets URL path
