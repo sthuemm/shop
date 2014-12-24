@@ -18,3 +18,5 @@ server.pid
 public/javascripts/countries.js
 app/db/test.de
 .classpath
+*.classpath
+.classpath
