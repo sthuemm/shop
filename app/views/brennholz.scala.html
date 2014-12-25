@@ -5,7 +5,7 @@
 		
 			@for(produkt <- produkte) {
 				<a href="/artikel" style="font-family:Georgia;color:black">
-				<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:20%;">
+				<div id="k@produkt.artikelNummer" class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:20%;">
 					<div class="item" style="padding:5%"">
 				      <img src=assets/@produkt.bildPfad width="250" height="150">
 						<div>
