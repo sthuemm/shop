@@ -82,6 +82,8 @@ public class Model {
 		return getGesuchteProdukte();
 
 	}
+	
+	
 
 	public Produkt[] getGesuchteProdukte() {
 		Produkt[] gesuchteProd = gesuchteProdukte
@@ -406,8 +408,8 @@ public class Model {
 	}
 	
 	
-	public Produkt[] Artikel( String ausgewaehltesProdukt ){
-		ArrayList<Produkt> artikel =  new ArrayList<>();
+	public Produkt artikelnummerSuchen( String ausgewaehltesProdukt ){
+		
 			try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt Where artikelNummer ="+ausgewaehltesProdukt+";");
@@ -422,7 +424,8 @@ public class Model {
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					artikel.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					System.out.println(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					return (new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
 				}
 				rs.close();
 				dbAufruf().close();
@@ -434,9 +437,9 @@ public class Model {
 			System.out.println("Fehler Produkt suchen");
 		}
 	
-	Produkt[] artikelAll = artikel.toArray(new Produkt[artikel.size()]);
+	
 	ausgewaehltesProdukt = null;
-	return artikelAll;
+	return null;
 	}
 	
 }

@@ -1,32 +1,26 @@
-	@(kunde: Kunde, produkte: Array[Produkt])
+	@(kunde: Kunde, produkt: Produkt)
 	
 	@main("Artikel")(kunde){
-
+		@if(produkt == null){
+			<p>Produkt konnte leider nicht gefunden werden</p>
+		} else {
 		
 		
-			@for(produkt <- produkte) {
-				
-				<div>
-					<img src=assets/@produkt.bildPfad>
-					<wbr> @produkt.artikelBezeichnung
-				</div>	
-			}
+		
 			
-	<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; height:120px;">
+				
+				<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; padding:15px">
+					<img src=/assets/@produkt.bildPfad width="250" height="150">
+					<wbr> @produkt.artikelBezeichnung
+					
+			
 	<form style="position:relative; padding-top:10%; padding-left:5%">
-	<select name="menge">
-	<option>1</option>
-	<option>2</option>
-	<option>3</option>
-	<option>4</option>
-	<option>5</option>
-	<option>6</option>
-	<option>7</option>
-	<option>8</option>
-	<option>9</option>
-	<option>10</option>
-	</select></br></br>
+	
+	<p>Menge: <input type="number" max="@produkt.lagermenge" min="0" name="menge"></p>
 	<input type="submit" value="In den Warenkorb">
 	</form>
 	</div>
 			}
+			
+	
+	}

@@ -31,4 +31,15 @@ public class Produkt {
 		this.lagermenge = lagermenge;
 	}
 
+	@Override
+	public String toString() {
+		return "Produkt [preis=" + preis + ", artikelNummer=" + artikelNummer
+				+ ", artikelBezeichnung=" + artikelBezeichnung + ", bildPfad="
+				+ bildPfad + ", kategorie=" + kategorie + ", lagermenge="
+				+ lagermenge + "]";
+	}
+
+	
+	
+	
 }

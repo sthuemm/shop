@@ -27,7 +27,7 @@ public class Application extends Controller {
 	public static Result artikel(String ausgewaehltesProdukt) {
 
 		return ok(artikel.render(Model.sharedInstance.getKunde(), 
-					Model.sharedInstance.Artikel(ausgewaehltesProdukt)));
+					Model.sharedInstance.artikelnummerSuchen(ausgewaehltesProdukt)));
 
 	}
 
