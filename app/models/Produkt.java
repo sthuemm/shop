@@ -12,6 +12,7 @@ public class Produkt {
 	public String artikelBezeichnung;
 	public String bildPfad;
 	public String kategorie;
+	public int lagermenge;
 
 	public Produkt() {
 		this.preis = 9.99;
@@ -21,21 +22,13 @@ public class Produkt {
 	}
 
 	public Produkt(double price, int artikelNummer,
-			String artikelBezeichnung, String pfad, String kategorie) {
+			String artikelBezeichnung, String pfad, String kategorie, int lagermenge) {
 		this.preis = price;
 		this.artikelNummer = artikelNummer;
 		this.artikelBezeichnung = artikelBezeichnung;
 		this.bildPfad = pfad;
 		this.kategorie = kategorie;
-	}
-
-	public Produkt(double price, int artikelNummer,
-			String artikelBezeichnung, String kategorie) {
-		this.preis = price;
-		this.artikelNummer = artikelNummer;
-		this.artikelBezeichnung = artikelBezeichnung;
-		this.kategorie = kategorie;
-
+		this.lagermenge = lagermenge;
 	}
 
 }

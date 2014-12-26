@@ -88,8 +88,9 @@ public class Model {
 							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
+					int lagermenge = rs.getInt("lagermenge");
 					gesuchteProdukte.add(new Produkt(preis, artikelNummer,
-							artikelBezeichnung, bildPfad, kategorie));
+							artikelBezeichnung, bildPfad, kategorie, lagermenge));
 				}
 				rs.close();
 				dbAufruf().close();
@@ -162,8 +163,13 @@ public class Model {
 							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
+<<<<<<< HEAD
 					produkteAussen.add(new Produkt(preis, artikelNummer,
 							artikelBezeichnung, bildPfad, kategorie));
+=======
+					int lagermenge = rs.getInt("lagermenge");
+					produkteAussen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+>>>>>>> origin/master
 				}
 				produkteAussenArray = produkteAussen
 						.toArray(new Produkt[produkteAussen.size()]);
@@ -197,8 +203,13 @@ public class Model {
 							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
+<<<<<<< HEAD
 					produkteInnen.add(new Produkt(preis, artikelNummer,
 							artikelBezeichnung, bildPfad, kategorie));
+=======
+					int lagermenge = rs.getInt("lagermenge");
+					produkteInnen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+>>>>>>> origin/master
 				}
 				produkteInnenArray = produkteInnen
 						.toArray(new Produkt[produkteInnen.size()]);
@@ -236,8 +247,13 @@ public class Model {
 							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
+<<<<<<< HEAD
 					produkteBrennstoff.add(new Produkt(preis, artikelNummer,
 							artikelBezeichnung, bildPfad, kategorie));
+=======
+					int lagermenge = rs.getInt("lagermenge");
+					produkteBrennstoff.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+>>>>>>> origin/master
 				}
 				produkteBrennstoffe = produkteBrennstoff
 						.toArray(new Produkt[produkteBrennstoff.size()]);
@@ -272,8 +288,13 @@ public class Model {
 							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
+<<<<<<< HEAD
 					artikel.add(new Produkt(preis, artikelNummer,
 							artikelBezeichnung, bildPfad, kategorie));
+=======
+					int lagermenge = rs.getInt("lagermenge");
+					produkteAlleList.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+>>>>>>> origin/master
 				}
 				rs.close();
 				dbAufruf().close();
@@ -421,4 +442,40 @@ public class Model {
 
 		return passwortString;
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	public Produkt[] Artikel(){
+			try {
+			ResultSet rs = dbAufruf().executeQuery(
+					"SELECT * FROM produkt;");
+
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					int artikelNummer = rs.getInt("artikelNummer");
+					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					int lagermenge = rs.getInt("lagermenge");
+					artikel.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+				}
+				rs.close();
+				dbAufruf().close();
+			
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		}
+	
+	Produkt[] artikelAll = artikel.toArray(new Produkt[artikel.size()]);
+	return artikelAll;
+	}
+	
+>>>>>>> origin/master
 }
