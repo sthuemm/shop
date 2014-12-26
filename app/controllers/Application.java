@@ -24,10 +24,10 @@ public class Application extends Controller {
 
 	}
 
-	public static Result artikel() {
+	public static Result artikel(String ausgewaehltesProdukt) {
 
 		return ok(artikel.render(Model.sharedInstance.getKunde(), 
-					Model.sharedInstance.Artikel()));
+					Model.sharedInstance.Artikel(ausgewaehltesProdukt)));
 
 	}
 

@@ -5,7 +5,7 @@
 
 GET     /                           controllers.Application.index()
 GET     /agb                        controllers.Application.agb()
-GET     /artikel                    controllers.Application.artikel()
+GET     /artikel/                   controllers.Application.artikel(ausgewaehltesProdukt)
 GET     /datenschutz                controllers.Application.datenschutz()
 GET     /holzAussen                 controllers.Application.holzAussen()
 GET     /impressum                  controllers.Application.impressum()

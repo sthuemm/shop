@@ -19,7 +19,6 @@ public class Model {
 	private ArrayList<Produkt> produkteInnen = new ArrayList<>();
 	private ArrayList<Produkt> produkteBrennholz = new ArrayList<>();
 	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
-	private ArrayList<Produkt> artikel =  new ArrayList<>();
 	private Kunde kunde = null;
 
 	public void suchergebnisseResetten() {
@@ -407,10 +406,11 @@ public class Model {
 	}
 	
 	
-	public Produkt[] Artikel(){
+	public Produkt[] Artikel( String ausgewaehltesProdukt ){
+		ArrayList<Produkt> artikel =  new ArrayList<>();
 			try {
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM produkt;");
+					"SELECT * FROM produkt Where artikelNummer ="+ausgewaehltesProdukt+";");
 
 			if (rs == null) {
 				return null;
@@ -435,6 +435,7 @@ public class Model {
 		}
 	
 	Produkt[] artikelAll = artikel.toArray(new Produkt[artikel.size()]);
+	ausgewaehltesProdukt = null;
 	return artikelAll;
 	}
 	
