@@ -1,6 +1,17 @@
 	@(kunde: Kunde, produkt: Produkt)
 	
 	@main("Artikel")(kunde){
+	
+	<script>
+		function ueberpruefeMenge(){
+			if(document.getElementById("anzahl").value > @produkt.lagermenge){
+				document.getElementById("mengeNichtVorhanden").innerHTML = "Menge nicht vorhanden";
+				
+			}
+		}
+	</script>
+	
+	
 		@if(produkt == null){
 			<p>Produkt konnte leider nicht gefunden werden</p>
 		} else {
@@ -11,13 +22,20 @@
 				
 				<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; padding:15px">
 					<img src=/assets/@produkt.bildPfad width="250" height="150">
-					<wbr> @produkt.artikelBezeichnung
-					
+					<p> @produkt.artikelBezeichnung</p>
+					@if(produkt.lagermenge < 10){
+						<p> nur noch @produkt.lagermenge Stück auf Lager</p>
+					} else {
+						<p> auf Lager </p>
+					}
 			
-	<form style="position:relative; padding-top:10%; padding-left:5%">
+	<form style="position:relative; padding-top:10%;">
 	
-	<p>Menge: <input type="number" max="@produkt.lagermenge" min="0" name="menge"></p>
+	<p>Menge: <input id="anzahl" type="number" max="@produkt.lagermenge" min="0" name="menge" onmousemove="ueberpruefeMenge()"></p>
+		<div id="mengeNichtVorhanden"></div>
+	
 	<input type="submit" value="In den Warenkorb">
+	
 	</form>
 	</div>
 			}
