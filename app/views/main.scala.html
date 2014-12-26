@@ -77,6 +77,17 @@
 					document.getElementById( "auswahlbox" ).style.visibility = "hidden";
 				  }
 				}
+				function ausgewaelterArtikel( eingabe ) {
+				  meinAjaxInit();
+				  if( req ) {
+					eingabetext = eingabe;
+					document.formular.gesuchtesProdukt.focus();
+					var url = "/artikel/?ausgewaehltesProdukt=" + escape( eingabetext );
+					req.open( "GET", url, true );
+					req.onreadystatechange = meineCallbackFkt;
+					req.send( null );
+				  }
+				}
 			  </script>
 			 
 	 </head>
