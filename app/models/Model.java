@@ -21,6 +21,8 @@ public class Model {
 	private ArrayList<Produkt> produkteBrennholz = new ArrayList<>();
 	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
 	private Kunde kunde = null;
+	private int dbAufrufe = 0;
+	private Connection conn;
 
 	public void suchergebnisseResetten() {
 
@@ -37,17 +39,21 @@ public class Model {
 	}
 
 	private Statement dbAufruf() {
-
-		Connection conn = DB.getConnection();
+		
+		this.conn = DB.getConnection();
 		Statement stmt = null;
+		
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("db aufruf");
+		System.out.println(++dbAufrufe +". db aufruf");
+		
 		return stmt;
 	}
+	
+	
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
 		suchergebnisseResetten();
@@ -74,10 +80,11 @@ public class Model {
 									artikelBezeichnung, bildPfad, kategorie,
 									lagermenge));
 				}
-				rs.close();
-				dbAufruf().close();
+				
 
 			}
+			rs.close();
+			conn.close();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -105,7 +112,7 @@ public class Model {
 			}
 			System.out.println(nr);
 			rs.close();
-			dbAufruf().close();
+			conn.close();
 		} catch (SQLException e1) {
 			System.out.println("Fehler ArtikelNR");
 			e1.printStackTrace();
@@ -123,7 +130,7 @@ public class Model {
 							+ NewArtikelNr() + "','" + artikelBezeichnung
 							+ "', '" + bildPfad + "','" + kategorie + "','"
 							+ lagermenge + "');");
-			dbAufruf().close();
+			conn.close();
 			System.out.println("Produkt wurde hinzugefügt");
 		}
 
@@ -163,7 +170,7 @@ public class Model {
 				throw new wrongPasswordOrUsernameException();
 			}
 			rs.close();
-			dbAufruf().close();
+			conn.close();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -185,7 +192,7 @@ public class Model {
 							+ verschluesselPW(kunde.getPasswort())
 							+ "','nein');");
 			System.out.println(rs + " Kunde wurde hinzugefügt");
-			dbAufruf().close();
+			conn.close();
 		} catch (SQLException e) {
 			System.out.println("Fehler Kunden inserieren");
 			e.printStackTrace();
@@ -200,6 +207,8 @@ public class Model {
 					"SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
 
 			if (rs == null) {
+				rs.close();
+				conn.close();
 				return null;
 			} else {
 				while (rs.next()) {
@@ -218,10 +227,10 @@ public class Model {
 				
 
 				rs.close();
-				dbAufruf().close();
+				conn.close();
 				return produkteAussen;
 			}
-
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
@@ -237,6 +246,7 @@ public class Model {
 					"SELECT * FROM produkt WHERE kategorie = 'innen' ;");
 
 			if (rs == null) {
+				conn.close();
 				return null;
 			} else {
 				while (rs.next()) {
@@ -255,7 +265,7 @@ public class Model {
 				
 
 				rs.close();
-				dbAufruf().close();
+				conn.close();
 				return produkteInnen;
 			}
 
@@ -278,6 +288,8 @@ public class Model {
 					"SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
 
 			if (rs == null) {
+				
+				conn.close();
 				return null;
 			} else {
 				while (rs.next()) {
@@ -296,7 +308,7 @@ public class Model {
 				
 
 				rs.close();
-				dbAufruf().close();
+				conn.close();
 				return produkteBrennstoff;
 			}
 
@@ -329,6 +341,7 @@ public class Model {
 			ResultSet rs = dbAufruf().executeQuery("SELECT * FROM produkt;");
 
 			if (rs == null) {
+				conn.close();
 				return null;
 			} else {
 				while (rs.next()) {
@@ -347,7 +360,7 @@ public class Model {
 				
 
 				rs.close();
-				dbAufruf().close();
+				conn.close();
 				return produkteAlleList;
 			}
 
@@ -364,7 +377,7 @@ public class Model {
 			dbAufruf().executeUpdate(
 					"UPDATE produkt SET lagermenge = lagermenge - '" + menge
 							+ "' WHERE artikelNummer = '" + artikelnr + "';");
-			dbAufruf().close();
+			conn.close();
 		} catch (SQLException e) {
 			System.out.println("Fehler beim ändern der Menge");
 			e.printStackTrace();
@@ -390,6 +403,7 @@ public class Model {
 			}
 						
 			if (rs == null) {
+				conn.close();
 				return produkteAlleList; //nicht null zurückgeben, lieber ein leeres Array
 			} else {
 				while (rs.next()) {
@@ -408,7 +422,7 @@ public class Model {
 			
 
 				rs.close();
-				dbAufruf().close();
+				conn.close();
 				return produkteAlleList;
 			}
 		} catch (SQLException ex) {
@@ -420,13 +434,13 @@ public class Model {
 	}
 
 	public void setWarenkorb(Kunde kunde, int artikelnr) {
-		this.kunde = kunde;
+		//this.kunde = kunde;
 		try {
 			dbAufruf().executeUpdate(
 					"insert into Warenkorb values ('" + kunde.getKundenNummer()
 							+ "','" + artikelnr + "');");
 
-			dbAufruf().close();
+			conn.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Warenkorb inserieren");
@@ -446,7 +460,7 @@ public class Model {
 				
 			}
 			rs.close();
-			dbAufruf().close();
+			conn.close();
 			boolean sorted = false;
 			String[] meinTextArray = produktbezeichnungen
 					.toArray(new String[produktbezeichnungen.size()]);
@@ -507,6 +521,7 @@ public class Model {
 							+ ausgewaehltesProdukt + ";");
 
 			if (rs == null) {
+				conn.close();
 				return null;
 			} else {
 				while (rs.next()) {
@@ -525,7 +540,7 @@ public class Model {
 							artikelBezeichnung, bildPfad, kategorie, lagermenge));
 				}
 				rs.close();
-				dbAufruf().close();
+				conn.close();
 
 			}
 

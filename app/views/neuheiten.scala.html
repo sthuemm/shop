@@ -1,5 +1,8 @@
 @(kunde: Kunde, produkte: List[Produkt])
 @main("Neuheiten")(kunde){
+	@if(produkte.isEmpty){
+		<wbr>keine Neuheiten verfügbar. Bitte besuchen Sie uns später noch einmal (wenn die Datenbank wieder läuft)
+	} else {
 		<div class="container-fluid" id=neuheiten>
 			<ul id=neuheitenUl>
 				<li id=neuheitenLi>
@@ -52,4 +55,5 @@
 				</li>
 			</ul>
 	</div>
+	}
 }
