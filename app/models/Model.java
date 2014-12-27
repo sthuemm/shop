@@ -27,9 +27,11 @@ public class Model {
 	}
 
 	private Model() {
-//		 dbAufruf(); // nee, die Methode gibt nur ein Statement zurück, der Aufruf geschieht immer dann
-					// wenn getProdukte() usw aufgerufen wird. Da hängt dbAufruf() immer davor
-//		produkteAusDatenbankInListe();
+		// dbAufruf(); // nee, die Methode gibt nur ein Statement zurück, der
+		// Aufruf geschieht immer dann
+		// wenn getProdukte() usw aufgerufen wird. Da hängt dbAufruf() immer
+		// davor
+		// produkteAusDatenbankInListe();
 
 	}
 
@@ -45,7 +47,6 @@ public class Model {
 		System.out.println("db aufruf");
 		return stmt;
 	}
-
 
 	public Produkt[] produktSuchen(String gesuchterWert) {
 		suchergebnisseResetten();
@@ -67,8 +68,10 @@ public class Model {
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					gesuchteProdukte.add(new Produkt(preis, artikelNummer,
-							artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					gesuchteProdukte
+							.add(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
 				}
 				rs.close();
 				dbAufruf().close();
@@ -82,8 +85,6 @@ public class Model {
 		return getGesuchteProdukte();
 
 	}
-	
-	
 
 	public Produkt[] getGesuchteProdukte() {
 		Produkt[] gesuchteProd = gesuchteProdukte
@@ -96,7 +97,8 @@ public class Model {
 		int nr = 0;
 		ResultSet rs;
 		try {
-			rs = dbAufruf().executeQuery("SELECT MAX(artikelNummer) from produkt;");
+			rs = dbAufruf().executeQuery(
+					"SELECT MAX(artikelNummer) from produkt;");
 			if (rs.next()) {
 				nr = rs.getInt("max(artikelNummer)") + 1;
 			}
@@ -118,7 +120,8 @@ public class Model {
 			dbAufruf().executeUpdate(
 					"insert into produkt values (" + preis + ",'"
 							+ NewArtikelNr() + "','" + artikelBezeichnung
-							+ "', '" + bildPfad + "','" + kategorie + "','" +lagermenge+"');");
+							+ "', '" + bildPfad + "','" + kategorie + "','"
+							+ lagermenge + "');");
 			dbAufruf().close();
 			System.out.println("Produkt wurde hinzugefügt");
 		}
@@ -147,13 +150,13 @@ public class Model {
 				}
 				this.kunde = new Kunde(
 						// instanziiert Kunden der aktuell eingeloggt ist
-						rs.getString("kundenNummer"),
-						rs.getString("vorname"), rs.getString("anrede"),
-						rs.getString("nachname"), rs.getString("username"),
-						rs.getString("email"), rs.getString("str"),
-						rs.getString("hausnr"), rs.getString("plz"),
-						rs.getString("ort"), rs.getString("telefonnr"),
-						rs.getString("pass"), isAdmin);
+						rs.getString("kundenNummer"), rs.getString("vorname"),
+						rs.getString("anrede"), rs.getString("nachname"),
+						rs.getString("username"), rs.getString("email"),
+						rs.getString("str"), rs.getString("hausnr"),
+						rs.getString("plz"), rs.getString("ort"),
+						rs.getString("telefonnr"), rs.getString("pass"),
+						isAdmin);
 			} else {
 				System.out.println("pw falsch");
 				throw new wrongPasswordOrUsernameException();
@@ -167,13 +170,13 @@ public class Model {
 		}
 	}
 
-
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		try {
 			int rs = dbAufruf().executeUpdate(
 					"insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
-							+ kunde.getAnrede()+"', '" + kunde.getVorname() + "', '" + kunde.getNachname()
-							+ "', '" + kunde.getBenutzername() + "', '"
+							+ kunde.getAnrede() + "', '" + kunde.getVorname()
+							+ "', '" + kunde.getNachname() + "', '"
+							+ kunde.getBenutzername() + "', '"
 							+ kunde.getEmail() + "', '" + kunde.getStrasse()
 							+ "', '" + kunde.getHausnummer() + "', '"
 							+ kunde.getPlz() + "', '" + kunde.getOrt() + "', '"
@@ -189,8 +192,8 @@ public class Model {
 	}
 
 	public Produkt[] getProdukteAussen() {
-		 ArrayList<Produkt> produkteAussen = new ArrayList<>();
-		 Produkt[] produkteAussenArray;
+		ArrayList<Produkt> produkteAussen = new ArrayList<>();
+		Produkt[] produkteAussenArray;
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
@@ -201,18 +204,22 @@ public class Model {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
 					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					produkteAussen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					produkteAussen
+							.add(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
 				}
 				produkteAussenArray = produkteAussen
-				.toArray(new Produkt[produkteAussen.size()]);
-					
+						.toArray(new Produkt[produkteAussen.size()]);
+
 				rs.close();
 				dbAufruf().close();
-			return produkteAussenArray;
+				return produkteAussenArray;
 			}
 
 		} catch (SQLException ex) {
@@ -223,8 +230,8 @@ public class Model {
 	}
 
 	public Produkt[] getProdukteInnen() {
-			 ArrayList<Produkt> produkteInnen = new ArrayList<>();
-		 Produkt[] produkteInnenArray;
+		ArrayList<Produkt> produkteInnen = new ArrayList<>();
+		Produkt[] produkteInnenArray;
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE kategorie = 'innen' ;");
@@ -235,18 +242,22 @@ public class Model {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
 					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					produkteInnen.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					produkteInnen
+							.add(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
 				}
 				produkteInnenArray = produkteInnen
-				.toArray(new Produkt[produkteInnen.size()]);
-					
+						.toArray(new Produkt[produkteInnen.size()]);
+
 				rs.close();
 				dbAufruf().close();
-			return produkteInnenArray;
+				return produkteInnenArray;
 			}
 
 		} catch (SQLException ex) {
@@ -261,8 +272,8 @@ public class Model {
 	}
 
 	public Produkt[] getProdukteBrennholz() {
-					 ArrayList<Produkt> produkteBrennstoff = new ArrayList<>();
-		 Produkt[] produkteBrennstoffe;
+		ArrayList<Produkt> produkteBrennstoff = new ArrayList<>();
+		Produkt[] produkteBrennstoffe;
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
@@ -273,18 +284,22 @@ public class Model {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
 					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					produkteBrennstoff.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					produkteBrennstoff
+							.add(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
 				}
 				produkteBrennstoffe = produkteBrennstoff
-				.toArray(new Produkt[produkteBrennstoff.size()]);
-					
+						.toArray(new Produkt[produkteBrennstoff.size()]);
+
 				rs.close();
 				dbAufruf().close();
-			return produkteBrennstoffe;
+				return produkteBrennstoffe;
 			}
 
 		} catch (SQLException ex) {
@@ -310,11 +325,10 @@ public class Model {
 
 	public Produkt[] getProdukte() {
 
-		 ArrayList<Produkt> produkteAlleList = new ArrayList<>();
-		 Produkt[] produkteAlleArray;
+		ArrayList<Produkt> produkteAlleList = new ArrayList<>();
+		Produkt[] produkteAlleArray;
 		try {
-			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM produkt;");
+			ResultSet rs = dbAufruf().executeQuery("SELECT * FROM produkt;");
 
 			if (rs == null) {
 				return null;
@@ -322,18 +336,22 @@ public class Model {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
 					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					produkteAlleList.add(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					produkteAlleList
+							.add(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
 				}
 				produkteAlleArray = produkteAlleList
-				.toArray(new Produkt[produkteAlleList.size()]);
-					
+						.toArray(new Produkt[produkteAlleList.size()]);
+
 				rs.close();
 				dbAufruf().close();
-			return produkteAlleArray;
+				return produkteAlleArray;
 			}
 
 		} catch (SQLException ex) {
@@ -341,6 +359,76 @@ public class Model {
 			System.out.println("Fehler Produkt suchen");
 		}
 		return null;
+	}
+
+	public void mengeÄndern(int artikelnr, int menge) {
+
+		try {
+			dbAufruf().executeUpdate(
+					"UPDATE produkt SET lagermenge = lagermenge - '" + menge
+							+ "' WHERE artikelNummer = '" + artikelnr + "';");
+			dbAufruf().close();
+		} catch (SQLException e) {
+			System.out.println("Fehler beim ändern der Menge");
+			e.printStackTrace();
+		}
+
+	}
+
+	public Produkt[] getWarenkorb() {
+		ArrayList<Produkt> produkteAlleList = new ArrayList<>();
+		Produkt[] produkteAlleArray;
+		try {
+			ResultSet rs = dbAufruf()
+					.executeQuery(
+							"SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
+									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+									+ kunde.getKundenNummer() + "';");
+
+			if (rs == null) {
+				return null;
+			} else {
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					int artikelNummer = rs.getInt("artikelNummer");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					int lagermenge = rs.getInt("lagermenge");
+					produkteAlleList
+							.add(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
+				}
+				produkteAlleArray = produkteAlleList
+						.toArray(new Produkt[produkteAlleList.size()]);
+
+				rs.close();
+				dbAufruf().close();
+				return produkteAlleArray;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Warebkorb asugabe");
+
+		}
+		return null;
+	}
+
+	public void setWarenkorb(Kunde kunde, int artikelnr) {
+		this.kunde = kunde;
+		try {
+			dbAufruf().executeUpdate(
+					"insert into Warenkorb values ('" + kunde.getKundenNummer()
+							+ "','" + artikelnr + "');");
+
+			dbAufruf().close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Warenkorb inserieren");
+		}
+
 	}
 
 	public String autovervollstaendigung(String produkt) {
@@ -406,13 +494,13 @@ public class Model {
 
 		return passwortString;
 	}
-	
-	
-	public Produkt artikelnummerSuchen( String ausgewaehltesProdukt ){
-		
-			try {
+
+	public Produkt artikelnummerSuchen(String ausgewaehltesProdukt) {
+
+		try {
 			ResultSet rs = dbAufruf().executeQuery(
-					"SELECT * FROM produkt Where artikelNummer ="+ausgewaehltesProdukt+";");
+					"SELECT * FROM produkt Where artikelNummer ="
+							+ ausgewaehltesProdukt + ";");
 
 			if (rs == null) {
 				return null;
@@ -420,26 +508,30 @@ public class Model {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
 					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs.getString("artikelBezeichnung");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-					System.out.println(new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
-					return (new Produkt(preis, artikelNummer, artikelBezeichnung, bildPfad, kategorie, lagermenge));
+					System.out
+							.println(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
+					return (new Produkt(preis, artikelNummer,
+							artikelBezeichnung, bildPfad, kategorie, lagermenge));
 				}
 				rs.close();
 				dbAufruf().close();
-			
+
 			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-	
-	
-	ausgewaehltesProdukt = null;
-	return null;
+
+		ausgewaehltesProdukt = null;
+		return null;
 	}
-	
+
 }

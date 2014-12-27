@@ -26,8 +26,8 @@ public class Application extends Controller {
 
 	public static Result artikel(String ausgewaehltesProdukt) {
 
-		return ok(artikel.render(Model.sharedInstance.getKunde(), 
-					Model.sharedInstance.artikelnummerSuchen(ausgewaehltesProdukt)));
+		return ok(artikel.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.artikelnummerSuchen(ausgewaehltesProdukt)));
 
 	}
 
@@ -113,7 +113,8 @@ public class Application extends Controller {
 
 	public static Result neuheiten() {
 
-		return ok(neuheiten.render(Model.sharedInstance.getKunde(),	Model.sharedInstance.getProdukte()));
+		return ok(neuheiten.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.getProdukte()));
 	}
 
 	public static Result registrierung() {
@@ -155,14 +156,15 @@ public class Application extends Controller {
 	public static Result produktInsert(String preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagerm) {
 		Model.sharedInstance.produktInserieren(Double.parseDouble(preis),
-				artikelBezeichnung, bildPfad, kategorie, Integer.parseInt(lagerm));
+				artikelBezeichnung, bildPfad, kategorie,
+				Integer.parseInt(lagerm));
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
 
 	public static Result neuesProdukt() {
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
-	
+
 	public static Result warenkorb() {
 
 		return ok(warenkorb.render(Model.sharedInstance.getKunde()));
