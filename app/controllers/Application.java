@@ -14,7 +14,7 @@ public class Application extends Controller {
 
 	public static Result index() {
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
 
 	}
 
@@ -87,7 +87,7 @@ public class Application extends Controller {
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
 			System.out.println(Model.sharedInstance.getKunde());
-			return ok(mainPage.render(Model.sharedInstance.getKunde()));
+			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
@@ -99,7 +99,7 @@ public class Application extends Controller {
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
 			System.out.println(Model.sharedInstance.getKunde());
-			return ok(mainPage.render(Model.sharedInstance.getKunde()));
+			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
@@ -107,7 +107,7 @@ public class Application extends Controller {
 
 	public static Result mainPage() {
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
 
 	}
 
@@ -126,11 +126,11 @@ public class Application extends Controller {
 
 	public static Result logout() {
 
-		return ok(mainPage.render(Model.sharedInstance.logout()));
+		return ok(mainPage.render(Model.sharedInstance.logout(), Model.sharedInstance.getProdukte()));
 	}
 
-	public static Result autover(String produkt) {
-		return ok(Model.sharedInstance.autovervollstaendigung(produkt));
+	public static Result autovervollstaendigungSuche(String produkt) {
+		return ok(Model.sharedInstance.autovervollstaendigungSuche(produkt));
 
 	}
 
@@ -143,7 +143,7 @@ public class Application extends Controller {
 			e.printStackTrace();
 		}
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
 	}
 
 	public static Result suche(String produkt) {

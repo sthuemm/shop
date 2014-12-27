@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import models.*;
 import play.db.*;
@@ -191,9 +192,9 @@ public class Model {
 		}
 	}
 
-	public Produkt[] getProdukteAussen() {
-		ArrayList<Produkt> produkteAussen = new ArrayList<>();
-		Produkt[] produkteAussenArray;
+	public List<Produkt> getProdukteAussen() {
+		List<Produkt> produkteAussen = new ArrayList<Produkt>();
+		
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
@@ -214,12 +215,11 @@ public class Model {
 									artikelBezeichnung, bildPfad, kategorie,
 									lagermenge));
 				}
-				produkteAussenArray = produkteAussen
-						.toArray(new Produkt[produkteAussen.size()]);
+				
 
 				rs.close();
 				dbAufruf().close();
-				return produkteAussenArray;
+				return produkteAussen;
 			}
 
 		} catch (SQLException ex) {
@@ -229,9 +229,9 @@ public class Model {
 		return null;
 	}
 
-	public Produkt[] getProdukteInnen() {
-		ArrayList<Produkt> produkteInnen = new ArrayList<>();
-		Produkt[] produkteInnenArray;
+	public List<Produkt> getProdukteInnen() {
+		List<Produkt> produkteInnen = new ArrayList<Produkt>();
+		
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE kategorie = 'innen' ;");
@@ -252,28 +252,27 @@ public class Model {
 									artikelBezeichnung, bildPfad, kategorie,
 									lagermenge));
 				}
-				produkteInnenArray = produkteInnen
-						.toArray(new Produkt[produkteInnen.size()]);
+				
 
 				rs.close();
 				dbAufruf().close();
-				return produkteInnenArray;
+				return produkteInnen;
 			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-		return null;
+		return produkteInnen;
 	}
 
 	public void setProdukteInnen(ArrayList<Produkt> produkteInnen) {
 		this.produkteInnen = produkteInnen;
 	}
 
-	public Produkt[] getProdukteBrennholz() {
-		ArrayList<Produkt> produkteBrennstoff = new ArrayList<>();
-		Produkt[] produkteBrennstoffe;
+	public List<Produkt> getProdukteBrennholz() {
+		List<Produkt> produkteBrennstoff = new ArrayList<Produkt>();
+		
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
@@ -294,19 +293,18 @@ public class Model {
 									artikelBezeichnung, bildPfad, kategorie,
 									lagermenge));
 				}
-				produkteBrennstoffe = produkteBrennstoff
-						.toArray(new Produkt[produkteBrennstoff.size()]);
+				
 
 				rs.close();
 				dbAufruf().close();
-				return produkteBrennstoffe;
+				return produkteBrennstoff;
 			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-		return null;
+		return produkteBrennstoff;
 	}
 
 	public void setProdukteBrennholz(ArrayList<Produkt> produkteBrennholz) {
@@ -323,10 +321,10 @@ public class Model {
 		return getKunde();
 	}
 
-	public Produkt[] getProdukte() {
+	public List<Produkt> getProdukte() {
 
-		ArrayList<Produkt> produkteAlleList = new ArrayList<>();
-		Produkt[] produkteAlleArray;
+		List<Produkt> produkteAlleList = new ArrayList<>();
+		
 		try {
 			ResultSet rs = dbAufruf().executeQuery("SELECT * FROM produkt;");
 
@@ -346,22 +344,21 @@ public class Model {
 									artikelBezeichnung, bildPfad, kategorie,
 									lagermenge));
 				}
-				produkteAlleArray = produkteAlleList
-						.toArray(new Produkt[produkteAlleList.size()]);
+				
 
 				rs.close();
 				dbAufruf().close();
-				return produkteAlleArray;
+				return produkteAlleList;
 			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-		return null;
+		return produkteAlleList;
 	}
 
-	public void mengeÄndern(int artikelnr, int menge) {
+	public void mengeAendern(int artikelnr, int menge) {		//keine Umlaute verwenden
 
 		try {
 			dbAufruf().executeUpdate(
@@ -375,25 +372,25 @@ public class Model {
 
 	}
 
-	public Produkt[] getWarenkorb() {
-		ArrayList<Produkt> produkteAlleList = new ArrayList<>();
-		Produkt[] produkteAlleArray = null;
+	public List<Produkt> getWarenkorb() {
+		List<Produkt> produkteAlleList = new ArrayList<Produkt>();
+		
 		try {
 	
 			ResultSet rs;
-			if(kunde.getKundenNummer()!=null){
+			if(kunde !=null){
 			
-			rs = dbAufruf()
+				rs = dbAufruf()
 					.executeQuery(
 							"SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 									+ kunde.getKundenNummer() + "';");
 			}else{
-				return produkteAlleArray;
+				return produkteAlleList;
 			}
 						
 			if (rs == null) {
-				return null;
+				return produkteAlleList; //nicht null zurückgeben, lieber ein leeres Array
 			} else {
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
@@ -408,12 +405,11 @@ public class Model {
 									artikelBezeichnung, bildPfad, kategorie,
 									lagermenge));
 				}
-				produkteAlleArray = produkteAlleList
-						.toArray(new Produkt[produkteAlleList.size()]);
+			
 
 				rs.close();
 				dbAufruf().close();
-				return produkteAlleArray;
+				return produkteAlleList;
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -438,7 +434,7 @@ public class Model {
 
 	}
 
-	public String autovervollstaendigung(String produkt) {
+	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
 		suchergebnisseResetten();
 		try {
@@ -447,7 +443,7 @@ public class Model {
 
 			while (rs.next()) {
 				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
-
+				
 			}
 			rs.close();
 			dbAufruf().close();
@@ -475,6 +471,7 @@ public class Model {
 				if (0 < auswahl.length()) {
 					auswahl.setLength(auswahl.length() - 1);
 				}
+				System.out.println(auswahl.toString());
 				return auswahl.toString();
 			}
 

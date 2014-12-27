@@ -1,4 +1,4 @@
-@(kunde: Kunde)
+@(kunde: Kunde, produkte: List[Produkt])
 @main("Startseite")(kunde){
 	
 			
@@ -11,16 +11,14 @@
 					<div id=mainAA> 	
 					<script type="text/javascript">
 					// <![CDATA[
-					var bilder = new Array(
-					  'images/HolzimAußenbereich.jpg',
-					  'images/HolzimAußenbereich.jpg',
-					  'images/HolzimInnenraum.jpg',
-					  'images/bruecke.jpg',
-					  'images/Holzstuhl.jpg',
-					  'images/Brennholz.jpg',
-					  'images/Brennholz.jpg'
-					);
 					
+					var bilder = [];
+					@if(produkte!=null){
+						@for(i <- produkte){
+							bilder.push('@i.bildPfad');
+						}
+					}
+								
 					var nr = Math.floor(Math.random()*bilder.length);
 					var bild = bilder[nr];
 					document.getElementById("mainAA").innerHTML = '<img src=assets/'+bild+'  width="250"; height="110"/>';
@@ -33,7 +31,7 @@
 				</li>
 				<li id=mainLi>
 					<a href='/holzAussen' id=mainA>
-					<img src=@routes.Assets.at("images/HolzimAußenbereich.jpg")  width="250" height="110">
+					<img src=@routes.Assets.at("images/HolzimAussenbereich.jpg")  width="250" height="110">
 						<h2 id=mainH2>Holz im Außenbereich</h2>
 						<p id=mainP> </p>
 					</a>
