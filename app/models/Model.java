@@ -377,14 +377,21 @@ public class Model {
 
 	public Produkt[] getWarenkorb() {
 		ArrayList<Produkt> produkteAlleList = new ArrayList<>();
-		Produkt[] produkteAlleArray;
+		Produkt[] produkteAlleArray = null;
 		try {
-			ResultSet rs = dbAufruf()
+	
+			ResultSet rs;
+			if(kunde.getKundenNummer()!=null){
+			
+			rs = dbAufruf()
 					.executeQuery(
 							"SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 									+ kunde.getKundenNummer() + "';");
-
+			}else{
+				return produkteAlleArray;
+			}
+						
 			if (rs == null) {
 				return null;
 			} else {

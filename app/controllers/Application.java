@@ -130,7 +130,6 @@ public class Application extends Controller {
 	}
 
 	public static Result autover(String produkt) {
-
 		return ok(Model.sharedInstance.autovervollstaendigung(produkt));
 
 	}
@@ -167,7 +166,7 @@ public class Application extends Controller {
 
 	public static Result warenkorb() {
 
-		return ok(warenkorb.render(Model.sharedInstance.getKunde()));
+		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
 
 	}
 
