@@ -427,7 +427,7 @@ public class Model {
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("Fehler Warebkorb asugabe");
+			System.out.println("Fehler Warebkorb ausgabe");
 
 		}
 		return null;

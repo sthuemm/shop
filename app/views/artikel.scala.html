@@ -1,7 +1,7 @@
  @(kunde: Kunde, produkt: Produkt)
  @main("Artikel")(kunde){
 
-<script>
+<script type="text/javascript">
 		function ueberpruefeMenge(){
 			if(document.getElementById("anzahl").value > @produkt.lagermenge){
 				document.getElementById("mengeNichtVorhanden").innerHTML = "Menge nicht vorhanden";
@@ -9,8 +9,6 @@
 			}
 		}
 	</script>
-
-
 @if(produkt == null){
 <p>Produkt konnte leider nicht gefunden werden</p>
 } else {
@@ -25,15 +23,16 @@
 	<p>auf Lager</p>
 	}
 
-	<form style="position: relative; padding-top: 10%;">
+	<form action="/warenkorb/" style="position: relative; padding-top: 10%;">
 		<p>
 			Menge: <input id="anzahl" type="number" max="@produkt.lagermenge"
 				min="0" name="menge" onmousemove="ueberpruefeMenge()">
 		</p>
+		<input type="hidden" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
 		<div id="mengeNichtVorhanden"></div>
 		
+		
 <input type="submit" value="In den Warenkorb" > 
-<!-- <a href="/warenkorb/?ausgewaehltesProdukt=@produkt.artikelNummer" type = "submit">In den Warenkorb</a> -->
 	</form>
 </div>
 } }
