@@ -77,6 +77,37 @@ public class Application extends Controller {
 		return ok(konto.render(Model.sharedInstance.getKunde(), userForm));
 
 	}
+	
+	public static WebSocket<String> loginWS() {
+		WebSocket<String> ws = null;
+		
+		final int r = Integer.parseInt(session("random"));
+		ws = new WebSocket<String>() {
+			public void onReady(WebSocket.In<String> in, final WebSocket.Out<String> out) {
+				in.onMessage(new Callback<String>() {
+					public void invoke(String g) {
+						int guess = Integer.parseInt(g);
+						String res = "< secret number!";
+						if (guess > r) {
+							res = "> secret number!"; 
+						} else if (guess == r) {
+							res = "correct!";
+						}
+						out.write(res);
+					}
+				});
+				
+				in.onClose(new Callback0() {
+					public void invoke() {
+						System.out.println("Disconnected!");
+					}
+				});
+			}
+		};
+		return ws;
+	}
+		
+	
 
 	public static Result login() {
 
@@ -158,7 +189,7 @@ public class Application extends Controller {
 			String bildPfad, String kategorie, String lagerm) {
 		Model.sharedInstance.produktInserieren(Double.parseDouble(preis),
 				artikelBezeichnung, bildPfad, kategorie,
-				Integer.parseInt(lagerm));
+				lagerm);
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
 

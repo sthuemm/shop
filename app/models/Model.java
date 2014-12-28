@@ -118,15 +118,18 @@ public class Model {
 //	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
-			String bildPfad, String kategorie, int lagermenge) {
+			String bildPfad, String kategorie, String lagermenge) {
 
 		try {
 
 			dbAufruf().executeUpdate(
-					"insert into produkt values (" + preis + ",'"
-							+ "(SELECT MAX (kundenNummer) FROM users)+1" + "','" + artikelBezeichnung
-							+ "', '" + bildPfad + "','" + kategorie + "','"
-							+ lagermenge + "');");
+					"insert into produkt values ("
+							+ preis + ","
+							+ "(SELECT MAX (artikelNummer) FROM produkt)+1,'"
+							+ artikelBezeichnung+ "', '" 
+							+ bildPfad + "','" 
+							+ kategorie + "',"
+							+ Integer.parseInt(lagermenge) + ");");
 			conn.close();
 			System.out.println("Produkt wurde hinzugefügt");
 		}
