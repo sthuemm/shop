@@ -15,7 +15,7 @@ public class Application extends Controller {
 	final static Form<Kunde> userForm = Form.form(Kunde.class);
 
 	public static Result index() {
-
+		
 		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
 
 	}

@@ -16,18 +16,15 @@ import java.sql.*;
 public class Model {
 
 	public static Model sharedInstance = new Model();
-	private ArrayList<Produkt> Produkte = new ArrayList<>();
-	private ArrayList<Produkt> produkteInnen = new ArrayList<>();
-	private ArrayList<Produkt> produkteBrennholz = new ArrayList<>();
-	private ArrayList<Produkt> gesuchteProdukte = new ArrayList<>();
+//	private List<Produkt> gesuchteProdukte = new ArrayList<>();
 	private Kunde kunde = null;
 	private int dbAufrufe = 0;
 	private Connection conn;
 
-	public void suchergebnisseResetten() {
-
-		gesuchteProdukte.clear();
-	}
+//	public void suchergebnisseResetten() {
+//
+//		gesuchteProdukte.clear();
+//	}
 
 	private Model() {
 		// dbAufruf(); // nee, die Methode gibt nur ein Statement zurück, der
@@ -55,9 +52,9 @@ public class Model {
 	
 	
 
-	public Produkt[] produktSuchen(String gesuchterWert) {
-		suchergebnisseResetten();
-
+	public List<Produkt> produktSuchen(String gesuchterWert) {
+//		suchergebnisseResetten();
+		List<Produkt> gesuchteProdukte = new ArrayList<>();
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT * FROM produkt WHERE preis ='" + gesuchterWert
@@ -90,35 +87,35 @@ public class Model {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-		return getGesuchteProdukte();
+		return gesuchteProdukte;
 
 	}
 
-	public Produkt[] getGesuchteProdukte() {
-		Produkt[] gesuchteProd = gesuchteProdukte
-				.toArray(new Produkt[gesuchteProdukte.size()]);
-		return gesuchteProd;
-	}
+//	public Produkt[] getGesuchteProdukte() {
+//		Produkt[] gesuchteProd = gesuchteProdukte
+//				.toArray(new Produkt[gesuchteProdukte.size()]);
+//		return gesuchteProd;
+//	}
 
-	public int NewArtikelNr() {
-
-		int nr = 0;
-		ResultSet rs;
-		try {
-			rs = dbAufruf().executeQuery(
-					"SELECT MAX(artikelNummer) from produkt;");
-			if (rs.next()) {
-				nr = rs.getInt("max(artikelNummer)") + 1;
-			}
-			System.out.println(nr);
-			rs.close();
-			conn.close();
-		} catch (SQLException e1) {
-			System.out.println("Fehler ArtikelNR");
-			e1.printStackTrace();
-		}
-		return nr;
-	}
+//	public int NewArtikelNr() {
+//
+//		int nr = 0;
+//		ResultSet rs;
+//		try {
+//			rs = dbAufruf().executeQuery(
+//					"SELECT MAX(artikelNummer) from produkt;");
+//			if (rs.next()) {
+//				nr = rs.getInt("max(artikelNummer)") + 1;
+//			}
+//			System.out.println(nr);
+//			rs.close();
+//			conn.close();
+//		} catch (SQLException e1) {
+//			System.out.println("Fehler ArtikelNR");
+//			e1.printStackTrace();
+//		}
+//		return nr;
+//	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, int lagermenge) {
@@ -127,7 +124,7 @@ public class Model {
 
 			dbAufruf().executeUpdate(
 					"insert into produkt values (" + preis + ",'"
-							+ NewArtikelNr() + "','" + artikelBezeichnung
+							+ "(SELECT MAX (kundenNummer) FROM users)+1" + "','" + artikelBezeichnung
 							+ "', '" + bildPfad + "','" + kategorie + "','"
 							+ lagermenge + "');");
 			conn.close();
@@ -276,9 +273,9 @@ public class Model {
 		return produkteInnen;
 	}
 
-	public void setProdukteInnen(ArrayList<Produkt> produkteInnen) {
-		this.produkteInnen = produkteInnen;
-	}
+//	public void setProdukteInnen(ArrayList<Produkt> produkteInnen) {
+//		this.produkteInnen = produkteInnen;
+//	}
 
 	public List<Produkt> getProdukteBrennholz() {
 		List<Produkt> produkteBrennstoff = new ArrayList<Produkt>();
@@ -319,9 +316,9 @@ public class Model {
 		return produkteBrennstoff;
 	}
 
-	public void setProdukteBrennholz(ArrayList<Produkt> produkteBrennholz) {
-		this.produkteBrennholz = produkteBrennholz;
-	}
+//	public void setProdukteBrennholz(ArrayList<Produkt> produkteBrennholz) {
+//		this.produkteBrennholz = produkteBrennholz;
+//	}
 
 	public Kunde getKunde() {
 		return kunde;
@@ -450,7 +447,7 @@ public class Model {
 
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
-		suchergebnisseResetten();
+//		suchergebnisseResetten();
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
 					"SELECT artikelBezeichnung FROM produkt;");
