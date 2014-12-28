@@ -3,20 +3,7 @@
 
 @main("Login")(null){
 
-<script type="text/javascript">
-	var webSocket;
-	$(function() {
-		var WS = window["MozWebSocket"] ? MozWebSocket : WebSocket;
-		webSocket = new WS("@routes.Application.loginWS().webSocketURL(request)");
-		webSocket.onmessage = receiveEvent;
-	})
-	
-	function loginWS(){
-		var username = $("#username")
-	}
 
-
-</script>
 <div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; height:200px;">
 	<div style="position:relative; padding-left:25% ; padding-top: 5%">
 	@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {

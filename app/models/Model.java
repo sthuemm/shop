@@ -13,25 +13,23 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+//import org.json.JSONArray;
+//import org.json.JSONObject;
+
+
+
+
 public class Model {
 
 	public static Model sharedInstance = new Model();
 //	private List<Produkt> gesuchteProdukte = new ArrayList<>();
 	private Kunde kunde = null;
-	private int dbAufrufe = 0;
 	private Connection conn;
 
-//	public void suchergebnisseResetten() {
-//
-//		gesuchteProdukte.clear();
-//	}
+
 
 	private Model() {
-		// dbAufruf(); // nee, die Methode gibt nur ein Statement zurück, der
-		// Aufruf geschieht immer dann
-		// wenn getProdukte() usw aufgerufen wird. Da hängt dbAufruf() immer
-		// davor
-		// produkteAusDatenbankInListe();
+
 
 	}
 
@@ -45,7 +43,7 @@ public class Model {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println(++dbAufrufe +". db aufruf");
+		
 		
 		return stmt;
 	}
@@ -53,7 +51,7 @@ public class Model {
 	
 
 	public List<Produkt> produktSuchen(String gesuchterWert) {
-//		suchergebnisseResetten();
+
 		List<Produkt> gesuchteProdukte = new ArrayList<>();
 		try {
 			ResultSet rs = dbAufruf().executeQuery(
@@ -91,31 +89,6 @@ public class Model {
 
 	}
 
-//	public Produkt[] getGesuchteProdukte() {
-//		Produkt[] gesuchteProd = gesuchteProdukte
-//				.toArray(new Produkt[gesuchteProdukte.size()]);
-//		return gesuchteProd;
-//	}
-
-//	public int NewArtikelNr() {
-//
-//		int nr = 0;
-//		ResultSet rs;
-//		try {
-//			rs = dbAufruf().executeQuery(
-//					"SELECT MAX(artikelNummer) from produkt;");
-//			if (rs.next()) {
-//				nr = rs.getInt("max(artikelNummer)") + 1;
-//			}
-//			System.out.println(nr);
-//			rs.close();
-//			conn.close();
-//		} catch (SQLException e1) {
-//			System.out.println("Fehler ArtikelNR");
-//			e1.printStackTrace();
-//		}
-//		return nr;
-//	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
@@ -552,5 +525,52 @@ public class Model {
 		ausgewaehltesProdukt = null;
 		return null;
 	}
+	
+	public String getProduktJson(String artikelNummer){
+		
+		try {
+			ResultSet rs = dbAufruf().executeQuery("SELECT * FROM produkt WHERE artikelNummer = "+artikelNummer+";");
+
+			if (rs == null) {
+				conn.close();
+				return null;
+			} else {
+				
+				
+				Integer menge = new Integer(rs.getInt("lagermenge"));
+				rs.close();
+				conn.close();
+				
+				
+				return menge.toString();
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+//	public static JSONArray convertToJson(ResultSet resultSet) throws Exception{
+//		JSONArray jsonArray = new JSONArray();
+//		while(resultSet.next()){
+//			int total_rows = resultSet.getMetaData().getColumnCount();
+//			JSONObject obj = new JSONObject();
+//			for(int i = 0; i < total_rows; i++){
+//				obj.put(resultSet.getMetaData().getColumnLabel(i+1).toLowerCase(),resultSet.getObject(i+1));
+//			}
+//			jsonArray.put(obj);
+//		}
+//		return jsonArray;
+//		
+//		
+//		
+//		
+//	}
 
 }
