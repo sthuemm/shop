@@ -16,7 +16,7 @@ public class Application extends Controller {
 
 	public static Result index() {
 		
-		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 
 	}
 
@@ -34,7 +34,6 @@ public class Application extends Controller {
 	}
 
 	public static Result datenschutz() {
-
 		return ok(datenschutz.render(Model.sharedInstance.getKunde()));
 
 	}
@@ -89,7 +88,7 @@ public class Application extends Controller {
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
 			System.out.println(Model.sharedInstance.getKunde());
-			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
+			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
@@ -101,7 +100,7 @@ public class Application extends Controller {
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
 			System.out.println(Model.sharedInstance.getKunde());
-			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
+			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
@@ -109,14 +108,14 @@ public class Application extends Controller {
 
 	public static Result mainPage() {
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 
 	}
 
 	public static Result neuheiten() {
 
 		return ok(neuheiten.render(Model.sharedInstance.getKunde(),
-				Model.sharedInstance.getProdukte()));
+				Model.sharedInstance.getProdukteAlle()));
 	}
 
 	public static Result registrierung() {
@@ -128,7 +127,7 @@ public class Application extends Controller {
 
 	public static Result logout() {
 
-		return ok(mainPage.render(Model.sharedInstance.logout(), Model.sharedInstance.getProdukte()));
+		return ok(mainPage.render(Model.sharedInstance.logout(), Model.sharedInstance.getProdukteAlle()));
 	}
 
 	public static Result autovervollstaendigungSuche(String produkt) {
@@ -145,7 +144,7 @@ public class Application extends Controller {
 			e.printStackTrace();
 		}
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukte()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 	}
 
 	public static Result suche(String produkt) {
@@ -171,5 +170,9 @@ public class Application extends Controller {
 		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
 
 	}
+	public static Result inWarenkorb(String ausgewaehltesProdukt) {
+		Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt);
+		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
 
+	}
 }
