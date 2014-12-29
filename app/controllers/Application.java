@@ -83,11 +83,11 @@ public class Application extends Controller {
 	public static WebSocket<String> socket() {
 		
 		return new WebSocket<String>() {
-			public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+			public void onReady(WebSocket.In<String> in,final WebSocket.Out<String> out) {
 				in.onMessage(new Callback<String>() {
 					public void invoke (String artikelNummer){
 						System.out.println("neue Menge...");
-						out.write(Model.sharedInstance.getProduktJson(artikelNummer));
+							out.write(Model.sharedInstance.getProduktJson(artikelNummer));
 						
 						
 					}
