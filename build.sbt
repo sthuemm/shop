@@ -12,5 +12,6 @@ libraryDependencies ++= Seq(
   javaEbean,
   cache,
   javaWs,
-  "org.xerial" % "sqlite-jdbc" % "3.7.15-M1"
+  "org.xerial" % "sqlite-jdbc" % "3.7.15-M1",
+  "org.json"%"org.json"%"chargebee-1.0"
   )

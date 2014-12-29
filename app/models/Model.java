@@ -12,6 +12,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Model {
 
 	public static Model sharedInstance = new Model();
@@ -31,20 +34,20 @@ public class Model {
 		
 	}
 
-//	private Statement dbAufruf() {
-//		
-//		Statement stmt = null;
-//
-//		try {
-//			System.out.println("Connected wird aufgerufen");
-//			stmt = connect().createStatement();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println(++dbAufrufe + ". db aufruf");
-//
-//		return stmt;
-//	}
+	private Statement dbAufruf() {
+		
+		Statement stmt = null;
+
+		try {
+			System.out.println("Connected wird aufgerufen");
+			stmt = connect().createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+
+		return stmt;
+	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
@@ -72,20 +75,21 @@ public class Model {
 	
 	public void setWarenkorb(String artikelnr) {
 		// this.kunde = kunde;
-
-		try {
-			Statement stmt = connect().createStatement();
-			stmt.executeUpdate(
-					"insert into Warenkorb values ('" + kunde.getKundenNummer()
-							+ "','" + Integer.parseInt(artikelnr) + "');");
-
-			
-			stmt.close();
-			connect().close();
-			conn.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			System.out.println("Fehler Warenkorb inserieren");
+		if(kunde!=null){
+			try {
+				Statement stmt = connect().createStatement();
+				stmt.executeUpdate(
+						"insert into Warenkorb values ('" + kunde.getKundenNummer()
+								+ "','" + Integer.parseInt(artikelnr) + "');");
+	
+				
+				stmt.close();
+				connect().close();
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+				System.out.println("Fehler Warenkorb inserieren");
+			}
 		}
 
 	}
@@ -444,5 +448,52 @@ public class Model {
 		return passwortString;
 	}
 
+	public String getProduktJson(String artikelNummer){
+		
+		try {
+			ResultSet rs = dbAufruf().executeQuery("SELECT * FROM produkt WHERE artikelNummer = "+artikelNummer+";");
 
+			if (rs == null) {
+				conn.close();
+				return null;
+			} else {
+				
+				
+				Integer menge = new Integer(rs.getInt("lagermenge"));
+				rs.close();
+				conn.close();
+				
+				
+				return menge.toString();
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Fehler Produkt suchen");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public static JSONArray convertToJson(ResultSet resultSet) throws Exception{
+		JSONArray jsonArray = new JSONArray();
+		while(resultSet.next()){
+			int total_rows = resultSet.getMetaData().getColumnCount();
+			JSONObject obj = new JSONObject();
+			for(int i = 0; i < total_rows; i++){
+				obj.put(resultSet.getMetaData().getColumnLabel(i+1).toLowerCase(),resultSet.getObject(i+1));
+			}
+			jsonArray.put(obj);
+		}
+		return jsonArray;
+		
+	}
+		
+		
+	
+	
+	
 }
