@@ -2,6 +2,34 @@
  @main("Artikel")(kunde){
 
 <script type="text/javascript">
+
+		//WebSocket Skript
+
+		var webSocket;
+		$(function() {
+			var WS = window["MozWebSocket"] ? MozWebSocket : WebSocket;
+			webSocket = new WS("@routes.Application.socket().webSocketURL(request)");
+			webSocket.onmessage = receiveEvent;
+		})
+		
+		function neueMenge(){
+			var artikelNummer = $("#artikelNummer").val();
+			
+			webSocket.send(artikelNummer);
+		};
+		
+		function receiveEvent(event){
+			$("#output").html("<p>aktuelle Restmenge: "+event.data+"</p>");
+		};
+
+
+
+
+
+
+
+		//Überprüfung der Menge
+
 		function ueberpruefeMenge(){
 			if(document.getElementById("anzahl").value > @produkt.lagermenge){
 				document.getElementById("mengeNichtVorhanden").innerHTML = "Menge nicht vorhanden";
@@ -17,18 +45,20 @@
 	style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; position: absolute; width: 300px; padding: 15px">
 	<img src=/assets/@produkt.bildPfad width="250" height="150">
 	<p>@produkt.artikelBezeichnung</p>
+	<div id="output">
 	@if(produkt.lagermenge < 10){
-	<p>nur noch @produkt.lagermenge Stück auf Lager</p>
+	<p">nur noch @produkt.lagermenge Stück auf Lager</p>
 	} else {
-	<p>auf Lager</p>
+	<p>@produkt.lagermenge Stück auf Lager</p>
 	}
+	</div>
 
 	<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
 		<p>
-			Menge: <input id="anzahl" type="number" max="@produkt.lagermenge"
-				min="0" name="menge" onmousemove="ueberpruefeMenge()">
+			Menge: <input id="anzahl" type="number" value="0" max="@produkt.lagermenge"
+				min="0" name="menge" onmousemove="ueberpruefeMenge()" onchange="neueMenge()">
 		</p>
-		<input type="hidden" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
+		<input type="hidden" id="artikelNummer" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
 		<div id="mengeNichtVorhanden"></div>
 		
 		

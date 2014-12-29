@@ -47,7 +47,7 @@ public class Model {
 //	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
-			String bildPfad, String kategorie, int lagermenge) {
+			String bildPfad, String kategorie, String lagermenge) {
 
 		try {
 			Statement stmt = connect().createStatement();

@@ -27,6 +27,7 @@ GET		/produktInsert/				controllers.Application.produktInsert(preis,artikelBezei
 GET 	/neuesProdukt				controllers.Application.neuesProdukt()
 GET		/warenkorb/					controllers.Application.warenkorb()
 GET 	/inWarenkorb/				controllers.Application.inWarenkorb(ausgewaehltesProdukt)
+GET		/loginWS/					controllers.Application.socket()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

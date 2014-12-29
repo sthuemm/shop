@@ -2,6 +2,8 @@ package controllers;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import play.*;
 import play.mvc.*;
 import play.data.*;
@@ -9,6 +11,7 @@ import views.html.*;
 import models.*;
 import play.libs.F.Callback;
 import play.libs.F.Callback0;
+import play.mvc.WebSocket;
 
 public class Application extends Controller {
 
@@ -76,6 +79,32 @@ public class Application extends Controller {
 		return ok(konto.render(Model.sharedInstance.getKunde(), userForm));
 
 	}
+	
+	public static WebSocket<String> socket() {
+		
+		return new WebSocket<String>() {
+			public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+				in.onMessage(new Callback<String>() {
+					public void invoke (String artikelNummer){
+						System.out.println("neue Menge...");
+						out.write(Model.sharedInstance.getProduktJson(artikelNummer));
+						
+						
+					}
+				});
+				
+				in.onClose(new Callback0(){
+					public void invoke(){
+						System.out.println("Artikelansicht verlassen :-(");
+					}
+				});
+				
+				
+			}
+		};
+	}
+		
+	
 
 	public static Result login() {
 
@@ -157,7 +186,7 @@ public class Application extends Controller {
 			String bildPfad, String kategorie, String lagerm) {
 		Model.sharedInstance.produktInserieren(Double.parseDouble(preis),
 				artikelBezeichnung, bildPfad, kategorie,
-				Integer.parseInt(lagerm));
+				lagerm);
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
 
