@@ -1,8 +1,12 @@
- @(kunde: Kunde, produkt: Produkt)
+ @(kunde: Kunde, produkt: Produkt, userForm: Form[models.Kunde])
+ @import helper._
+ 
  @main("Artikel")(kunde){
+ 
 
-<script type="text/javascript">
 
+<script type="text/javascript" src=@routes.Assets.at("javascripts/jquery-2.1.1.min.js")></script>
+<script>
 		//WebSocket Skript
 
 		var webSocket;
@@ -36,33 +40,55 @@
 				
 			}
 		}
+		
+		function loginWindow(){
+			$("#loginWindow").show();
+		}
 	</script>
-@if(produkt == null){
-<p>Produkt konnte leider nicht gefunden werden</p>
-} else {
-
-<div 
-	style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; position: absolute; width: 300px; padding: 15px">
-	<img src=/assets/@produkt.bildPfad width="250" height="150">
-	<p>@produkt.artikelBezeichnung</p>
-	<div id="output">
-	@if(produkt.lagermenge < 10){
-	<p">nur noch @produkt.lagermenge Stück auf Lager</p>
+	
+	@if(produkt == null){
+		<p>Produkt konnte leider nicht gefunden werden</p>
 	} else {
-	<p>@produkt.lagermenge Stück auf Lager</p>
-	}
+	<div class="row">
+		<div class="col-md-4" style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; width: 300px; padding: 15px" >
+			<img src=/assets/@produkt.bildPfad width="250" height="150">
+			<p>@produkt.artikelBezeichnung</p>
+			<div id="output">
+		
+				@if(produkt.lagermenge < 10){
+					<p">nur noch @produkt.lagermenge Stück auf Lager</p>
+				} else {
+					<p>@produkt.lagermenge Stück auf Lager</p>
+				}
+				
+			
+			</div>	
+				@if(kunde!=null){
+				<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
+					<p>Menge: 
+						<input id="anzahl" type="number" value="1" max="@produkt.lagermenge"
+							min="0" name="menge" onmousemove="ueberpruefeMenge()" onchange="neueMenge()">
+					</p>
+					<input type="hidden" id="artikelNummer" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
+					<div id="mengeNichtVorhanden"></div>
+					<input type="submit" value="In den Warenkorb" > 
+				</form>
+			} else {
+				<button onclick="loginWindow()">bitte einloggen</button>
+			}
+		</div>
+		<div class="col-md-4" id="kundenAusgabe"></div>
+		<div id="loginWindow" class="col-md-4"  style="box-shadow:8px 8px 8px #666; background-color: #58FA82; width:300px; height:200px; display:none">
+			<div style="position:relative; padding-left:25% ; padding-top: 5%">
+			
+				@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {
+				@helper.inputText(userForm("benutzername"), '_label -> "Benutzername", '_id -> "username")
+				@helper.inputPassword(userForm("passwort"), '_label -> "Passwort", '_id -> "password")
+				
+					<input type ="submit" value="senden">
+				}
+			</div>
+		</div>
 	</div>
-
-	<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
-		<p>
-			Menge: <input id="anzahl" type="number" value="0" max="@produkt.lagermenge"
-				min="0" name="menge" onmousemove="ueberpruefeMenge()" onchange="neueMenge()">
-		</p>
-		<input type="hidden" id="artikelNummer" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
-		<div id="mengeNichtVorhanden"></div>
-		
-		
-<input type="submit" value="In den Warenkorb" > 
-	</form>
-</div>
-} }
+	}
+} 

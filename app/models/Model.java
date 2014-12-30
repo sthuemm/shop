@@ -19,52 +19,38 @@ public class Model {
 
 	public static Model sharedInstance = new Model();
 	private Kunde kunde = null;
-//	private int dbAufrufe = 0;
-	private Connection conn = null;
 
 	private Model() {
-
-	}
-	
-	private Connection connect(){
-		
-		System.out.println("Connected");
-		
-		return conn = DB.getConnection() ;
-		
 	}
 
-	private Statement dbAufruf() {
-		
-		Statement stmt = null;
-
-		try {
-			System.out.println("Connected wird aufgerufen");
-			stmt = connect().createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-
-		return stmt;
-	}
+	// private Statement dbAufruf() {
+	//
+	// Statement stmt = null;
+	//
+	// try {
+	// System.out.println("Connected wird aufgerufen");
+	// stmt = connect().createStatement();
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	//
+	//
+	// return stmt;
+	// }
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
 
 		try {
-			Statement stmt = connect().createStatement();
-			int rs = stmt.executeUpdate(
-					"insert into produkt values (" + preis + ",'"
-							+ "(SELECT MAX (artikelNummer) FROM users)+1"
-							+ "','" + artikelBezeichnung + "', '" + bildPfad
-							+ "','" + kategorie + "','" + lagermenge + "');");
-
-			
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("insert into produkt values (" + preis + ","
+					+ "(SELECT MAX (artikelNummer) FROM produkt)+1,'"
+					+ artikelBezeichnung + "', '" + bildPfad + "','"
+					+ kategorie + "'," + Integer.parseInt(lagermenge) + ");");
 			stmt.close();
-			connect().close();
 			conn.close();
-			System.out.println( rs+ " Produkt wurde hinzugefügt");
+			System.out.println("Produkt wurde hinzugefügt");
 		}
 
 		catch (SQLException ex) {
@@ -72,19 +58,20 @@ public class Model {
 			System.out.println("Fehler Produkt inserieren");
 		}
 	}
-	
-	public void setWarenkorb(String artikelnr) {
+
+	public void setWarenkorb(String artikelnr, String menge) {
 		// this.kunde = kunde;
-		if(kunde!=null){
+		if (kunde != null) {
 			try {
-				Statement stmt = connect().createStatement();
-				stmt.executeUpdate(
-						"insert into Warenkorb values ('" + kunde.getKundenNummer()
-								+ "','" + Integer.parseInt(artikelnr) + "');");
-	
-				
+				Connection conn = DB.getConnection();
+				Statement stmt = conn.createStatement();
+				int anzahl = stmt
+						.executeUpdate("insert into Warenkorb values ("
+								+ kunde.getKundenNummer() + ","
+								+ Integer.parseInt(artikelnr) + ");");
+				System.out.println("updates: " + anzahl);
+
 				stmt.close();
-				connect().close();
 				conn.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
@@ -93,42 +80,32 @@ public class Model {
 		}
 
 	}
+
 	public List<Produkt> produktSuchen(String gesuchterWert) {
 		// suchergebnisseResetten();
 		List<Produkt> gesuchteProdukte = new ArrayList<>();
 		try {
-			Statement stmt = connect().createStatement();
-			
-			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM produkt WHERE preis ='" + gesuchterWert
-							+ "' OR artikelBezeichnung = '" + gesuchterWert
-							+ "' OR kategorie = '" + gesuchterWert + "';");
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
 
-			if (rs == null) {
-				rs.close();
-				stmt.close();
-				connect().close();
-				conn.close();
-				return null;
-			} else {
-				while (rs.next()) {
-					double preis = rs.getDouble("preis");
-					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs
-							.getString("artikelBezeichnung");
-					String bildPfad = rs.getString("bildPfad");
-					String kategorie = rs.getString("kategorie");
-					int lagermenge = rs.getInt("lagermenge");
-					gesuchteProdukte
-							.add(new Produkt(preis, artikelNummer,
-									artikelBezeichnung, bildPfad, kategorie,
-									lagermenge));
-				}
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM produkt WHERE preis ='"
+							+ gesuchterWert + "' OR artikelBezeichnung = '"
+							+ gesuchterWert + "' OR kategorie = '"
+							+ gesuchterWert + "';");
 
+			while (rs.next()) {
+				double preis = rs.getDouble("preis");
+				int artikelNummer = rs.getInt("artikelNummer");
+				String artikelBezeichnung = rs.getString("artikelBezeichnung");
+				String bildPfad = rs.getString("bildPfad");
+				String kategorie = rs.getString("kategorie");
+				int lagermenge = rs.getInt("lagermenge");
+				gesuchteProdukte.add(new Produkt(preis, artikelNummer,
+						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
-			rs.close();
+
 			stmt.close();
-			connect().close();
 			conn.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -137,95 +114,84 @@ public class Model {
 		return gesuchteProdukte;
 
 	}
+
 	public Produkt artikelnummerSuchen(String ausgewaehltesProdukt) {
 
 		try {
-			Statement stmt = connect().createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM produkt Where artikelNummer ="
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM produkt Where artikelNummer ="
 							+ ausgewaehltesProdukt + ";");
+			
 
-			if (rs == null) {
-				rs.close();
+			if (rs.next()) {
+				double preis = rs.getDouble("preis");
+				int artikelNummer = rs.getInt("artikelNummer");
+				String artikelBezeichnung = rs.getString("artikelBezeichnung");
+				String bildPfad = rs.getString("bildPfad");
+				String kategorie = rs.getString("kategorie");
+				int lagermenge = rs.getInt("lagermenge");
+				System.out.println(new Produkt(preis, artikelNummer,
+						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 				stmt.close();
-				connect().close();
 				conn.close();
-				return null;
-			} else {
-				while (rs.next()) {
-					double preis = rs.getDouble("preis");
-					int artikelNummer = rs.getInt("artikelNummer");
-					String artikelBezeichnung = rs
-							.getString("artikelBezeichnung");
-					String bildPfad = rs.getString("bildPfad");
-					String kategorie = rs.getString("kategorie");
-					int lagermenge = rs.getInt("lagermenge");
-					System.out
-							.println(new Produkt(preis, artikelNummer,
-									artikelBezeichnung, bildPfad, kategorie,
-									lagermenge));
-					return (new Produkt(preis, artikelNummer,
-							artikelBezeichnung, bildPfad, kategorie, lagermenge));
-				}
-				rs.close();
-				stmt.close();
-				connect().close();
-				conn.close();
+				return (new Produkt(preis, artikelNummer, artikelBezeichnung,
+						bildPfad, kategorie, lagermenge));
 			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println("Fehler Produkt suchen");
 		}
-
+	
 		ausgewaehltesProdukt = null;
 		return null;
 	}
-	
-	public List<Produkt> getProdukte(String wo){
-	 List<Produkt> produkte = new ArrayList<Produkt>();
-	 try {
-		 Statement stmt = connect().createStatement();
-		 ResultSet rs = null;
-		 
-		 switch (wo){
-		 
-		 case "alle": rs = stmt.executeQuery("SELECT * FROM produkt;");
-		 System.out.println("stmt wird aufgerufen");
-		 		break;
-		 case "aussen": rs = stmt.executeQuery(
-					"SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
-		 System.out.println("stmt wird aufgerufen");
-		 		break;
-		 case "innen":  rs = stmt.executeQuery(
-					"SELECT * FROM produkt WHERE kategorie = 'innen' ;");
-		 System.out.println("stmt wird aufgerufen");
-		 		break;
-		 case "brennbar":  rs = stmt.executeQuery(
-					"SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
-		 System.out.println("stmt wird aufgerufen");
-		 		break;
-		 case "warenkorb": 
-			 if (this.kunde != null) {
-				rs = stmt.executeQuery(
-				"SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
-				+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-				+ this.kunde.getKundenNummer() + "';");
-				System.out.println("Statement wird aufgerufen");
-			} else {
-				return produkte;
-			} break;
-			 }			 
-		if (rs == null) {
+
+	public List<Produkt> getProdukte(String wo) {
+		List<Produkt> produkte = new ArrayList<Produkt>();
+		try {
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = null;
+
+			switch (wo) {
+
+			case "alle":
+				rs = stmt.executeQuery("SELECT * FROM produkt;");
+				System.out.println("stmt wird aufgerufen");
+				break;
+			case "aussen":
+				rs = stmt
+						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
+				System.out.println("stmt wird aufgerufen");
+				break;
+			case "innen":
+				rs = stmt
+						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'innen' ;");
+				System.out.println("stmt wird aufgerufen");
+				break;
+			case "brennbar":
+				rs = stmt
+						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
+				System.out.println("stmt wird aufgerufen");
+				break;
+			case "warenkorb":
+				if (this.kunde != null) {
+					rs = stmt
+							.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
+									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+									+ this.kunde.getKundenNummer() + "';");
+					System.out.println("Statement wird aufgerufen");
+				} else {
+					stmt.close();
+					conn.close();
+					return produkte;
+				}
+				break;
+			}
 			
-			rs.close();
-			stmt.close();
-			connect().close();
-			conn.close();
-			System.out.println("Stmt closed");
-			return null;
-		} else {
-			System.out.println("Hier gehts es in while");
 			while (rs.next()) {
 				double preis = rs.getDouble("preis");
 				int artikelNummer = rs.getInt("artikelNummer");
@@ -234,24 +200,19 @@ public class Model {
 				String bildPfad = rs.getString("bildPfad");
 				String kategorie = rs.getString("kategorie");
 				int lagermenge = rs.getInt("lagermenge");
-				produkte
-						.add(new Produkt(preis, artikelNummer,
-								artikelBezeichnung, bildPfad, kategorie,
-								lagermenge));
+				produkte.add(new Produkt(preis, artikelNummer,
+						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
-			rs.close();
 			stmt.close();
-			connect().close();
 			conn.close();
-			return produkte;
+			
+		} catch (SQLException e) {
+			System.out.println("Fehler Produkt suchen");
+			e.printStackTrace();
 		}
 		
-	} catch (SQLException e) {
-		System.out.println("Fehler Produkt suchen");
-		e.printStackTrace();
+		return produkte;
 	}
-	  return null;
- }
 
 	public List<Produkt> getProdukteAlle() {
 
@@ -280,13 +241,13 @@ public class Model {
 
 		return produkteBrennstoff;
 	}
+
 	public List<Produkt> getWarenkorb() {
-		
+
 		List<Produkt> produkteWarenkorb = getProdukte("warenkorb");
 
 		return produkteWarenkorb;
 	}
-
 
 	public Kunde getKunde() {
 		return kunde;
@@ -296,11 +257,13 @@ public class Model {
 		kunde = null;
 		return getKunde();
 	}
+
 	public void loginUeberpruefung(Kunde kunde) throws Exception {
 		try {
-			Statement stmt = connect().createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM users WHERE username ='"
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM users WHERE username ='"
 							+ kunde.getBenutzername() + "'AND pass = '"
 							+ verschluesselPW(kunde.getPasswort()) + "';");
 
@@ -322,15 +285,13 @@ public class Model {
 						rs.getString("telefonnr"), rs.getString("pass"),
 						isAdmin);
 			} else {
-				rs.close();
 				stmt.close();
-				connect().close();
 				conn.close();
 				System.out.println("pw falsch");
 				throw new wrongPasswordOrUsernameException();
 			}
+
 			stmt.close();
-			connect().close();
 			conn.close();
 
 		} catch (SQLException ex) {
@@ -341,21 +302,34 @@ public class Model {
 
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		try {
-			Statement stmt = connect().createStatement();
-			int rs = stmt.executeUpdate(
-					"insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
-							+ kunde.getAnrede() + "', '" + kunde.getVorname()
-							+ "', '" + kunde.getNachname() + "', '"
-							+ kunde.getBenutzername() + "', '"
-							+ kunde.getEmail() + "', '" + kunde.getStrasse()
-							+ "', '" + kunde.getHausnummer() + "', '"
-							+ kunde.getPlz() + "', '" + kunde.getOrt() + "', '"
-							+ kunde.getTelefonnummer() + "', '"
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			int rs = stmt
+					.executeUpdate("insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
+							+ kunde.getAnrede()
+							+ "', '"
+							+ kunde.getVorname()
+							+ "', '"
+							+ kunde.getNachname()
+							+ "', '"
+							+ kunde.getBenutzername()
+							+ "', '"
+							+ kunde.getEmail()
+							+ "', '"
+							+ kunde.getStrasse()
+							+ "', '"
+							+ kunde.getHausnummer()
+							+ "', '"
+							+ kunde.getPlz()
+							+ "', '"
+							+ kunde.getOrt()
+							+ "', '"
+							+ kunde.getTelefonnummer()
+							+ "', '"
 							+ verschluesselPW(kunde.getPasswort())
 							+ "','nein');");
 			System.out.println(rs + " Kunde wurde hinzugefügt");
 			stmt.close();
-			connect().close();
 			conn.close();
 		} catch (SQLException e) {
 			System.out.println("Fehler Kunden inserieren");
@@ -363,15 +337,13 @@ public class Model {
 		}
 	}
 
-
-	public void mengeAendern(int artikelnr, int menge) { 
+	public void mengeAendern(int artikelnr, int menge) {
 		try {
-			Statement stmt = connect().createStatement();
-			stmt.executeUpdate(
-					"UPDATE produkt SET lagermenge = lagermenge - '" + menge
-							+ "' WHERE artikelNummer = '" + artikelnr + "';");
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - '"
+					+ menge + "' WHERE artikelNummer = '" + artikelnr + "';");
 			stmt.close();
-			connect().close();
 			conn.close();
 		} catch (SQLException e) {
 			System.out.println("Fehler beim ändern der Menge");
@@ -384,17 +356,17 @@ public class Model {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
 		// suchergebnisseResetten();
 		try {
-			Statement stmt = connect().createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT artikelBezeichnung FROM produkt;");
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT artikelBezeichnung FROM produkt;");
 
 			while (rs.next()) {
 				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
 
 			}
-			rs.close();
+
 			stmt.close();
-			connect().close();
 			conn.close();
 			boolean sorted = false;
 			String[] meinTextArray = produktbezeichnungen
@@ -448,22 +420,20 @@ public class Model {
 		return passwortString;
 	}
 
-	public String getProduktJson(String artikelNummer){
-		
-		try {
-			ResultSet rs = dbAufruf().executeQuery("SELECT * FROM produkt WHERE artikelNummer = "+artikelNummer+";");
+	public String getProduktJson(String artikelNummer) {
 
-			if (rs == null) {
-				conn.close();
-				return null;
-			} else {
-				
-				
+		try {
+			Connection conn = DB.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
+							+ artikelNummer + ";");
+
+			if (rs.next()) {
 				Integer menge = new Integer(rs.getInt("lagermenge"));
-				rs.close();
+				stmt.close();
 				conn.close();
-				
-				
+
 				return menge.toString();
 			}
 
@@ -474,26 +444,23 @@ public class Model {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	public static JSONArray convertToJson(ResultSet resultSet) throws Exception{
+
+	public static JSONArray convertToJson(ResultSet resultSet) throws Exception {
 		JSONArray jsonArray = new JSONArray();
-		while(resultSet.next()){
+		while (resultSet.next()) {
 			int total_rows = resultSet.getMetaData().getColumnCount();
 			JSONObject obj = new JSONObject();
-			for(int i = 0; i < total_rows; i++){
-				obj.put(resultSet.getMetaData().getColumnLabel(i+1).toLowerCase(),resultSet.getObject(i+1));
+			for (int i = 0; i < total_rows; i++) {
+				obj.put(resultSet.getMetaData().getColumnLabel(i + 1)
+						.toLowerCase(), resultSet.getObject(i + 1));
 			}
 			jsonArray.put(obj);
 		}
 		return jsonArray;
-		
+
 	}
-		
-		
-	
-	
-	
+
 }

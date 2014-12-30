@@ -103,6 +103,30 @@ public class Application extends Controller {
 			}
 		};
 	}
+	
+public static WebSocket<String> loginWS() {
+		
+		return new WebSocket<String>() {
+			public void onReady(WebSocket.In<String> in,final WebSocket.Out<String> out) {
+				in.onMessage(new Callback<String>() {
+					public void invoke (String artikelNummer){
+						System.out.println("neue Menge...");
+							out.write(Model.sharedInstance.getProduktJson(artikelNummer));
+						
+						
+					}
+				});
+				
+				in.onClose(new Callback0(){
+					public void invoke(){
+						System.out.println("Artikelansicht verlassen :-(");
+					}
+				});
+				
+				
+			}
+		};
+	}
 		
 	
 
@@ -122,7 +146,7 @@ public class Application extends Controller {
 			return ok(loginFehler.render(null));
 		}
 	}
-
+	
 	public static Result submitKundendaten() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
@@ -163,6 +187,10 @@ public class Application extends Controller {
 		return ok(Model.sharedInstance.autovervollstaendigungSuche(produkt));
 
 	}
+	
+	/*
+	 * Neuer Benutzer wird angelegt
+	 */
 
 	public static Result neuerUser() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
@@ -175,12 +203,20 @@ public class Application extends Controller {
 
 		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 	}
+	
+	/*
+	 * Suche
+	 */
 
 	public static Result suche(String produkt) {
 
 		return ok(suchergebnisse.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.produktSuchen(produkt)));
 	}
+	
+	/*
+	 * Fügt Produkte hinzu
+	 */
 
 	public static Result produktInsert(String preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagerm) {
@@ -189,18 +225,31 @@ public class Application extends Controller {
 				lagerm);
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
+	
+	/*
+	 * Lädt Seite um neue Produkte hinzufügen zu können
+	 */
 
 	public static Result neuesProdukt() {
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
 
+	/*
+	 * ruft Warenkorb auf
+	 */
+	
 	public static Result warenkorb() {
 
 		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
 
 	}
-	public static Result inWarenkorb(String ausgewaehltesProdukt) {
-		Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt);
+	
+	/*
+	 * Legt Artikel in den Warenkorb 
+	 */
+	
+	public static Result inWarenkorb(String ausgewaehltesProdukt, String menge) {
+		Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge);
 		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
 
 	}
