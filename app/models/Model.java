@@ -23,21 +23,6 @@ public class Model {
 	private Model() {
 	}
 
-	// private Statement dbAufruf() {
-	//
-	// Statement stmt = null;
-	//
-	// try {
-	// System.out.println("Connected wird aufgerufen");
-	// stmt = connect().createStatement();
-	// } catch (SQLException e) {
-	// e.printStackTrace();
-	// }
-	//
-	//
-	// return stmt;
-	// }
-
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
 
@@ -60,13 +45,12 @@ public class Model {
 	}
 
 	public void setWarenkorb(String artikelnr, String menge) {
-		// this.kunde = kunde;
 		if (kunde != null) {
 			try {
 				Connection conn = DB.getConnection();
 				Statement stmt = conn.createStatement();
 				int anzahl = stmt
-						.executeUpdate("insert into Warenkorb values ("
+						.executeUpdate("insert into Warenkorb values ((SELECT MAX (wkn) FROM warenkorb)+1, "
 								+ kunde.getKundenNummer() + ","
 								+ Integer.parseInt(artikelnr) + ");");
 				System.out.println("updates: " + anzahl);
@@ -78,40 +62,6 @@ public class Model {
 				System.out.println("Fehler Warenkorb inserieren");
 			}
 		}
-
-	}
-
-	public List<Produkt> produktSuchen(String gesuchterWert) {
-		// suchergebnisseResetten();
-		List<Produkt> gesuchteProdukte = new ArrayList<>();
-		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM produkt WHERE preis ='"
-							+ gesuchterWert + "' OR artikelBezeichnung = '"
-							+ gesuchterWert + "' OR kategorie = '"
-							+ gesuchterWert + "';");
-
-			while (rs.next()) {
-				double preis = rs.getDouble("preis");
-				int artikelNummer = rs.getInt("artikelNummer");
-				String artikelBezeichnung = rs.getString("artikelBezeichnung");
-				String bildPfad = rs.getString("bildPfad");
-				String kategorie = rs.getString("kategorie");
-				int lagermenge = rs.getInt("lagermenge");
-				gesuchteProdukte.add(new Produkt(preis, artikelNummer,
-						artikelBezeichnung, bildPfad, kategorie, lagermenge));
-			}
-
-			stmt.close();
-			conn.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			System.out.println("Fehler Produkt suchen");
-		}
-		return gesuchteProdukte;
 
 	}
 
@@ -160,22 +110,18 @@ public class Model {
 
 			case "alle":
 				rs = stmt.executeQuery("SELECT * FROM produkt;");
-				System.out.println("stmt wird aufgerufen");
 				break;
 			case "aussen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
-				System.out.println("stmt wird aufgerufen");
 				break;
 			case "innen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'innen' ;");
-				System.out.println("stmt wird aufgerufen");
 				break;
 			case "brennbar":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
-				System.out.println("stmt wird aufgerufen");
 				break;
 			case "warenkorb":
 				if (this.kunde != null) {
@@ -183,13 +129,18 @@ public class Model {
 							.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 									+ this.kunde.getKundenNummer() + "';");
-					System.out.println("Statement wird aufgerufen");
 				} else {
 					stmt.close();
 					conn.close();
 					return produkte;
 				}
 				break;
+			default: rs = stmt
+					.executeQuery("SELECT * FROM produkt WHERE preis ='"
+							+ wo + "' OR artikelBezeichnung = '"
+							+ wo + "' OR kategorie = '"
+							+ wo + "';");
+			break;
 			}
 			
 			while (rs.next()) {
@@ -212,6 +163,14 @@ public class Model {
 		}
 		
 		return produkte;
+	}
+	
+	public List<Produkt> produktSuchen(String gesuchterWert) {
+		
+		List<Produkt> gesuchteProdukte = getProdukte(gesuchterWert);
+		
+		return gesuchteProdukte;
+
 	}
 
 	public List<Produkt> getProdukteAlle() {
