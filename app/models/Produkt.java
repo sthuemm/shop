@@ -1,27 +1,25 @@
 package models;
 
-import play.*;
-import play.mvc.*;
-import views.html.*;
-import play.db.ebean.Model;
 
-public class Produkt {
+
+//import play.*;
+//import play.mvc.*;
+//import views.html.*;
+//import play.db.ebean.Model;
+
+public class Produkt  {
 
 	public double preis;
-	public int artikelNummer;
+	public String artikelNummer;
 	public String artikelBezeichnung;
 	public String bildPfad;
 	public String kategorie;
 	public int lagermenge;
+	public int bestellmenge = 0;
 
-	public Produkt() {
-		this.preis = 9.99;
-		this.artikelNummer = 1337;
-		this.artikelBezeichnung = "default";
+	public Produkt() {}	// Standardkonstruktor
 
-	}
-
-	public Produkt(double price, int artikelNummer,
+	public Produkt(double price, String artikelNummer,
 			String artikelBezeichnung, String pfad, String kategorie, int lagermenge) {
 		this.preis = price;
 		this.artikelNummer = artikelNummer;
@@ -33,10 +31,7 @@ public class Produkt {
 
 	@Override
 	public String toString() {
-		return "Produkt [preis=" + preis + ", artikelNummer=" + artikelNummer
-				+ ", artikelBezeichnung=" + artikelBezeichnung + ", bildPfad="
-				+ bildPfad + ", kategorie=" + kategorie + ", lagermenge="
-				+ lagermenge + "]";
+		return "Artikelnummer:"+artikelNummer+" Preis: "+preis;
 	}
 
 	

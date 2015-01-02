@@ -1,11 +1,17 @@
 package models;
 
-import play.*;
-import play.mvc.*;
-import views.html.*;
-import play.db.ebean.Model;
-import play.data.validation.Constraints;
-import play.data.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+//import play.*;
+//import play.mvc.*;
+//import views.html.*;
+//import play.db.ebean.Model;
+//import play.data.validation.Constraints;
+//import play.data.*;
 
 public class Kunde {
 
@@ -23,6 +29,9 @@ public class Kunde {
 	public String plz;
 	public String ort;
 	public String passwort;
+	private List<Produkt> warenkorb = new ArrayList<>();
+	
+	
 
 	public Kunde(String kundenNummer, String vorname, String anrede,
 			String nachname, String username, String email, String strasse,
@@ -45,13 +54,13 @@ public class Kunde {
 
 	@Override
 	public String toString() {
-		return "Kunde [kundenNummer=" + kundenNummer + ", telefon=" + telefon
-				+ ", isAdmin=" + isAdmin + ", anrede=" + anrede + ", vorname="
-				+ vorname + ", nachname=" + nachname + ", benutzername="
-				+ benutzername + ", email=" + email + ", email2=" + email2
-				+ ", strasse=" + strasse + ", hausnummer=" + hausnummer
-				+ ", plz=" + plz + ", ort=" + ort + ", passwort=" + passwort
-				+ "]";
+		return "KundenNummer:" + kundenNummer + ",\n"
+				+ "Telefonnummer:" + telefon+ ",\n"
+				+ "Adminrechte:" + isAdmin + ",\n"
+				+ "Name:" + anrede + " " + vorname + " " +nachname + ",\n"
+				+ "benutzername:"	+ benutzername + ",\n"
+				+ "EMail-Adresse:" + email + ",\n"
+				+ "Adresse: "+strasse+" "+hausnummer+", "+ plz +" "+ort;
 	}
 
 	public String getKundenNummer() {
@@ -150,9 +159,7 @@ public class Kunde {
 		this.passwort = passwort;
 	}
 
-	public Kunde() {
-
-	}
+	public Kunde() {}	// Standardkonstruktor
 
 	public String getAnrede() {
 		return anrede;
@@ -160,6 +167,50 @@ public class Kunde {
 
 	public void setAnrede(String anrede) {
 		this.anrede = anrede;
+	}
+
+	public String getTelefon() {
+		return telefon;
+	}
+
+	public void setTelefon(String telefon) {
+		this.telefon = telefon;
+	}
+
+	public String getEmail2() {
+		return email2;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public List<Produkt> getWarenkorb() {
+		return warenkorb;
+	}
+
+	public void setWarenkorb(Produkt produkt) {
+		this.warenkorb.add(produkt);
+	}
+	
+	public void clearWarenkorb(){
+		this.warenkorb.clear();
+	}
+	
+	public void updateWarenkorb(ArrayList<Produkt> produkte){
+	
+		for(Produkt produkt : produkte){
+			if(this.warenkorb.contains(produkt)){
+				this.warenkorb.add(produkt);
+			}
+			
+		}
+	}
+	
+	public void zeigeInhaltWarenkorb(){
+		for(Produkt produkt : this.warenkorb){
+			System.out.println(produkt);
+		}
 	}
 
 }

@@ -140,7 +140,6 @@ public static WebSocket<String> loginWS() {
 
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
-			System.out.println(Model.sharedInstance.getKunde());
 			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
@@ -240,7 +239,7 @@ public static WebSocket<String> loginWS() {
 	
 	public static Result warenkorb() {
 
-		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
+		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getKunde().getWarenkorb()));
 
 	}
 	
@@ -250,7 +249,7 @@ public static WebSocket<String> loginWS() {
 	
 	public static Result inWarenkorb(String ausgewaehltesProdukt, String menge) {
 		Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge);
-		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getWarenkorb()));
+		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getKunde().getWarenkorb()));
 
 	}
 }

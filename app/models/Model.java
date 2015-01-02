@@ -1,7 +1,9 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import models.*;
 import play.db.*;
@@ -15,12 +17,18 @@ import java.sql.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Model {
+public class Model extends Observable {
 
 	public static Model sharedInstance = new Model();
 	private Kunde kunde = null;
+	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 
 	private Model() {
+	}
+
+	private String getTime() {
+		Date currentTime = new Date(System.currentTimeMillis());
+		return formatter.format(currentTime);
 	}
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
@@ -31,16 +39,18 @@ public class Model {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("insert into produkt values (" + preis + ","
 					+ "(SELECT MAX (artikelNummer) FROM produkt)+1,'"
-					+ artikelBezeichnung + "', '" + bildPfad + "','"
-					+ kategorie + "'," + Integer.parseInt(lagermenge) + ");");
-			stmt.close();
+					+ artikelBezeichnung + "'," + " '" + bildPfad + "','"
+					+ kategorie + "'," + "" + lagermenge + ");");
+			System.out.println(getTime() + ":" + stmt
+					+ "Produkt(e) hinzugefügt");
+
 			conn.close();
-			System.out.println("Produkt wurde hinzugefügt");
+
 		}
 
 		catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("Fehler Produkt inserieren");
+			System.out.println(getTime() + ": Fehler Produkt inserieren");
 		}
 	}
 
@@ -50,17 +60,20 @@ public class Model {
 				Connection conn = DB.getConnection();
 				Statement stmt = conn.createStatement();
 				int anzahl = stmt
-						.executeUpdate("insert into Warenkorb values ((SELECT MAX (wkn) FROM warenkorb)+1, "
-								+ kunde.getKundenNummer() + ","
-								+ Integer.parseInt(artikelnr) + ");");
-				System.out.println("updates: " + anzahl);
+						.executeUpdate("insert into Warenkorb values ("
+								+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
+								+ kunde.getKundenNummer() + "," + artikelnr
+								+ "," + menge + ");");
+				System.out.println(getTime() + ": " + anzahl
+						+ " Artikel in Warenkorb gelegt");
 
-				stmt.close();
 				conn.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
-				System.out.println("Fehler Warenkorb inserieren");
+				System.out.println(getTime() + ": Fehler Warenkorb inserieren");
 			}
+		} else {
+			System.out.println(getTime() + ": nicht eingeloggt");
 		}
 
 	}
@@ -73,18 +86,19 @@ public class Model {
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM produkt Where artikelNummer ="
 							+ ausgewaehltesProdukt + ";");
-			
 
 			if (rs.next()) {
 				double preis = rs.getDouble("preis");
-				int artikelNummer = rs.getInt("artikelNummer");
+				String artikelNummer = rs.getString("artikelNummer");
 				String artikelBezeichnung = rs.getString("artikelBezeichnung");
 				String bildPfad = rs.getString("bildPfad");
 				String kategorie = rs.getString("kategorie");
 				int lagermenge = rs.getInt("lagermenge");
-				System.out.println(new Produkt(preis, artikelNummer,
-						artikelBezeichnung, bildPfad, kategorie, lagermenge));
-				stmt.close();
+				System.out.println(getTime()
+						+ ": "
+						+ new Produkt(preis, artikelNummer, artikelBezeichnung,
+								bildPfad, kategorie, lagermenge));
+
 				conn.close();
 				return (new Produkt(preis, artikelNummer, artikelBezeichnung,
 						bildPfad, kategorie, lagermenge));
@@ -92,9 +106,9 @@ public class Model {
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("Fehler Produkt suchen");
+			System.out.println(getTime() + ": Fehler Produkt suchen");
 		}
-	
+
 		ausgewaehltesProdukt = null;
 		return null;
 	}
@@ -130,45 +144,42 @@ public class Model {
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 									+ this.kunde.getKundenNummer() + "';");
 				} else {
-					stmt.close();
 					conn.close();
 					return produkte;
 				}
 				break;
-			default: rs = stmt
-					.executeQuery("SELECT * FROM produkt WHERE preis ='"
-							+ wo + "' OR artikelBezeichnung = '"
-							+ wo + "' OR kategorie = '"
-							+ wo + "';");
-			break;
+			default:
+				stmt.executeQuery("SELECT * FROM produkt WHERE preis ='" + wo
+						+ "' OR artikelBezeichnung = '" + wo
+						+ "' OR kategorie = '" + wo + "';");
+				break;
 			}
-			
+
 			while (rs.next()) {
 				double preis = rs.getDouble("preis");
-				int artikelNummer = rs.getInt("artikelNummer");
-				String artikelBezeichnung = rs
-						.getString("artikelBezeichnung");
+				String artikelNummer = rs.getString("artikelNummer");
+				String artikelBezeichnung = rs.getString("artikelBezeichnung");
 				String bildPfad = rs.getString("bildPfad");
 				String kategorie = rs.getString("kategorie");
 				int lagermenge = rs.getInt("lagermenge");
 				produkte.add(new Produkt(preis, artikelNummer,
 						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
-			stmt.close();
+
 			conn.close();
-			
+
 		} catch (SQLException e) {
-			System.out.println("Fehler Produkt suchen");
+			System.out.println(getTime() + ": Fehler Produkt suchen");
 			e.printStackTrace();
 		}
-		
+
 		return produkte;
 	}
-	
+
 	public List<Produkt> produktSuchen(String gesuchterWert) {
-		
+
 		List<Produkt> gesuchteProdukte = getProdukte(gesuchterWert);
-		
+
 		return gesuchteProdukte;
 
 	}
@@ -201,14 +212,49 @@ public class Model {
 		return produkteBrennstoff;
 	}
 
-	public List<Produkt> getWarenkorb() {
+	public void getWarenkorb() {
+		Connection conn = DB.getConnection();
 
-		List<Produkt> produkteWarenkorb = getProdukte("warenkorb");
+		try {
 
-		return produkteWarenkorb;
+			Statement stmt = conn.createStatement();
+			ResultSet rs = null;
+			if (this.kunde != null) {
+				rs = stmt
+						.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
+								+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+								+ this.kunde.getKundenNummer() + "';");
+			} else {
+				conn.close();
+				System.out.println(getTime() + ": Kunde nicht eingeloggt");
+			}
+
+			while (rs.next()) {
+				double preis = rs.getDouble("preis");
+				String artikelNummer = rs.getString("artikelNummer");
+				String artikelBezeichnung = rs.getString("artikelBezeichnung");
+				String bildPfad = rs.getString("bildPfad");
+				String kategorie = rs.getString("kategorie");
+				int lagermenge = rs.getInt("lagermenge");
+
+				this.kunde.setWarenkorb(new Produkt(preis, artikelNummer,
+						artikelBezeichnung, bildPfad, kategorie, lagermenge));
+			}
+			if(this.kunde.getWarenkorb().isEmpty()){
+				System.out.println(getTime() + ": Warenkorb leer");
+			} else {
+				this.kunde.zeigeInhaltWarenkorb();
+			}
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public Kunde getKunde() {
+
 		return kunde;
 	}
 
@@ -227,7 +273,7 @@ public class Model {
 							+ verschluesselPW(kunde.getPasswort()) + "';");
 
 			if (rs.next()) {
-				System.out.println("pw richtig");
+				System.out.println(getTime() + ": pw richtig");
 
 				boolean isAdmin = false;
 
@@ -243,19 +289,21 @@ public class Model {
 						rs.getString("plz"), rs.getString("ort"),
 						rs.getString("telefonnr"), rs.getString("pass"),
 						isAdmin);
+				System.out.println(getTime() + ": Login von:\n " + this.kunde);
+				
+				getWarenkorb(); //Läd Warenkorb aus der DB in die ArrayList des Kunden
 			} else {
-				stmt.close();
+
 				conn.close();
-				System.out.println("pw falsch");
+				System.out.println(getTime() + ": pw falsch");
 				throw new wrongPasswordOrUsernameException();
 			}
 
-			stmt.close();
 			conn.close();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("Fehler login");
+			System.out.println(getTime() + ": Fehler login");
 		}
 	}
 
@@ -263,35 +311,34 @@ public class Model {
 		try {
 			Connection conn = DB.getConnection();
 			Statement stmt = conn.createStatement();
-			int rs = stmt
-					.executeUpdate("insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
-							+ kunde.getAnrede()
-							+ "', '"
-							+ kunde.getVorname()
-							+ "', '"
-							+ kunde.getNachname()
-							+ "', '"
-							+ kunde.getBenutzername()
-							+ "', '"
-							+ kunde.getEmail()
-							+ "', '"
-							+ kunde.getStrasse()
-							+ "', '"
-							+ kunde.getHausnummer()
-							+ "', '"
-							+ kunde.getPlz()
-							+ "', '"
-							+ kunde.getOrt()
-							+ "', '"
-							+ kunde.getTelefonnummer()
-							+ "', '"
-							+ verschluesselPW(kunde.getPasswort())
-							+ "','nein');");
-			System.out.println(rs + " Kunde wurde hinzugefügt");
-			stmt.close();
+			stmt.executeUpdate("insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
+					+ kunde.getAnrede()
+					+ "', '"
+					+ kunde.getVorname()
+					+ "', '"
+					+ kunde.getNachname()
+					+ "', '"
+					+ kunde.getBenutzername()
+					+ "', '"
+					+ kunde.getEmail()
+					+ "', '"
+					+ kunde.getStrasse()
+					+ "', '"
+					+ kunde.getHausnummer()
+					+ "', '"
+					+ kunde.getPlz()
+					+ "', '"
+					+ kunde.getOrt()
+					+ "', '"
+					+ kunde.getTelefonnummer()
+					+ "', '"
+					+ verschluesselPW(kunde.getPasswort()) + "','nein');");
+			System.out.println(getTime() + ": " + stmt
+					+ " Kunde wurde hinzugefügt");
+
 			conn.close();
 		} catch (SQLException e) {
-			System.out.println("Fehler Kunden inserieren");
+			System.out.println(getTime() + ": Fehler Kunden inserieren");
 			e.printStackTrace();
 		}
 	}
@@ -302,18 +349,16 @@ public class Model {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - '"
 					+ menge + "' WHERE artikelNummer = '" + artikelnr + "';");
-			stmt.close();
+
 			conn.close();
 		} catch (SQLException e) {
-			System.out.println("Fehler beim ändern der Menge");
+			System.out.println(getTime() + ": Fehler beim ändern der Menge");
 			e.printStackTrace();
 		}
-
 	}
 
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
-		// suchergebnisseResetten();
 		try {
 			Connection conn = DB.getConnection();
 			Statement stmt = conn.createStatement();
@@ -325,7 +370,6 @@ public class Model {
 
 			}
 
-			stmt.close();
 			conn.close();
 			boolean sorted = false;
 			String[] meinTextArray = produktbezeichnungen
@@ -356,7 +400,8 @@ public class Model {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Fehler beim Auslesen der Artikelbezeichnung");
+			System.out.println(getTime()
+					+ ": Fehler beim Auslesen der Artikelbezeichnung");
 			e.printStackTrace();
 		}
 		return "";
@@ -365,6 +410,10 @@ public class Model {
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
+
+	/*
+	 * Verschlüsselung des Passworts
+	 */
 
 	public static String verschluesselPW(String pass)
 			throws NoSuchAlgorithmException {
@@ -389,8 +438,9 @@ public class Model {
 							+ artikelNummer + ";");
 
 			if (rs.next()) {
+
 				Integer menge = new Integer(rs.getInt("lagermenge"));
-				stmt.close();
+
 				conn.close();
 
 				return menge.toString();
@@ -398,7 +448,7 @@ public class Model {
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			System.out.println("Fehler Produkt suchen");
+			System.out.println(getTime() + ": Fehler Produkt suchen");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
