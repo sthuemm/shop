@@ -13,16 +13,16 @@
 					// <![CDATA[
 					
 					var bilder = [];
-					@if(produkte!=null){
+					@if(produkte!=null){			
 							
 						@for(i <- produkte){
 							bilder.push('@i.bildPfad');
 						}
 					}
 								
-					var nr = Math.floor(Math.random()*bilder.length);
+					var nr = Math.floor(Math.random()*bilder.length); //Random-Selektion des Bilds bei "Neuheiten"
 					var bild = bilder[nr];
-					document.getElementById("mainAA").innerHTML = '<img src=assets/'+bild+'  width="250"; height="110"/>';
+					document.getElementById("mainAA").innerHTML = '<img src=/assets/'+bild+'  width="250"; height="110"/>';
 					
 					// ]]>
 				</script></div>

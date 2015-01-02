@@ -4,15 +4,15 @@
 
 
 
-	@if(produkte.isEmpty()){
-		<div><wbr>Ihr Warenkorb ist leider leer. Loggen Sie sich ein und dann Suchen Sie sich doch etwas aus unserem reichhalten Sortiment aus</div>
+	@if(kunde.benutzername.equals("guest")){
+		<div><wbr>Bitte loggen Sie sich ein</div>
+	} else { @if(produkte.isEmpty()){
+		<div>Ihr Warenkorb ist leider leer. Bitte suchen Sie sich doch etwas aus unserem reichhalten Sortiment aus </div>
 	} else {
 	<h1>Warenkorb</h1>
 		@for(produkt <- produkte) {
 		
-				
-				
-				<div class="row" style="padding:5%">
+				<div id="w@produkt.artikelNummer" class="row" style="padding:5%">
 				<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:20%;">
 					<a href="/bestellung" style="font-family:Georgia;color:black">
 					<img src=/assets/@produkt.bildPfad  width="250" height="150"></a>
@@ -21,6 +21,8 @@
 					<p>Preis: @produkt.preis</p><p>Bestellmenge: @produkt.bestellmenge</p>
 				</div>	
 				</div>
+				
 		}
-	}
+		<button>jetzt verbindlich bestellen</button>
+	}}
 }

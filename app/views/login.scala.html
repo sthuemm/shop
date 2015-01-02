@@ -1,7 +1,7 @@
-@(userForm: Form[models.Kunde])
+@(userForm: Form[models.Kunde], kunde: Kunde)
 @import helper._
 
-@main("Login")(null){
+@main("Login")(kunde){
 
 
 <div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ; position:absolute; width:300px; height:200px;">

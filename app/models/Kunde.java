@@ -159,7 +159,9 @@ public class Kunde {
 		this.passwort = passwort;
 	}
 
-	public Kunde() {}	// Standardkonstruktor
+	public Kunde() {
+		this.benutzername = "guest";
+	}	// Standardkonstruktor
 
 	public String getAnrede() {
 		return anrede;

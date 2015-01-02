@@ -20,7 +20,7 @@ import org.json.JSONObject;
 public class Model extends Observable {
 
 	public static Model sharedInstance = new Model();
-	private Kunde kunde = null;
+	private Kunde kunde = new Kunde();
 	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 
 	private Model() {
@@ -224,27 +224,34 @@ public class Model extends Observable {
 						.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
 								+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 								+ this.kunde.getKundenNummer() + "';");
+
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					int lagermenge = rs.getInt("lagermenge");
+
+					this.kunde
+							.setWarenkorb(new Produkt(preis, artikelNummer,
+									artikelBezeichnung, bildPfad, kategorie,
+									lagermenge));
+
+				}
+
+				if (this.kunde.getWarenkorb().isEmpty()) {
+					System.out.println(getTime() + ": Warenkorb leer");
+				} else {
+					this.kunde.zeigeInhaltWarenkorb();
+				}
+
 			} else {
 				conn.close();
 				System.out.println(getTime() + ": Kunde nicht eingeloggt");
 			}
 
-			while (rs.next()) {
-				double preis = rs.getDouble("preis");
-				String artikelNummer = rs.getString("artikelNummer");
-				String artikelBezeichnung = rs.getString("artikelBezeichnung");
-				String bildPfad = rs.getString("bildPfad");
-				String kategorie = rs.getString("kategorie");
-				int lagermenge = rs.getInt("lagermenge");
-
-				this.kunde.setWarenkorb(new Produkt(preis, artikelNummer,
-						artikelBezeichnung, bildPfad, kategorie, lagermenge));
-			}
-			if(this.kunde.getWarenkorb().isEmpty()){
-				System.out.println(getTime() + ": Warenkorb leer");
-			} else {
-				this.kunde.zeigeInhaltWarenkorb();
-			}
 			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -259,7 +266,7 @@ public class Model extends Observable {
 	}
 
 	public Kunde logout() {
-		kunde = null;
+		kunde = new Kunde();
 		return getKunde();
 	}
 
@@ -290,8 +297,9 @@ public class Model extends Observable {
 						rs.getString("telefonnr"), rs.getString("pass"),
 						isAdmin);
 				System.out.println(getTime() + ": Login von:\n " + this.kunde);
-				
-				getWarenkorb(); //Läd Warenkorb aus der DB in die ArrayList des Kunden
+
+				getWarenkorb(); // Läd Warenkorb aus der DB in die ArrayList des
+								// Kunden
 			} else {
 
 				conn.close();

@@ -110,7 +110,7 @@ public static WebSocket<String> loginWS() {
 			public void onReady(WebSocket.In<String> in,final WebSocket.Out<String> out) {
 				in.onMessage(new Callback<String>() {
 					public void invoke (String artikelNummer){
-						System.out.println("neue Menge...");
+						System.out.println("Bestellung abgeschlossen...");
 							out.write(Model.sharedInstance.getProduktJson(artikelNummer));
 						
 						
@@ -132,7 +132,7 @@ public static WebSocket<String> loginWS() {
 
 	public static Result login() {
 
-		return ok(login.render(userForm));
+		return ok(login.render(userForm, Model.sharedInstance.getKunde()));
 	}
 
 	public static Result submitLogin() {
