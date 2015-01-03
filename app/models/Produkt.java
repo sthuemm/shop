@@ -19,6 +19,9 @@ public class Produkt  {
 
 	public Produkt() {}	// Standardkonstruktor
 
+	/*
+	 * Konstruktor ohne Bestellmenge
+	 */
 	public Produkt(double price, String artikelNummer,
 			String artikelBezeichnung, String pfad, String kategorie, int lagermenge) {
 		this.preis = price;
@@ -27,7 +30,23 @@ public class Produkt  {
 		this.bildPfad = pfad;
 		this.kategorie = kategorie;
 		this.lagermenge = lagermenge;
+		
 	}
+	
+	/*
+	 * Konstruktor mit Bestellmenge
+	 */
+	public Produkt(double price, String artikelNummer,
+			String artikelBezeichnung, String pfad, String kategorie, int lagermenge, int bestellmenge) {
+		this.preis = price;
+		this.artikelNummer = artikelNummer;
+		this.artikelBezeichnung = artikelBezeichnung;
+		this.bildPfad = pfad;
+		this.kategorie = kategorie;
+		this.lagermenge = lagermenge;
+		this.bestellmenge = bestellmenge;
+	}
+	
 
 	@Override
 	public String toString() {

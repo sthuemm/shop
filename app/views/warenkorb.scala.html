@@ -1,7 +1,28 @@
 @(kunde: Kunde, produkte:List[Produkt])
 @main("Warenkorb")(kunde){
 
+<script type="text/javascript" src=@routes.Assets.at("javascripts/jquery-2.1.1.min.js")></script>
+<script>
+		
 
+		var webSocket;
+		$(function() {
+			var WS = window["MozWebSocket"] ? MozWebSocket : WebSocket;
+			webSocket = new WS("@routes.Application.bestellungSocket().webSocketURL(request)");
+			webSocket.onmessage = receiveEvent;
+		})
+		
+		function bestellen(){
+			//var dingens = document.getElementById("bestellButton").val;
+			
+			webSocket.send('Bestellung');
+		};
+		
+		//function receiveEvent(event){
+			//$("#output").html("<p>aktuelle Restmenge: "+event.data+"</p>");
+		//};
+
+	</script>
 
 
 	@if(kunde.benutzername.equals("guest")){
@@ -23,6 +44,6 @@
 				</div>
 				
 		}
-		<button>jetzt verbindlich bestellen</button>
+		<input id="bestellButton" type="button" onclick="bestellen()" value="bestellen"></input>
 	}}
 }

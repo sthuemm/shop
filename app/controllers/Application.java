@@ -18,8 +18,9 @@ public class Application extends Controller {
 	final static Form<Kunde> userForm = Form.form(Kunde.class);
 
 	public static Result index() {
-		
-		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
+
+		return ok(mainPage.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.getProdukteAlle()));
 
 	}
 
@@ -32,7 +33,8 @@ public class Application extends Controller {
 	public static Result artikel(String ausgewaehltesProdukt) {
 
 		return ok(artikel.render(Model.sharedInstance.getKunde(),
-				Model.sharedInstance.artikelnummerSuchen(ausgewaehltesProdukt),userForm));
+				Model.sharedInstance.artikelnummerSuchen(ausgewaehltesProdukt),
+				userForm));
 
 	}
 
@@ -79,56 +81,62 @@ public class Application extends Controller {
 		return ok(konto.render(Model.sharedInstance.getKunde(), userForm));
 
 	}
-	
+
+	public static WebSocket<String> bestellungSocket() {
+
+		return new WebSocket<String>() {
+			public void onReady(WebSocket.In<String> in, final WebSocket.Out<String> out) {
+				System.out.println("WebSocketBestellung ready...");
+				in.onMessage(new Callback<String>() {
+					public void invoke(String vorgang) {
+						System.out.println("Uebermittelt an WS: "+vorgang);
+						switch (vorgang) {
+						case "Bestellung":
+							Model.sharedInstance.bestellArtikelAusWarenkorb();
+							break;
+						}
+
+//						System.out.println("neue Menge...");
+//						out.write(Model.sharedInstance
+//								.getProduktJson(artikelNummer));
+
+					}
+				});
+
+				in.onClose(new Callback0() {
+					public void invoke() {
+						System.out.println("Artikelansicht verlassen :-(");
+					}
+				});
+
+			}
+		};
+	}
+
 	public static WebSocket<String> socket() {
-		
+
 		return new WebSocket<String>() {
-			public void onReady(WebSocket.In<String> in,final WebSocket.Out<String> out) {
+			public void onReady(WebSocket.In<String> in,
+					final WebSocket.Out<String> out) {
+				System.out.println("WebSocketArtikel ready...");
 				in.onMessage(new Callback<String>() {
-					public void invoke (String artikelNummer){
+					public void invoke(String artikelNummer) {
 						System.out.println("neue Menge...");
-							out.write(Model.sharedInstance.getProduktJson(artikelNummer));
-						
-						
+						out.write(Model.sharedInstance
+								.getProduktJson(artikelNummer));
+
 					}
 				});
-				
-				in.onClose(new Callback0(){
-					public void invoke(){
+
+				in.onClose(new Callback0() {
+					public void invoke() {
 						System.out.println("Artikelansicht verlassen :-(");
 					}
 				});
-				
-				
+
 			}
 		};
 	}
-	
-public static WebSocket<String> loginWS() {
-		
-		return new WebSocket<String>() {
-			public void onReady(WebSocket.In<String> in,final WebSocket.Out<String> out) {
-				in.onMessage(new Callback<String>() {
-					public void invoke (String artikelNummer){
-						System.out.println("Bestellung abgeschlossen...");
-							out.write(Model.sharedInstance.getProduktJson(artikelNummer));
-						
-						
-					}
-				});
-				
-				in.onClose(new Callback0(){
-					public void invoke(){
-						System.out.println("Artikelansicht verlassen :-(");
-					}
-				});
-				
-				
-			}
-		};
-	}
-		
-	
 
 	public static Result login() {
 
@@ -140,19 +148,21 @@ public static WebSocket<String> loginWS() {
 
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
-			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
+			return ok(mainPage.render(Model.sharedInstance.getKunde(),
+					Model.sharedInstance.getProdukteAlle()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
 	}
-	
+
 	public static Result submitKundendaten() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
 			System.out.println(Model.sharedInstance.getKunde());
-			return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
+			return ok(mainPage.render(Model.sharedInstance.getKunde(),
+					Model.sharedInstance.getProdukteAlle()));
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
@@ -160,7 +170,8 @@ public static WebSocket<String> loginWS() {
 
 	public static Result mainPage() {
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.getProdukteAlle()));
 
 	}
 
@@ -179,14 +190,15 @@ public static WebSocket<String> loginWS() {
 
 	public static Result logout() {
 
-		return ok(mainPage.render(Model.sharedInstance.logout(), Model.sharedInstance.getProdukteAlle()));
+		return ok(mainPage.render(Model.sharedInstance.logout(),
+				Model.sharedInstance.getProdukteAlle()));
 	}
 
 	public static Result autovervollstaendigungSuche(String produkt) {
 		return ok(Model.sharedInstance.autovervollstaendigungSuche(produkt));
 
 	}
-	
+
 	/*
 	 * Neuer Benutzer wird angelegt
 	 */
@@ -200,9 +212,10 @@ public static WebSocket<String> loginWS() {
 			e.printStackTrace();
 		}
 
-		return ok(mainPage.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getProdukteAlle()));
+		return ok(mainPage.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.getProdukteAlle()));
 	}
-	
+
 	/*
 	 * Suche
 	 */
@@ -212,7 +225,7 @@ public static WebSocket<String> loginWS() {
 		return ok(suchergebnisse.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.produktSuchen(produkt)));
 	}
-	
+
 	/*
 	 * Fügt Produkte hinzu
 	 */
@@ -220,11 +233,10 @@ public static WebSocket<String> loginWS() {
 	public static Result produktInsert(String preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagerm) {
 		Model.sharedInstance.produktInserieren(Double.parseDouble(preis),
-				artikelBezeichnung, bildPfad, kategorie,
-				lagerm);
+				artikelBezeichnung, bildPfad, kategorie, lagerm);
 		return ok(neuesProdukt.render(Model.sharedInstance.getKunde()));
 	}
-	
+
 	/*
 	 * Lädt Seite um neue Produkte hinzufügen zu können
 	 */
@@ -236,20 +248,22 @@ public static WebSocket<String> loginWS() {
 	/*
 	 * ruft Warenkorb auf
 	 */
-	
+
 	public static Result warenkorb() {
 
-		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getKunde().getWarenkorb()));
+		return ok(warenkorb.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.getKunde().getWarenkorb()));
 
 	}
-	
+
 	/*
-	 * Legt Artikel in den Warenkorb 
+	 * Legt Artikel in den Warenkorb
 	 */
-	
+
 	public static Result inWarenkorb(String ausgewaehltesProdukt, String menge) {
 		Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge);
-		return ok(warenkorb.render(Model.sharedInstance.getKunde(), Model.sharedInstance.getKunde().getWarenkorb()));
+		return ok(warenkorb.render(Model.sharedInstance.getKunde(),
+				Model.sharedInstance.getKunde().getWarenkorb()));
 
 	}
 }

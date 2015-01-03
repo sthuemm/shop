@@ -44,7 +44,7 @@ public class Model extends Observable {
 			System.out.println(getTime() + ":" + stmt
 					+ "Produkt(e) hinzugefügt");
 
-			conn.close();
+			stmt.close(); conn.close();
 
 		}
 
@@ -67,7 +67,7 @@ public class Model extends Observable {
 				System.out.println(getTime() + ": " + anzahl
 						+ " Artikel in Warenkorb gelegt");
 
-				conn.close();
+				stmt.close(); conn.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 				System.out.println(getTime() + ": Fehler Warenkorb inserieren");
@@ -86,7 +86,7 @@ public class Model extends Observable {
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM produkt Where artikelNummer ="
 							+ ausgewaehltesProdukt + ";");
-
+			System.out.println("artikelNummerSuchen");
 			if (rs.next()) {
 				double preis = rs.getDouble("preis");
 				String artikelNummer = rs.getString("artikelNummer");
@@ -99,7 +99,7 @@ public class Model extends Observable {
 						+ new Produkt(preis, artikelNummer, artikelBezeichnung,
 								bildPfad, kategorie, lagermenge));
 
-				conn.close();
+				rs.close(); stmt.close(); conn.close();
 				return (new Produkt(preis, artikelNummer, artikelBezeichnung,
 						bildPfad, kategorie, lagermenge));
 			}
@@ -124,34 +124,39 @@ public class Model extends Observable {
 
 			case "alle":
 				rs = stmt.executeQuery("SELECT * FROM produkt;");
+				
 				break;
 			case "aussen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
+				
 				break;
 			case "innen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'innen' ;");
+				
 				break;
 			case "brennbar":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
+				
 				break;
-			case "warenkorb":
-				if (this.kunde != null) {
-					rs = stmt
-							.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
-									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-									+ this.kunde.getKundenNummer() + "';");
-				} else {
-					conn.close();
-					return produkte;
-				}
-				break;
+//			case "warenkorb":					//eigene Methode, weil die Abfragen beim Warenkorb abweichen
+//				if (this.kunde != null) {
+//					rs = stmt
+//							.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
+//									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+//									+ this.kunde.getKundenNummer() + "';");
+//				} else {
+//					rs.close(); stmt.close(); conn.close();
+//					return produkte;
+//				}
+//				break;
 			default:
 				stmt.executeQuery("SELECT * FROM produkt WHERE preis ='" + wo
 						+ "' OR artikelBezeichnung = '" + wo
 						+ "' OR kategorie = '" + wo + "';");
+				stmt.close();
 				break;
 			}
 
@@ -162,11 +167,13 @@ public class Model extends Observable {
 				String bildPfad = rs.getString("bildPfad");
 				String kategorie = rs.getString("kategorie");
 				int lagermenge = rs.getInt("lagermenge");
+//				int bestellmenge = rs.getInt("bestellmenge");
 				produkte.add(new Produkt(preis, artikelNummer,
 						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
-
-			conn.close();
+			System.out.println("getProdukte");
+			
+			rs.close(); stmt.close(); conn.close();
 
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Produkt suchen");
@@ -221,10 +228,10 @@ public class Model extends Observable {
 			ResultSet rs = null;
 			if (this.kunde != null) {
 				rs = stmt
-						.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
+						.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
 								+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 								+ this.kunde.getKundenNummer() + "';");
-
+				System.out.println("get Warenkorb");
 				while (rs.next()) {
 					double preis = rs.getDouble("preis");
 					String artikelNummer = rs.getString("artikelNummer");
@@ -233,11 +240,12 @@ public class Model extends Observable {
 					String bildPfad = rs.getString("bildPfad");
 					String kategorie = rs.getString("kategorie");
 					int lagermenge = rs.getInt("lagermenge");
-
+					int bestellmenge = rs.getInt("bestellmenge");
+					
 					this.kunde
 							.setWarenkorb(new Produkt(preis, artikelNummer,
 									artikelBezeichnung, bildPfad, kategorie,
-									lagermenge));
+									lagermenge, bestellmenge));
 
 				}
 
@@ -248,11 +256,11 @@ public class Model extends Observable {
 				}
 
 			} else {
-				conn.close();
+				rs.close(); stmt.close(); conn.close();
 				System.out.println(getTime() + ": Kunde nicht eingeloggt");
 			}
 
-			conn.close();
+			rs.close(); stmt.close(); conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -298,16 +306,16 @@ public class Model extends Observable {
 						isAdmin);
 				System.out.println(getTime() + ": Login von:\n " + this.kunde);
 
-				getWarenkorb(); // Läd Warenkorb aus der DB in die ArrayList des
+				this.getWarenkorb(); // Läd Warenkorb aus der DB in die ArrayList des
 								// Kunden
 			} else {
 
-				conn.close();
+				rs.close(); stmt.close(); conn.close();
 				System.out.println(getTime() + ": pw falsch");
 				throw new wrongPasswordOrUsernameException();
 			}
 
-			conn.close();
+			rs.close(); stmt.close(); conn.close();
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -344,26 +352,14 @@ public class Model extends Observable {
 			System.out.println(getTime() + ": " + stmt
 					+ " Kunde wurde hinzugefügt");
 
-			conn.close();
+			stmt.close(); conn.close();
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Kunden inserieren");
 			e.printStackTrace();
 		}
 	}
 
-	public void mengeAendern(int artikelnr, int menge) {
-		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - '"
-					+ menge + "' WHERE artikelNummer = '" + artikelnr + "';");
-
-			conn.close();
-		} catch (SQLException e) {
-			System.out.println(getTime() + ": Fehler beim ändern der Menge");
-			e.printStackTrace();
-		}
-	}
+	
 
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
@@ -372,13 +368,13 @@ public class Model extends Observable {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt
 					.executeQuery("SELECT artikelBezeichnung FROM produkt;");
-
+			System.out.println("Aufruf autovervollstaendigung");
 			while (rs.next()) {
 				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
 
 			}
 
-			conn.close();
+			rs.close(); stmt.close(); conn.close();
 			boolean sorted = false;
 			String[] meinTextArray = produktbezeichnungen
 					.toArray(new String[produktbezeichnungen.size()]);
@@ -444,12 +440,12 @@ public class Model extends Observable {
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
 							+ artikelNummer + ";");
-
+			System.out.println("json produkt");
 			if (rs.next()) {
 
 				Integer menge = new Integer(rs.getInt("lagermenge"));
 
-				conn.close();
+				rs.close(); stmt.close(); conn.close();
 
 				return menge.toString();
 			}
@@ -478,6 +474,35 @@ public class Model extends Observable {
 		}
 		return jsonArray;
 
+	}
+	
+	public void mengeAendern(String artikelnr, int menge) {
+			Connection conn = DB.getConnection();
+		try {
+			
+			System.out.println("conn geht");
+			Statement stmt = conn.createStatement();
+			System.out.println("stmt geht");
+			int anzahl = stmt.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - "
+						+ menge + " WHERE artikelNummer = '" + artikelnr + "';");
+			if(anzahl != 0){
+				System.out.println(getTime()+" ArtikelNummer: "+artikelnr+" bestellt");
+			}
+			stmt.close(); conn.close();
+		} catch (SQLException e) {
+			System.out.println(getTime() + ": Fehler beim aendern der Menge");
+			e.printStackTrace();
+		}
+	}
+	
+	public void bestellArtikelAusWarenkorb(){
+		
+			for(Produkt produkt : this.kunde.getWarenkorb()){
+				mengeAendern(produkt.artikelNummer, produkt.bestellmenge);
+			}
+			this.kunde.clearWarenkorb();
+		
+		
 	}
 
 }
