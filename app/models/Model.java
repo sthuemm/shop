@@ -75,6 +75,7 @@ public class Model extends Observable {
 		} else {
 			System.out.println(getTime() + ": nicht eingeloggt");
 		}
+		getWarenkorb();
 
 	}
 
@@ -156,7 +157,7 @@ public class Model extends Observable {
 				stmt.executeQuery("SELECT * FROM produkt WHERE preis ='" + wo
 						+ "' OR artikelBezeichnung = '" + wo
 						+ "' OR kategorie = '" + wo + "';");
-				stmt.close();
+				
 				break;
 			}
 
@@ -480,9 +481,9 @@ public class Model extends Observable {
 			Connection conn = DB.getConnection();
 		try {
 			
-			System.out.println("conn geht");
+			
 			Statement stmt = conn.createStatement();
-			System.out.println("stmt geht");
+			
 			int anzahl = stmt.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - "
 						+ menge + " WHERE artikelNummer = '" + artikelnr + "';");
 			if(anzahl != 0){
@@ -501,8 +502,27 @@ public class Model extends Observable {
 				mengeAendern(produkt.artikelNummer, produkt.bestellmenge);
 			}
 			this.kunde.clearWarenkorb();
+			warenkorbDatenbankLeeren();
+			getWarenkorb();
 		
-		
+	}
+	
+	public void warenkorbDatenbankLeeren(){
+		Connection conn = DB.getConnection();
+		try {
+			
+			
+			Statement stmt = conn.createStatement();
+			
+			int anzahl = stmt.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '" + this.kunde.getKundenNummer() + "';");
+			
+				System.out.println(getTime()+": "+anzahl+" Eintraege aus Warenkorb geloescht");
+			
+			stmt.close(); conn.close();
+		} catch (SQLException e) {
+			System.out.println(getTime() + ": Fehler beim aendern der Menge");
+			e.printStackTrace();
+		}
 	}
 
 }
