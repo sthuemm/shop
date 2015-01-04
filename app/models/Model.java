@@ -34,31 +34,41 @@ public class Model extends Observable {
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
 
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
 			stmt.executeUpdate("insert into produkt values (" + preis + ","
 					+ "(SELECT MAX (artikelNummer) FROM produkt)+1,'"
 					+ artikelBezeichnung + "'," + " '" + bildPfad + "','"
 					+ kategorie + "'," + "" + lagermenge + ");");
 			System.out.println(getTime() + ":" + stmt
 					+ "Produkt(e) hinzugefügt");
-
-			stmt.close(); conn.close();
-
 		}
 
 		catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println(getTime() + ": Fehler Produkt inserieren");
+		} finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
 
 	public void setWarenkorb(String artikelnr, String menge) {
 		if (kunde != null) {
+		
+			Connection conn = null;
+			Statement stmt = null;
+			ResultSet rs = null;
+			
 			try {
-				Connection conn = DB.getConnection();
-				Statement stmt = conn.createStatement();
+				conn = DB.getConnection();
+				stmt = conn.createStatement();
 				int anzahl = stmt
 						.executeUpdate("insert into Warenkorb values ("
 								+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
@@ -66,11 +76,13 @@ public class Model extends Observable {
 								+ "," + menge + ");");
 				System.out.println(getTime() + ": " + anzahl
 						+ " Artikel in Warenkorb gelegt");
-
-				stmt.close(); conn.close();
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 				System.out.println(getTime() + ": Fehler Warenkorb inserieren");
+			} finally {
+				if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+				if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+				if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 			}
 		} else {
 			System.out.println(getTime() + ": nicht eingeloggt");
@@ -80,11 +92,14 @@ public class Model extends Observable {
 	}
 
 	public Produkt artikelnummerSuchen(String ausgewaehltesProdukt) {
-
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Produkt gesuchtesProdukt = null;
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt
 					.executeQuery("SELECT * FROM produkt Where artikelNummer ="
 							+ ausgewaehltesProdukt + ";");
 			System.out.println("artikelNummerSuchen");
@@ -99,65 +114,70 @@ public class Model extends Observable {
 						+ ": "
 						+ new Produkt(preis, artikelNummer, artikelBezeichnung,
 								bildPfad, kategorie, lagermenge));
-
-				rs.close(); stmt.close(); conn.close();
-				return (new Produkt(preis, artikelNummer, artikelBezeichnung,
-						bildPfad, kategorie, lagermenge));
+				gesuchtesProdukt = new Produkt(preis, artikelNummer, artikelBezeichnung,
+						bildPfad, kategorie, lagermenge);
 			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println(getTime() + ": Fehler Produkt suchen");
+		} finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 
 		ausgewaehltesProdukt = null;
-		return null;
+		return gesuchtesProdukt;
 	}
 
 	public List<Produkt> getProdukte(String wo) {
 		List<Produkt> produkte = new ArrayList<Produkt>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = null;
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
 
 			switch (wo) {
 
 			case "alle":
 				rs = stmt.executeQuery("SELECT * FROM produkt;");
-				
+
 				break;
 			case "aussen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
-				
+
 				break;
 			case "innen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'innen' ;");
-				
+
 				break;
 			case "brennbar":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
-				
+
 				break;
-//			case "warenkorb":					//eigene Methode, weil die Abfragen beim Warenkorb abweichen
-//				if (this.kunde != null) {
-//					rs = stmt
-//							.executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
-//									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-//									+ this.kunde.getKundenNummer() + "';");
-//				} else {
-//					rs.close(); stmt.close(); conn.close();
-//					return produkte;
-//				}
-//				break;
+			// case "warenkorb": //eigene Methode, weil die Abfragen beim
+			// Warenkorb abweichen
+			// if (this.kunde != null) {
+			// rs = stmt
+			// .executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
+			// + "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+			// + this.kunde.getKundenNummer() + "';");
+			// } else {
+			// rs.close(); stmt.close(); conn.close();
+			// return produkte;
+			// }
+			// break;
 			default:
 				stmt.executeQuery("SELECT * FROM produkt WHERE preis ='" + wo
 						+ "' OR artikelBezeichnung = '" + wo
 						+ "' OR kategorie = '" + wo + "';");
-				
+
 				break;
 			}
 
@@ -168,17 +188,19 @@ public class Model extends Observable {
 				String bildPfad = rs.getString("bildPfad");
 				String kategorie = rs.getString("kategorie");
 				int lagermenge = rs.getInt("lagermenge");
-//				int bestellmenge = rs.getInt("bestellmenge");
+				// int bestellmenge = rs.getInt("bestellmenge");
 				produkte.add(new Produkt(preis, artikelNummer,
 						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
 			System.out.println("getProdukte");
-			
-			rs.close(); stmt.close(); conn.close();
 
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Produkt suchen");
 			e.printStackTrace();
+		} finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 
 		return produkte;
@@ -221,50 +243,53 @@ public class Model extends Observable {
 	}
 
 	public void getWarenkorb() {
-		Connection conn = DB.getConnection();
-
-		try {
-
-			Statement stmt = conn.createStatement();
-			ResultSet rs = null;
-			if (this.kunde != null) {
-				rs = stmt
-						.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
-								+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-								+ this.kunde.getKundenNummer() + "';");
-				System.out.println("get Warenkorb");
-				while (rs.next()) {
-					double preis = rs.getDouble("preis");
-					String artikelNummer = rs.getString("artikelNummer");
-					String artikelBezeichnung = rs
-							.getString("artikelBezeichnung");
-					String bildPfad = rs.getString("bildPfad");
-					String kategorie = rs.getString("kategorie");
-					int lagermenge = rs.getInt("lagermenge");
-					int bestellmenge = rs.getInt("bestellmenge");
-					
-					this.kunde
-							.setWarenkorb(new Produkt(preis, artikelNummer,
-									artikelBezeichnung, bildPfad, kategorie,
-									lagermenge, bestellmenge));
-
-				}
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		if (this.kunde != null) {
+			try {
+				conn = DB.getConnection();
+				stmt = conn.createStatement();
+			
+				
+					rs = stmt
+							.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
+									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+									+ this.kunde.getKundenNummer() + "';");
+					System.out.println("get Warenkorb");
+					while (rs.next()) {
+						double preis = rs.getDouble("preis");
+						String artikelNummer = rs.getString("artikelNummer");
+						String artikelBezeichnung = rs
+								.getString("artikelBezeichnung");
+						String bildPfad = rs.getString("bildPfad");
+						String kategorie = rs.getString("kategorie");
+						int lagermenge = rs.getInt("lagermenge");
+						int bestellmenge = rs.getInt("bestellmenge");
+	
+						this.kunde.setWarenkorb(new Produkt(preis, artikelNummer,
+								artikelBezeichnung, bildPfad, kategorie,
+								lagermenge, bestellmenge));
+	
+					}
 
 				if (this.kunde.getWarenkorb().isEmpty()) {
 					System.out.println(getTime() + ": Warenkorb leer");
 				} else {
 					this.kunde.zeigeInhaltWarenkorb();
 				}
-
-			} else {
-				rs.close(); stmt.close(); conn.close();
-				System.out.println(getTime() + ": Kunde nicht eingeloggt");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+				if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+				if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 			}
-
-			rs.close(); stmt.close(); conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else {
+			
+			System.out.println(getTime() + ": Kunde nicht eingeloggt");
 		}
 
 	}
@@ -280,10 +305,14 @@ public class Model extends Observable {
 	}
 
 	public void loginUeberpruefung(Kunde kunde) throws Exception {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt
 					.executeQuery("SELECT * FROM users WHERE username ='"
 							+ kunde.getBenutzername() + "'AND pass = '"
 							+ verschluesselPW(kunde.getPasswort()) + "';");
@@ -307,27 +336,31 @@ public class Model extends Observable {
 						isAdmin);
 				System.out.println(getTime() + ": Login von:\n " + this.kunde);
 
-				this.getWarenkorb(); // Läd Warenkorb aus der DB in die ArrayList des
-								// Kunden
+				this.getWarenkorb(); // Läd Warenkorb aus der DB in die
+										// ArrayList des
+				// Kunden
 			} else {
-
-				rs.close(); stmt.close(); conn.close();
 				System.out.println(getTime() + ": pw falsch");
 				throw new wrongPasswordOrUsernameException();
 			}
-
-			rs.close(); stmt.close(); conn.close();
-
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println(getTime() + ": Fehler login");
+		} finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
 
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
 			stmt.executeUpdate("insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
 					+ kunde.getAnrede()
 					+ "', '"
@@ -353,29 +386,31 @@ public class Model extends Observable {
 			System.out.println(getTime() + ": " + stmt
 					+ " Kunde wurde hinzugefügt");
 
-			stmt.close(); conn.close();
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Kunden inserieren");
 			e.printStackTrace();
+		} finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
 
-	
-
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String ergebnis = "";
+		
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT artikelBezeichnung FROM produkt;");
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT artikelBezeichnung FROM produkt;");
 			System.out.println("Aufruf autovervollstaendigung");
 			while (rs.next()) {
 				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
-
 			}
-
-			rs.close(); stmt.close(); conn.close();
 			boolean sorted = false;
 			String[] meinTextArray = produktbezeichnungen
 					.toArray(new String[produktbezeichnungen.size()]);
@@ -401,15 +436,19 @@ public class Model extends Observable {
 					auswahl.setLength(auswahl.length() - 1);
 				}
 				System.out.println(auswahl.toString());
-				return auswahl.toString();
+				ergebnis = auswahl.toString();
 			}
 
 		} catch (SQLException e) {
 			System.out.println(getTime()
 					+ ": Fehler beim Auslesen der Artikelbezeichnung");
 			e.printStackTrace();
+		} finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
-		return "";
+		return ergebnis;
 	}
 
 	public void setKunde(Kunde kunde) {
@@ -434,21 +473,18 @@ public class Model extends Observable {
 	}
 
 	public String getProduktJson(String artikelNummer) {
-
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Integer menge = null;
 		try {
-			Connection conn = DB.getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
 							+ artikelNummer + ";");
 			System.out.println("json produkt");
 			if (rs.next()) {
-
-				Integer menge = new Integer(rs.getInt("lagermenge"));
-
-				rs.close(); stmt.close(); conn.close();
-
-				return menge.toString();
+				menge = new Integer(rs.getInt("lagermenge"));	
 			}
 
 		} catch (SQLException ex) {
@@ -457,9 +493,13 @@ public class Model extends Observable {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 
-		return null;
+		return menge.toString();
 	}
 
 	public static JSONArray convertToJson(ResultSet resultSet) throws Exception {
@@ -476,52 +516,72 @@ public class Model extends Observable {
 		return jsonArray;
 
 	}
-	
+
 	public void mengeAendern(String artikelnr, int menge) {
-			Connection conn = DB.getConnection();
+	
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
-			
-			
-			Statement stmt = conn.createStatement();
-			
-			int anzahl = stmt.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - "
-						+ menge + " WHERE artikelNummer = '" + artikelnr + "';");
-			if(anzahl != 0){
-				System.out.println(getTime()+" ArtikelNummer: "+artikelnr+" bestellt");
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+
+			int anzahl = stmt
+					.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - "
+							+ menge
+							+ " WHERE artikelNummer = '"
+							+ artikelnr
+							+ "';");
+			if (anzahl != 0) {
+				System.out.println(getTime() + " ArtikelNummer: " + artikelnr
+						+ " bestellt");
 			}
-			stmt.close(); conn.close();
+			stmt.close();
+			conn.close();
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler beim aendern der Menge");
 			e.printStackTrace();
+		}finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
-	
-	public void bestellArtikelAusWarenkorb(){
-		
-			for(Produkt produkt : this.kunde.getWarenkorb()){
-				mengeAendern(produkt.artikelNummer, produkt.bestellmenge);
-			}
-			this.kunde.clearWarenkorb();
-			warenkorbDatenbankLeeren();
-			getWarenkorb();
-		
+
+	public void bestellArtikelAusWarenkorb() {
+
+		for (Produkt produkt : this.kunde.getWarenkorb()) {
+			mengeAendern(produkt.artikelNummer, produkt.bestellmenge);
+		}
+		this.kunde.clearWarenkorb();
+		warenkorbDatenbankLeeren();
+		getWarenkorb();
+
 	}
+
+	public void warenkorbDatenbankLeeren() {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 	
-	public void warenkorbDatenbankLeeren(){
-		Connection conn = DB.getConnection();
 		try {
-			
-			
-			Statement stmt = conn.createStatement();
-			
-			int anzahl = stmt.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '" + this.kunde.getKundenNummer() + "';");
-			
-				System.out.println(getTime()+": "+anzahl+" Eintraege aus Warenkorb geloescht");
-			
-			stmt.close(); conn.close();
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+
+			int anzahl = stmt
+					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"
+							+ this.kunde.getKundenNummer() + "';");
+
+			System.out.println(getTime() + ": " + anzahl
+					+ " Eintraege aus Warenkorb geloescht");
+
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler beim aendern der Menge");
 			e.printStackTrace();
+		}finally {
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
 
