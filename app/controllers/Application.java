@@ -81,36 +81,15 @@ public class Application extends Controller {
 		return ok(konto.render(Model.sharedInstance.getKunde(), userForm));
 
 	}
-
-	public static WebSocket<String> bestellungSocket() {
-
-		return new WebSocket<String>() {
-			public void onReady(WebSocket.In<String> in, final WebSocket.Out<String> out) {
-				System.out.println(Model.sharedInstance.getTime()+": WebSocketBestellung ready...");
-				in.onMessage(new Callback<String>() {
-					public void invoke(String vorgang) {
-						System.out.println(vorgang+" wird ausgeführt");
-						switch (vorgang) {
-						case "Bestellung":
-							Model.sharedInstance.bestellArtikelAusWarenkorb();
-							break;
-						}
-						
-						out.write("Bestellung erfolgt");
-						
-
-					}
-				});
-
-				in.onClose(new Callback0() {
-					public void invoke() {
-						System.out.println(Model.sharedInstance.getTime()+": WebSocketBestellung verlassen...");
-					}
-				});
-
-			}
-		};
+	
+	public static Result bestellungAbschliessen(){
+		
+		Model.sharedInstance.bestellArtikelAusWarenkorb();
+		
+		return redirect("/warenkorb/");
+		
 	}
+
 
 	public static WebSocket<String> socket() {
 

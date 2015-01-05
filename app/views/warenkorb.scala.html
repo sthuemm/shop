@@ -1,28 +1,7 @@
  @(kunde: Kunde, produkte:List[Produkt])
  @main("Warenkorb")(kunde){
  
-<script type="text/javascript" src=@routes.Assets.at("javascripts/jquery-2.1.1.min.js")></script>
-<script>
-		
 
-		var webSocket;
-		$(function() {
-			var WS = window["MozWebSocket"] ? MozWebSocket : WebSocket;
-			webSocket = new WS("@routes.Application.bestellungSocket().webSocketURL(request)");
-			webSocket.onmessage = receiveEvent;
-		})
-		
-		function bestellen(){
-			//var dingens = document.getElementById("bestellButton").val;
-			
-			webSocket.send('Bestellung');
-		};
-		
-		function receiveEvent(event){
-			$("#output").html("<p>"+event.data+"</p>");
-		};
- 
-	</script>
 
 	
 		@if(kunde.benutzername.equals("guest")){
@@ -31,7 +10,7 @@
 			<div>Ihr Warenkorb ist leider leer. Bitte suchen Sie sich doch etwas aus unserem reichhalten Sortiment aus </div>
 		} else {
 		<h1>Warenkorb</h1>
-		<div id="output"></div>
+		
 			@for(produkt <- produkte) {
 			
 					<div id="w@produkt.artikelNummer" class="row" style="padding:5%">
@@ -45,7 +24,10 @@
 					</div>
 					
 			}
-			<input id="bestellButton" type="button" onclick="bestellen()" value="bestellen"></input>
+			<form action="/bestellungAbschliessen">
+				<input type="submit" value="verbindlich und unwiderruflich bestellen">
+			</form>
+			
 		}}
 	
 }
