@@ -22,15 +22,27 @@ public class Model extends Observable {
 	public static Model sharedInstance = new Model();
 	private Kunde kunde = new Kunde();
 	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-
+	
+	/*
+	 * Konstruktor
+	 */
+	
 	private Model() {
 	}
-
+	
+	/*
+	 * Aktuelles Datum und zeit
+	 */
+	
 	public String getTime() {
 		Date currentTime = new Date(System.currentTimeMillis());
 		return formatter.format(currentTime);
 	}
-
+	
+	/*
+	 * Produkte in die DB inserieren
+	 */
+	
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
 
@@ -58,7 +70,11 @@ public class Model extends Observable {
 			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
-
+	
+	/*
+	 * In Tabelle Warenkorb Warenkorbnummer, Kundennummer, Artikelnummer und die Menge inserieren
+	 */
+	
 	public void setWarenkorb(String artikelnr, String menge) {
 		if (kunde != null) {
 		
@@ -90,7 +106,11 @@ public class Model extends Observable {
 		getWarenkorb();
 
 	}
-
+	
+	/*
+	 * Produktsuche anhand der Artikelnummer 
+	 */
+	
 	public Produkt artikelnummerSuchen(String ausgewaehltesProdukt) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -129,7 +149,11 @@ public class Model extends Observable {
 		ausgewaehltesProdukt = null;
 		return gesuchtesProdukt;
 	}
-
+	
+	/*
+	 * Methode zum 
+	 */
+	
 	public List<Produkt> getProdukte(String wo) {
 		List<Produkt> produkte = new ArrayList<Produkt>();
 		Connection conn = null;
@@ -204,7 +228,11 @@ public class Model extends Observable {
 
 		return produkte;
 	}
-
+	
+	/*
+	 * Gesuchtes Produkt
+	 */
+	
 	public List<Produkt> produktSuchen(String gesuchterWert) {
 
 		List<Produkt> gesuchteProdukte = getProdukte(gesuchterWert);
@@ -212,35 +240,55 @@ public class Model extends Observable {
 		return gesuchteProdukte;
 
 	}
-
+	
+	/*
+	 * Alle Produkte
+	 */
+	
 	public List<Produkt> getProdukteAlle() {
 
 		List<Produkt> produkteAlleList = getProdukte("alle");
 
 		return produkteAlleList;
 	}
-
+	
+	/*
+	 * Produkte aus Kategorie Aussen
+	 */
+	
 	public List<Produkt> getProdukteAussen() {
 
 		List<Produkt> produkteAussen = getProdukte("aussen");
 
 		return produkteAussen;
 	}
-
+	
+	/*
+	 * Produkte aus Kategorie Innen
+	 */
+	
 	public List<Produkt> getProdukteInnen() {
 
 		List<Produkt> produkteInnen = getProdukte("innen");
 
 		return produkteInnen;
 	}
-
+	
+	/*
+	 * Produkte aus Kategorie Brennstoffe
+	 */
+	
 	public List<Produkt> getProdukteBrennholz() {
 
 		List<Produkt> produkteBrennstoff = getProdukte("brennbar");
 
 		return produkteBrennstoff;
 	}
-
+	
+	/*
+	 * Produkte aus dem Warenkorb werden gezeigt/geholt
+	 */
+	
 	public void getWarenkorb() {
 		Connection conn = null;
 		Statement stmt = null;
@@ -280,7 +328,6 @@ public class Model extends Observable {
 					this.kunde.zeigeInhaltWarenkorb();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				if (rs != null) {try {rs.close();} catch (SQLException e) {}}
@@ -293,17 +340,29 @@ public class Model extends Observable {
 		}
 
 	}
-
+	
+	/*
+	 * 
+	 */
+	
 	public Kunde getKunde() {
 
 		return kunde;
 	}
-
+	
+	/*
+	 * Logout
+	 */
+	
 	public Kunde logout() {
 		kunde = new Kunde();
 		return getKunde();
 	}
-
+	
+	/*
+	 * Login Daten werden überprüft
+	 */
+	
 	public void loginUeberpruefung(Kunde kunde) throws Exception {
 		Connection conn = null;
 		Statement stmt = null;
@@ -352,7 +411,11 @@ public class Model extends Observable {
 			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
-
+	
+	/*
+	 * Kunde wird im DB hinzugefügt
+	 */
+	
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		Connection conn = null;
 		Statement stmt = null;
@@ -395,7 +458,11 @@ public class Model extends Observable {
 			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
-
+	
+	/*
+	 * Autovervollständigung bei der Suche
+	 */
+	
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
 		Connection conn = null;
@@ -449,7 +516,11 @@ public class Model extends Observable {
 		}
 		return ergebnis;
 	}
-
+	
+	/*
+	 * 
+	 */
+	
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
@@ -470,7 +541,11 @@ public class Model extends Observable {
 
 		return passwortString;
 	}
-
+	
+	/*
+	 * 
+	 */
+	
 	public String getProduktJson(String artikelNummer) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -490,7 +565,7 @@ public class Model extends Observable {
 			ex.printStackTrace();
 			System.out.println(getTime() + ": Fehler Produkt suchen");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}finally {
 			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
@@ -500,7 +575,9 @@ public class Model extends Observable {
 
 		return menge.toString();
 	}
-
+	/*
+	 * KEINE AHNUNG :)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+	 */
 	public static JSONArray convertToJson(ResultSet resultSet) throws Exception {
 		JSONArray jsonArray = new JSONArray();
 		while (resultSet.next()) {
@@ -515,7 +592,11 @@ public class Model extends Observable {
 		return jsonArray;
 
 	}
-
+	
+	/*
+	 * Ändert die Menge der vorhandenen Produkte im DB
+	 */
+	
 	public void mengeAendern(String artikelnr, int menge) {
 	
 		Connection conn = null;
@@ -546,7 +627,9 @@ public class Model extends Observable {
 			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
-
+	/*
+	 * 
+	 */
 	public void bestellArtikelAusWarenkorb() {
 
 		for (Produkt produkt : this.kunde.getWarenkorb()) {
@@ -557,7 +640,11 @@ public class Model extends Observable {
 		getWarenkorb();
 
 	}
-
+	
+	/*
+	 * Löscht Produkte aus der Warenkorb anhand der Kundennumer
+	 */
+	
 	public void warenkorbDatenbankLeeren() {
 		Connection conn = null;
 		Statement stmt = null;
