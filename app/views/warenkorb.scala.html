@@ -1,6 +1,6 @@
-@(kunde: Kunde, produkte:List[Produkt])
-@main("Warenkorb")(kunde){
-
+ @(kunde: Kunde, produkte:List[Produkt])
+ @main("Warenkorb")(kunde){
+ 
 <script type="text/javascript" src=@routes.Assets.at("javascripts/jquery-2.1.1.min.js")></script>
 <script>
 		
@@ -19,9 +19,9 @@
 		};
 		
 		function receiveEvent(event){
-			$("#output").html("<p>"+event.data+"</p>);
+			$("#output").html("<p>"+event.data+"</p>");
 		};
-
+ 
 	</script>
 
 	
