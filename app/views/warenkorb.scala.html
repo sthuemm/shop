@@ -18,32 +18,34 @@
 			webSocket.send('Bestellung');
 		};
 		
-		//function receiveEvent(event){
-			//$("#output").html("<p>aktuelle Restmenge: "+event.data+"</p>");
-		//};
+		function receiveEvent(event){
+			$("#output").html("<p>"+event.data+"</p>);
+		};
 
 	</script>
 
-
-	@if(kunde.benutzername.equals("guest")){
-		<div><wbr>Bitte loggen Sie sich ein</div>
-	} else { @if(produkte.isEmpty()){
-		<div>Ihr Warenkorb ist leider leer. Bitte suchen Sie sich doch etwas aus unserem reichhalten Sortiment aus </div>
-	} else {
-	<h1>Warenkorb</h1>
-		@for(produkt <- produkte) {
-		
-				<div id="w@produkt.artikelNummer" class="row" style="padding:5%">
-				<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:20%;">
-					<a href="/bestellung" style="font-family:Georgia;color:black">
-					<img src=/assets/@produkt.bildPfad  width="250" height="150"></a>
+	
+		@if(kunde.benutzername.equals("guest")){
+			<div><wbr>Bitte loggen Sie sich ein</div>
+		} else { @if(produkte.isEmpty()){
+			<div>Ihr Warenkorb ist leider leer. Bitte suchen Sie sich doch etwas aus unserem reichhalten Sortiment aus </div>
+		} else {
+		<h1>Warenkorb</h1>
+		<div id="output"></div>
+			@for(produkt <- produkte) {
+			
+					<div id="w@produkt.artikelNummer" class="row" style="padding:5%">
+					<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:20%;">
+						<a href="/bestellung" style="font-family:Georgia;color:black">
+						<img src=/assets/@produkt.bildPfad  width="250" height="150"></a>
+						
+						<wbr> @produkt.artikelBezeichnung
+						<p>Preis: @produkt.preis</p><p>Bestellmenge: @produkt.bestellmenge</p>
+					</div>	
+					</div>
 					
-					<wbr> @produkt.artikelBezeichnung
-					<p>Preis: @produkt.preis</p><p>Bestellmenge: @produkt.bestellmenge</p>
-				</div>	
-				</div>
-				
-		}
-		<input id="bestellButton" type="button" onclick="bestellen()" value="bestellen"></input>
-	}}
+			}
+			<input id="bestellButton" type="button" onclick="bestellen()" value="bestellen"></input>
+		}}
+	
 }

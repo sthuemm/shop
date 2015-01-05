@@ -210,9 +210,17 @@ public class Kunde {
 	}
 	
 	public void zeigeInhaltWarenkorb(){
+		System.out.println("****** WARENKORB ************************************");
 		for(Produkt produkt : this.warenkorb){
 			System.out.println(produkt);
 		}
+		System.out.println("*****************************************************");
+	}
+	
+	public void gibKundeAus(){
+		System.out.println("******* KUNDENDATEN **********************************");
+		this.toString();
+		System.out.println("******************************************************");
 	}
 
 }

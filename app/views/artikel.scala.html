@@ -63,7 +63,7 @@
 				
 			
 			</div>	
-				@if(kunde!=null){
+				@if(!kunde.benutzername.equals("guest")){
 				<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
 					<p>Menge: 
 						<input id="anzahl" type="number" value="1" max="@produkt.lagermenge"

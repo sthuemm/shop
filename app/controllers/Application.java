@@ -86,26 +86,25 @@ public class Application extends Controller {
 
 		return new WebSocket<String>() {
 			public void onReady(WebSocket.In<String> in, final WebSocket.Out<String> out) {
-				System.out.println("WebSocketBestellung ready...");
+				System.out.println(Model.sharedInstance.getTime()+": WebSocketBestellung ready...");
 				in.onMessage(new Callback<String>() {
 					public void invoke(String vorgang) {
-						System.out.println("Uebermittelt an WS: "+vorgang);
+						System.out.println(vorgang+" wird ausgeführt");
 						switch (vorgang) {
 						case "Bestellung":
 							Model.sharedInstance.bestellArtikelAusWarenkorb();
 							break;
 						}
-
-//						System.out.println("neue Menge...");
-//						out.write(Model.sharedInstance
-//								.getProduktJson(artikelNummer));
+						
+						out.write("Bestellung erfolgt");
+						
 
 					}
 				});
 
 				in.onClose(new Callback0() {
 					public void invoke() {
-						System.out.println("Artikelansicht verlassen :-(");
+						System.out.println(Model.sharedInstance.getTime()+": WebSocketBestellung verlassen...");
 					}
 				});
 
@@ -118,7 +117,7 @@ public class Application extends Controller {
 		return new WebSocket<String>() {
 			public void onReady(WebSocket.In<String> in,
 					final WebSocket.Out<String> out) {
-				System.out.println("WebSocketArtikel ready...");
+				System.out.println(Model.sharedInstance.getTime()+": WebSocketArtikel ready...");
 				in.onMessage(new Callback<String>() {
 					public void invoke(String artikelNummer) {
 						System.out.println("neue Menge...");
@@ -130,7 +129,7 @@ public class Application extends Controller {
 
 				in.onClose(new Callback0() {
 					public void invoke() {
-						System.out.println("Artikelansicht verlassen :-(");
+						System.out.println(Model.sharedInstance.getTime()+": Artikelansicht verlassen...");
 					}
 				});
 

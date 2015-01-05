@@ -26,7 +26,7 @@ public class Model extends Observable {
 	private Model() {
 	}
 
-	private String getTime() {
+	public String getTime() {
 		Date currentTime = new Date(System.currentTimeMillis());
 		return formatter.format(currentTime);
 	}
@@ -102,7 +102,6 @@ public class Model extends Observable {
 			rs = stmt
 					.executeQuery("SELECT * FROM produkt Where artikelNummer ="
 							+ ausgewaehltesProdukt + ";");
-			System.out.println("artikelNummerSuchen");
 			if (rs.next()) {
 				double preis = rs.getDouble("preis");
 				String artikelNummer = rs.getString("artikelNummer");
@@ -192,7 +191,7 @@ public class Model extends Observable {
 				produkte.add(new Produkt(preis, artikelNummer,
 						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
-			System.out.println("getProdukte");
+			
 
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Produkt suchen");
@@ -257,7 +256,8 @@ public class Model extends Observable {
 							.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 									+ this.kunde.getKundenNummer() + "';");
-					System.out.println("get Warenkorb");
+					System.out.println(getTime()+": Lade Warenkorb des Kunden...");
+					this.kunde.clearWarenkorb();
 					while (rs.next()) {
 						double preis = rs.getDouble("preis");
 						String artikelNummer = rs.getString("artikelNummer");
@@ -275,7 +275,7 @@ public class Model extends Observable {
 					}
 
 				if (this.kunde.getWarenkorb().isEmpty()) {
-					System.out.println(getTime() + ": Warenkorb leer");
+					System.out.println(getTime() + ": Warenkorb leer...");
 				} else {
 					this.kunde.zeigeInhaltWarenkorb();
 				}
@@ -340,7 +340,7 @@ public class Model extends Observable {
 										// ArrayList des
 				// Kunden
 			} else {
-				System.out.println(getTime() + ": pw falsch");
+				System.out.println(getTime() + ": Passwort nicht korrekt...");
 				throw new wrongPasswordOrUsernameException();
 			}
 		} catch (SQLException ex) {
@@ -384,7 +384,7 @@ public class Model extends Observable {
 					+ "', '"
 					+ verschluesselPW(kunde.getPasswort()) + "','nein');");
 			System.out.println(getTime() + ": " + stmt
-					+ " Kunde wurde hinzugefügt");
+					+ " Kunde wurde hinzugefügt...");
 
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Kunden inserieren");
@@ -407,7 +407,6 @@ public class Model extends Observable {
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT artikelBezeichnung FROM produkt;");
-			System.out.println("Aufruf autovervollstaendigung");
 			while (rs.next()) {
 				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
 			}
@@ -482,7 +481,7 @@ public class Model extends Observable {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
 							+ artikelNummer + ";");
-			System.out.println("json produkt");
+			
 			if (rs.next()) {
 				menge = new Integer(rs.getInt("lagermenge"));	
 			}
@@ -533,8 +532,8 @@ public class Model extends Observable {
 							+ artikelnr
 							+ "';");
 			if (anzahl != 0) {
-				System.out.println(getTime() + " ArtikelNummer: " + artikelnr
-						+ " bestellt");
+				System.out.println(getTime() + " ArtikelNummer " + artikelnr
+						+ " bestellt...");
 			}
 			stmt.close();
 			conn.close();
@@ -571,10 +570,12 @@ public class Model extends Observable {
 			int anzahl = stmt
 					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"
 							+ this.kunde.getKundenNummer() + "';");
+			if(anzahl==1){
+				System.out.println(getTime() + ": " + anzahl+ " Eintrag aus Warenkorb geloescht");
 
-			System.out.println(getTime() + ": " + anzahl
-					+ " Eintraege aus Warenkorb geloescht");
-
+			} else {
+				System.out.println(getTime() + ": " + anzahl+ " Eintraege aus Warenkorb geloescht");
+			}
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler beim aendern der Menge");
 			e.printStackTrace();
