@@ -1,7 +1,16 @@
-shop
+#Holzshop
+
+## Projektbeschreibung
+
+Ein Shop zur bestellen von verschiedenen Holzprodukte. Es beinhaltet entweder Produkte die im Außenbereich, 
+Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
+
 ====
 
-Web-Tech
+## Anforderungsanalyse
+
+====
+## Erste Ideen
 
 - Login / Registrieren
 - Zahlung
@@ -13,3 +22,21 @@ Web-Tech
 - Kundenservice
 - Neuheiten
 - Sprachen
+
+====
+
+## Architektur
+
+====
+
+## Verwendete Technologien
+
+====
+
+## Gelerntes
+
+====
+
+## Probleme
+
+====
