@@ -21,3 +21,4 @@ app/db/test.de
 *.classpath
 .classpath
 .classpath
+app/db/database
