@@ -91,7 +91,32 @@ public class Application extends Controller {
 	}
 
 
-	public static WebSocket<String> socket() {
+	public static WebSocket<JsonNode> socket() {
+
+		return new WebSocket<JsonNode>() {
+			public void onReady(WebSocket.In<JsonNode> in,
+					final WebSocket.Out<JsonNode> out) {
+				System.out.println(Model.sharedInstance.getTime()+": WebSocketArtikel ready...");
+				in.onMessage(new Callback<JsonNode>() {
+					public void invoke(JsonNode obj) {
+						
+						out.write(Model.sharedInstance.zeigeAktuelleMenge(obj));
+
+					}
+
+				});
+
+				in.onClose(new Callback0() {
+					public void invoke() {
+						System.out.println(Model.sharedInstance.getTime()+": Artikelansicht verlassen...");
+					}
+				});
+
+			}
+		};
+	}
+	
+	public static WebSocket<String> socketInWarenkorb() {
 
 		return new WebSocket<String>() {
 			public void onReady(WebSocket.In<String> in,

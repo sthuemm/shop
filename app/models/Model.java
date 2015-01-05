@@ -8,6 +8,7 @@ import java.util.Observable;
 import models.*;
 import play.db.*;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.DigestException;
 import java.security.MessageDigest;
@@ -15,7 +16,12 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Model extends Observable {
 
@@ -515,6 +521,44 @@ public class Model extends Observable {
 		return jsonArray;
 
 	}
+	
+	public static JsonNode zeigeAktuelleMenge(JsonNode obj){
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		
+		
+		JsonNode json = obj;
+		JsonNode jsonMenge = null;
+		String artikelNummer = obj.get("Artikel").asText();
+		Integer menge = null;
+		
+		try {
+			conn = DB.getConnection();
+			stmt = conn.createStatement();	
+			rs = stmt.executeQuery("SELECT * FROM produkt WHERE artikelNummer = '"+artikelNummer+"' ;");
+			
+			if (rs.next()) {
+				menge = new Integer(rs.getInt("lagermenge"));	
+			}
+			
+			ObjectMapper mapper = new ObjectMapper();
+			jsonMenge = mapper.readTree("{\"Menge\":\""+menge.toString()+"\"}");
+			
+			
+			
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		
+		return jsonMenge;
+	}
+	
 
 	public void mengeAendern(String artikelnr, int menge) {
 	

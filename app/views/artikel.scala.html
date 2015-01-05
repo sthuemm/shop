@@ -17,16 +17,24 @@
 		})
 		
 		function neueMenge(){
-			var artikelNummer = $("#artikelNummer").val();
-			
-			webSocket.send(artikelNummer);
+			var JsonString = {
+					Artikel:"@produkt.artikelNummer",
+					};
+					var JsonObj = JSON.stringify (JsonString);
+					webSocket.send(JsonObj);
 		};
 		
+	
+		
 		function receiveEvent(event){
-			$("#output").html("<p>aktuelle Restmenge: "+event.data+"</p>");
+			var obj = JSON.parse(event.data);
+			
+			$("#output").html("<p>aktuelle Restmenge: "+obj.Menge+" Stück</p>");
 		};
 
-
+		
+		
+		
 
 
 
@@ -42,8 +50,10 @@
 		}
 		
 		function loginWindow(){
+			
 			$("#loginWindow").show();
 		}
+		
 	</script>
 	
 	@if(produkt == null){
@@ -61,7 +71,7 @@
 					<p>@produkt.lagermenge Stück auf Lager</p>
 				}
 				
-			
+		
 			</div>	
 				@if(!kunde.benutzername.equals("guest")){
 				<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
@@ -69,13 +79,13 @@
 						<input id="anzahl" type="number" value="1" max="@produkt.lagermenge"
 							min="0" name="menge" onmousemove="ueberpruefeMenge()" onchange="neueMenge()">
 					</p>
-					<input type="hidden" id="artikelNummer" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
+					<input type="hidden" id="artikelDaten" name = "ausgewaehltesProdukt" value="@produkt.artikelNummer"/>
 					<div id="mengeNichtVorhanden"></div>
-					<input type="submit" value="In den Warenkorb" > 
+					<input type="submit" value="In den Warenkorb" onclick="inWarenkorb()"> 
 				</form>
-			} else {
-				<button onclick="loginWindow()">bitte einloggen</button>
-			}
+				} else {
+					<button onclick="loginWindow()">bitte einloggen</button>
+				}
 		</div>
 		<div class="col-md-4" id="kundenAusgabe"></div>
 		<div id="loginWindow" class="col-md-4"  style="box-shadow:8px 8px 8px #666; background-color: #58FA82; width:300px; height:200px; display:none">
@@ -91,4 +101,5 @@
 		</div>
 	</div>
 	}
+	
 } 
