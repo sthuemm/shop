@@ -15,10 +15,4 @@ server.pid
 *.eml
 /dist/
 .cache
-public/javascripts/countries.js
-app/db/test.de
-.classpath
-*.classpath
-.classpath
-.classpath
-app/db/database
+/.classpath

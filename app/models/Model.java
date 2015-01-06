@@ -34,6 +34,7 @@ public class Model extends Observable {
 	 */
 	
 	private Model() {
+		System.out.println("Play: "+play.core.PlayVersion.current());
 	}
 	
 	/*
