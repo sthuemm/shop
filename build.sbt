@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "org.xerial" % "sqlite-jdbc" % "3.7.15-M1",
-  "org.json"%"org.json"%"chargebee-1.0"
+  "org.json"%"org.json"%"chargebee-1.0",
+  "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
   )
