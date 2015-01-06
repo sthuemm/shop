@@ -14,9 +14,13 @@ import play.libs.F.Callback0;
 import play.mvc.WebSocket;
 
 public class Application extends Controller {
-
+	//Erstellt ein Formular für den Login
 	final static Form<Kunde> userForm = Form.form(Kunde.class);
 
+	/*
+	 * Rendert die Main Seite
+	 */
+	
 	public static Result index() {
 
 		return ok(mainPage.render(Model.sharedInstance.getKunde(),
@@ -24,38 +28,61 @@ public class Application extends Controller {
 
 	}
 
+	/*
+	 * Rendert die AGB Seite
+	 */
+	
 	public static Result agb() {
 
 		return ok(agb.render(Model.sharedInstance.getKunde()));
 
 	}
 
+	/*
+	 * Rendert die Artikel Seite
+	 */
+	
 	public static Result artikel(String ausgewaehltesProdukt) {
 
 		return ok(artikel.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.artikelnummerSuchen(ausgewaehltesProdukt),
 				userForm));
-
 	}
 
+	/*
+	 * Rendert die Datenschutz Seite
+	 */
+	
 	public static Result datenschutz() {
 		return ok(datenschutz.render(Model.sharedInstance.getKunde()));
 
 	}
-
+	
+	/*
+	 * Rendert die Holz in Aussenbereich Seite
+	 */
+	
 	public static Result holzAussen() {
 
 		return ok(holzAussen.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.getProdukteAussen()));
 
 	}
-
+	
+	/*
+	 * Rendert die Impressum Seite
+	 */
+	
 	public static Result impressum() {
 
 		return ok(impressum.render(Model.sharedInstance.getKunde()));
 
 	}
-
+	
+	/*
+	 * Rendert die Holz in Innenbereich Seite
+	 */
+	
 	public static Result holzInnen() {
 
 		return ok(holzInnen.render(Model.sharedInstance.getKunde(),
@@ -63,6 +90,10 @@ public class Application extends Controller {
 
 	}
 
+	/*
+	 * Rendert die Brenstoffe Seite
+	 */
+	
 	public static Result brennholz() {
 
 		return ok(brennholz.render(Model.sharedInstance.getKunde(),
@@ -70,17 +101,29 @@ public class Application extends Controller {
 
 	}
 
+	/*
+	 * Rendert die Kontakt Seite
+	 */
+	
 	public static Result kontakt() {
 
 		return ok(kontakt.render(Model.sharedInstance.getKunde()));
 
 	}
 
+	/*
+	 * Rendert die Konto Seite
+	 */
+	
 	public static Result konto() {
 
 		return ok(konto.render(Model.sharedInstance.getKunde(), userForm));
 
 	}
+	
+	/*
+	 * 
+	 */
 	
 	public static Result bestellungAbschliessen(){
 		
@@ -90,7 +133,10 @@ public class Application extends Controller {
 		
 	}
 
-
+	/*
+	 * 
+	 */
+	
 	public static WebSocket<JsonNode> socket() {
 
 		return new WebSocket<JsonNode>() {
@@ -115,6 +161,10 @@ public class Application extends Controller {
 			}
 		};
 	}
+	
+	/*
+	 * 
+	 */
 	
 	public static WebSocket<String> socketInWarenkorb() {
 
@@ -141,11 +191,19 @@ public class Application extends Controller {
 		};
 	}
 
+	/*
+	 * Rendert die Login Seite
+	 */
+	
 	public static Result login() {
 
 		return ok(login.render(userForm, Model.sharedInstance.getKunde()));
 	}
 
+	/*
+	 * 
+	 */
+	
 	public static Result submitLogin() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
@@ -158,6 +216,10 @@ public class Application extends Controller {
 		}
 	}
 
+	/*
+	 * 
+	 */
+	
 	public static Result submitKundendaten() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
@@ -171,6 +233,10 @@ public class Application extends Controller {
 		}
 	}
 
+	/*
+	 * Rendert die MainPage Seite
+	 */
+	
 	public static Result mainPage() {
 
 		return ok(mainPage.render(Model.sharedInstance.getKunde(),
@@ -178,12 +244,20 @@ public class Application extends Controller {
 
 	}
 
+	/*
+	 * Rendert die Neuheiten Seite
+	 */
+	
 	public static Result neuheiten() {
 
 		return ok(neuheiten.render(Model.sharedInstance.getKunde(),
 				Model.sharedInstance.getProdukteAlle()));
 	}
 
+	/*
+	 * Rendert die Registrierung Seite
+	 */
+	
 	public static Result registrierung() {
 
 		return ok(registrierung.render(userForm,
@@ -191,6 +265,10 @@ public class Application extends Controller {
 
 	}
 
+	/*
+	 * Rendert die Logout Seite
+	 */
+	
 	public static Result logout() {
 
 		return ok(mainPage.render(Model.sharedInstance.logout(),
@@ -203,7 +281,7 @@ public class Application extends Controller {
 	}
 
 	/*
-	 * Neuer Benutzer wird angelegt
+	 * Rendert die Registrierungsseite
 	 */
 
 	public static Result neuerUser() {
