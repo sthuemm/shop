@@ -22,10 +22,17 @@ public class Application extends Controller {
 	 */
 	
 	public static Result index() {
-
-		return ok(mainPage.render(Model.sharedInstance.getKunde(),
-				Model.sharedInstance.getProdukteAlle()));
-
+    	String username = session("User");
+    	System.out.println(username);
+    	if(username != Model.sharedInstance.getKunde().getBenutzername()) {
+    		System.out.println(username + "irgendwas");
+    		return ok(mainPage.render(Model.sharedInstance.getKunde(),
+    				Model.sharedInstance.getProdukteAlle()));
+    	}else{
+    		return ok(mainPage.render(Model.sharedInstance.getKunde(),
+    				Model.sharedInstance.getProdukteAlle()));
+    	}
+		
 	}
 
 	/*
@@ -200,17 +207,22 @@ public class Application extends Controller {
 		return ok(login.render(userForm, Model.sharedInstance.getKunde()));
 	}
 
-	/*
-	 * 
-	 */
+
 	
 	public static Result submitLogin() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
 		try {
 			Model.sharedInstance.loginUeberpruefung(filledForm.get());
-			return ok(mainPage.render(Model.sharedInstance.getKunde(),
-					Model.sharedInstance.getProdukteAlle()));
+			if (!filledForm.hasErrors()){
+				 session().clear();
+			     session("User", filledForm.get().benutzername);
+			     System.out.println(session());
+				return ok(mainPage.render(Model.sharedInstance.getKunde(),Model.sharedInstance.getProdukteAlle()));
+			} else {
+		        return badRequest(login.render(filledForm, Model.sharedInstance.getKunde()));
+			}
+		    		
 		} catch (Exception e) {
 			return ok(loginFehler.render(null));
 		}
@@ -270,7 +282,8 @@ public class Application extends Controller {
 	 */
 	
 	public static Result logout() {
-
+		session().clear();
+		System.out.println(session());
 		return ok(mainPage.render(Model.sharedInstance.logout(),
 				Model.sharedInstance.getProdukteAlle()));
 	}
