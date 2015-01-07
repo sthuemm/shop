@@ -9,7 +9,7 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 
 ## Anforderungsanalyse
 
-![Use-Case Diagramm](/public/images/UseCase.JPG )
+![Use-Case Diagramm](/public/images/UseCase.jpg "Use-Case")
 
 ====
 ## Erste Ideen
