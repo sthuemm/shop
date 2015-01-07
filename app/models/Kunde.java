@@ -23,15 +23,20 @@ public class Kunde {
 	public String nachname;
 	public String benutzername;
 	public String email;
-	public String email2;
 	public String strasse;
 	public String hausnummer;
 	public String plz;
 	public String ort;
 	public String passwort;
-	private List<Produkt> warenkorb = new ArrayList<>();
+
 	
+	public Kunde(){
+		this.benutzername = "guest";
+	}
 	
+	public Kunde(String benutzername){
+		this.benutzername = benutzername;
+	}
 
 	public Kunde(String kundenNummer, String vorname, String anrede,
 			String nachname, String username, String email, String strasse,
@@ -63,6 +68,22 @@ public class Kunde {
 				+ "Adresse: "+strasse+" "+hausnummer+", "+ plz +" "+ort;
 	}
 
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	public void gibKundeAus(){
+		System.out.println("******* KUNDENDATEN **********************************");
+		this.toString();
+		System.out.println("******************************************************");
+	}
+
 	public String getKundenNummer() {
 		return kundenNummer;
 	}
@@ -71,12 +92,12 @@ public class Kunde {
 		this.kundenNummer = kundenNummer;
 	}
 
-	public String getTelefonnummer() {
+	public String getTelefon() {
 		return telefon;
 	}
 
-	public void setTelefonnummer(String telefonnummer) {
-		this.telefon = telefonnummer;
+	public void setTelefon(String telefon) {
+		this.telefon = telefon;
 	}
 
 	public boolean isAdmin() {
@@ -85,6 +106,14 @@ public class Kunde {
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public String getAnrede() {
+		return anrede;
+	}
+
+	public void setAnrede(String anrede) {
+		this.anrede = anrede;
 	}
 
 	public String getVorname() {
@@ -158,69 +187,7 @@ public class Kunde {
 	public void setPasswort(String passwort) {
 		this.passwort = passwort;
 	}
-
-	public Kunde() {
-		this.benutzername = "guest";
-	}	// Standardkonstruktor
-
-	public String getAnrede() {
-		return anrede;
-	}
-
-	public void setAnrede(String anrede) {
-		this.anrede = anrede;
-	}
-
-	public String getTelefon() {
-		return telefon;
-	}
-
-	public void setTelefon(String telefon) {
-		this.telefon = telefon;
-	}
-
-	public String getEmail2() {
-		return email2;
-	}
-
-	public void setEmail2(String email2) {
-		this.email2 = email2;
-	}
-
-	public List<Produkt> getWarenkorb() {
-		return warenkorb;
-	}
-
-	public void setWarenkorb(Produkt produkt) {
-		this.warenkorb.add(produkt);
-	}
 	
-	public void clearWarenkorb(){
-		this.warenkorb.clear();
-	}
 	
-	public void updateWarenkorb(ArrayList<Produkt> produkte){
-	
-		for(Produkt produkt : produkte){
-			if(this.warenkorb.contains(produkt)){
-				this.warenkorb.add(produkt);
-			}
-			
-		}
-	}
-	
-	public void zeigeInhaltWarenkorb(){
-		System.out.println("****** WARENKORB ************************************");
-		for(Produkt produkt : this.warenkorb){
-			System.out.println(produkt);
-		}
-		System.out.println("*****************************************************");
-	}
-	
-	public void gibKundeAus(){
-		System.out.println("******* KUNDENDATEN **********************************");
-		this.toString();
-		System.out.println("******************************************************");
-	}
 
 }

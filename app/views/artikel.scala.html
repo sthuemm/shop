@@ -1,4 +1,4 @@
- @(kunde: Kunde, produkt: Produkt, userForm: Form[models.Kunde])
+ @(kunde: String, produkt: Produkt, userForm: Form[models.Kunde])
  @import helper._
  
  @main("Artikel")(kunde){
@@ -73,7 +73,7 @@
 				
 		
 			</div>	
-				@if(!kunde.benutzername.equals("guest")){
+				@if(!kunde.equals("guest")){
 				<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
 					<p>Menge: 
 						<input id="anzahl" type="number" value="1" max="@produkt.lagermenge"

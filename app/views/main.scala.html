@@ -1,4 +1,4 @@
-@(title: String)(kunde: Kunde)(content: Html)
+@(title: String)(kunde: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -110,20 +110,15 @@
 							</div>
 							<button type="submit" class="btn btn-default">Los</button>
 						</form>
-						@if(kunde!=null && kunde.isAdmin()==true){
-							<ul class="nav navbar-nav">
-								<li><a href=@routes.Application.neuesProdukt>Produkte hinzufügen</a></li>
-							</ul>
-						}
-						
+												
 				   <ul class="nav navbar-nav navbar-right">
 				  	 	<li><a href=@routes.Application.warenkorb>Warenkorb</a></li>
-						@if(kunde.benutzername.equals("guest")){
+						@if(kunde.equals("guest")){
 	       					<li><a href=@routes.Application.login>Hallo Fremder</a></li>
 	       					<li><a href=@routes.Application.login>Login</a></li>
 	       			
 	       				} else {
-	       				<li><a href="/konto" >Hallo @kunde.getVorname()</a></li>
+	       				<li><a href="/konto" >Hallo @kunde</a></li>
 	       				<li><a href=@routes.Application.logout>Logout</a></li>
 	       				}
 	       				<li><a href=@routes.Application.registrierung>Registrieren</a></li>

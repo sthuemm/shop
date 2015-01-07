@@ -110,7 +110,7 @@ public class Model extends Observable {
 		} else {
 			System.out.println(getTime() + ": nicht eingeloggt");
 		}
-		getWarenkorb();
+		
 
 	}
 	
@@ -296,7 +296,8 @@ public class Model extends Observable {
 	 * Produkte aus dem Warenkorb werden gezeigt/geholt
 	 */
 	
-	public void getWarenkorb() {
+	public List<Produkt> getWarenkorb(String kundenNummer) {
+		List<Produkt> produkte = new ArrayList<Produkt>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -310,9 +311,9 @@ public class Model extends Observable {
 					rs = stmt
 							.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-									+ this.kunde.getKundenNummer() + "';");
+									+ kundenNummer + "';");
 					System.out.println(getTime()+": Lade Warenkorb des Kunden...");
-					this.kunde.clearWarenkorb();
+					
 					while (rs.next()) {
 						double preis = rs.getDouble("preis");
 						String artikelNummer = rs.getString("artikelNummer");
@@ -323,17 +324,12 @@ public class Model extends Observable {
 						int lagermenge = rs.getInt("lagermenge");
 						int bestellmenge = rs.getInt("bestellmenge");
 	
-						this.kunde.setWarenkorb(new Produkt(preis, artikelNummer,
+						produkte.add(new Produkt(preis, artikelNummer,
 								artikelBezeichnung, bildPfad, kategorie,
 								lagermenge, bestellmenge));
 	
 					}
 
-				if (this.kunde.getWarenkorb().isEmpty()) {
-					System.out.println(getTime() + ": Warenkorb leer...");
-				} else {
-					this.kunde.zeigeInhaltWarenkorb();
-				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -345,6 +341,8 @@ public class Model extends Observable {
 			
 			System.out.println(getTime() + ": Kunde nicht eingeloggt");
 		}
+		
+		return produkte;
 
 	}
 	
@@ -370,17 +368,18 @@ public class Model extends Observable {
 	 * Login Daten werden überprüft
 	 */
 	
-	public void loginUeberpruefung(Kunde kunde) throws Exception {
+	public Kunde loginUeberpruefung(Kunde kunde) throws Exception {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		Kunde kundeLoggedIn = null;
 		
 		try {
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt
-					.executeQuery("SELECT * FROM users WHERE username ='"
-							+ kunde.getBenutzername() + "'AND pass = '"
+					.executeQuery("SELECT * FROM Kunde WHERE benutzername ='"
+							+ kunde.getBenutzername() + "'AND passwort = '"
 							+ verschluesselPW(kunde.getPasswort()) + "';");
 
 			if (rs.next()) {
@@ -388,26 +387,25 @@ public class Model extends Observable {
 
 				boolean isAdmin = false;
 
-				if (rs.getString("admin").equals("ja")) {
+				if (rs.getString("isAdmin").equals("ja")) {
 					isAdmin = true;
 				}
-				this.kunde = new Kunde(
+				kundeLoggedIn = new Kunde(
 						// instanziiert Kunden der aktuell eingeloggt ist
 						rs.getString("kundenNummer"), rs.getString("vorname"),
 						rs.getString("anrede"), rs.getString("nachname"),
-						rs.getString("username"), rs.getString("email"),
-						rs.getString("str"), rs.getString("hausnr"),
+						rs.getString("benutzername"), rs.getString("email"),
+						rs.getString("strasse"), rs.getString("hausnummer"),
 						rs.getString("plz"), rs.getString("ort"),
-						rs.getString("telefonnr"), rs.getString("pass"),
+						rs.getString("telefon"), rs.getString("passwort"),
 						isAdmin);
 				System.out.println(getTime() + ": Login von:\n " + this.kunde);
 
-				this.getWarenkorb(); // Läd Warenkorb aus der DB in die
-										// ArrayList des
+				
 				// Kunden
 			} else {
-				System.out.println(getTime() + ": Passwort nicht korrekt...");
-				throw new wrongPasswordOrUsernameException();
+				System.out.println(getTime() + ": passwortwort nicht korrekt...");
+				
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -417,6 +415,9 @@ public class Model extends Observable {
 			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
 			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
+		
+		
+		return kundeLoggedIn;
 	}
 	
 	/*
@@ -450,7 +451,7 @@ public class Model extends Observable {
 					+ "', '"
 					+ kunde.getOrt()
 					+ "', '"
-					+ kunde.getTelefonnummer()
+					+ kunde.getTelefon()
 					+ "', '"
 					+ verschluesselPW(kunde.getPasswort()) + "','nein');");
 			System.out.println(getTime() + ": " + stmt
@@ -533,20 +534,20 @@ public class Model extends Observable {
 	}
 
 	/*
-	 * Verschlüsselung des Passworts
+	 * Verschlüsselung des passwortworts
 	 */
 
-	public static String verschluesselPW(String pass)
+	public static String verschluesselPW(String passwort)
 			throws NoSuchAlgorithmException {
 
 		MessageDigest md = MessageDigest.getInstance("SHA");
-		md.update(pass.getBytes());
-		String passwortString = "";
+		md.update(passwort.getBytes());
+		String passwortwortString = "";
 		for (byte b : md.digest()) {
-			passwortString += Byte.toString(b);
+			passwortwortString += Byte.toString(b);
 		}
 
-		return passwortString;
+		return passwortwortString;
 	}
 	
 	/*
@@ -677,22 +678,25 @@ public class Model extends Observable {
 	/*
 	 * 
 	 */
-	public void bestellArtikelAusWarenkorb() {
 
-		for (Produkt produkt : this.kunde.getWarenkorb()) {
+	public void bestellArtikelAusWarenkorb(String kundenNummer) {
+
+		for (Produkt produkt : getWarenkorb(kundenNummer)) {
 			mengeAendern(produkt.artikelNummer, produkt.bestellmenge);
 		}
-		this.kunde.clearWarenkorb();
-		warenkorbDatenbankLeeren();
-		getWarenkorb();
+		
+		warenkorbDatenbankLeeren(kundenNummer);
+		
 
 	}
+	
+	
 	
 	/*
 	 * Löscht Produkte aus der Warenkorb anhand der Kundennumer
 	 */
 	
-	public void warenkorbDatenbankLeeren() {
+	public void warenkorbDatenbankLeeren(String kundenNummer) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -703,7 +707,7 @@ public class Model extends Observable {
 
 			int anzahl = stmt
 					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"
-							+ this.kunde.getKundenNummer() + "';");
+							+ kundenNummer + "';");
 			if(anzahl==1){
 				System.out.println(getTime() + ": " + anzahl+ " Eintrag aus Warenkorb geloescht");
 

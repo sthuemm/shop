@@ -1,10 +1,10 @@
- @(kunde: Kunde, produkte:List[Produkt])
+ @(kunde: String, produkte:List[Produkt])
  @main("Warenkorb")(kunde){
  
 
 
 	
-		@if(kunde.benutzername.equals("guest")){
+		@if(kunde.equals("guest")){
 			<div><wbr>Bitte loggen Sie sich ein</div>
 		} else { @if(produkte.isEmpty()){
 			<div>Ihr Warenkorb ist leider leer. Bitte suchen Sie sich doch etwas aus unserem reichhalten Sortiment aus </div>

@@ -1,4 +1,4 @@
-@(kunde: Kunde, produkte: List[Produkt])
+@(kunde: String, produkte: List[Produkt])
 @main("Neuheiten")(kunde){
 	@if(produkte.isEmpty){
 		<wbr>keine Neuheiten verfügbar. Bitte besuchen Sie uns später noch einmal (wenn die Datenbank wieder läuft)

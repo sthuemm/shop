@@ -1,4 +1,4 @@
-@(kunde: Kunde, userForm: Form[models.Kunde])
+@(kunde: String, userForm: Form[models.Kunde])
 @import helper._
 
 @main("Login")(kunde){
@@ -9,14 +9,14 @@
 
 	@helper.form(action = routes.Application.submitKundendaten(), 'id -> "userForm") {
 		@helper.inputPassword(userForm("passwort"))
-		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text" value="@kunde.getVorname()" @toHtmlArgs(args)>}
-		@helper.input(userForm("nachname")){ (id, name, value, args) => <input type="text" value="@kunde.getNachname()" @toHtmlArgs(args)>}
-		@helper.input(userForm("benutzername")){ (id, name, value, args) => <input type="text" value="@kunde.getBenutzername()" @toHtmlArgs(args)>}
-		@helper.input(userForm("email")){ (id, name, value, args) => <input type="text" value="@kunde.getEmail()" @toHtmlArgs(args)>}
-		@helper.input(userForm("strasse")){ (id, name, value, args) => <input type="text" value="@kunde.getStrasse()" @toHtmlArgs(args)>}
-		@helper.input(userForm("hausnummer")){ (id, name, value, args) => <input type="text" value="@kunde.getHausnummer()" @toHtmlArgs(args)>}
-		@helper.input(userForm("ort")){ (id, name, value, args) => <input type="text" value="@kunde.getOrt()" @toHtmlArgs(args)>}
-		@helper.input(userForm("telefonnummer")){ (id, name, value, args) => <input type="text" value="@kunde.getTelefonnummer()" @toHtmlArgs(args)>}
+		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("nachname")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("benutzername")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("email")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("strasse")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("hausnummer")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("ort")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
+		@helper.input(userForm("telefon")){ (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
 		
 		<input type ="submit" value="senden">
 	
