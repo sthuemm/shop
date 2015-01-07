@@ -1,4 +1,4 @@
-package controllers;
+﻿package controllers;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -21,6 +21,7 @@ public class Application extends Controller {
 	 * Rendert die Main Seite
 	 */
 
+
 	public static Result index() {
 		String username = session("User1");
 		if (username != null) {
@@ -31,6 +32,9 @@ public class Application extends Controller {
 					Model.sharedInstance.getProdukte("alle")));
 		}
 
+
+	
+	
 	}
 
 	/*
@@ -246,9 +250,27 @@ public class Application extends Controller {
 	 * Rendert die Login Seite
 	 */
 
-	/*
-	 * 
-	 */
+
+	
+	public static Result submitLogin() {
+		Form<Kunde> filledForm = userForm.bindFromRequest();
+
+		try {
+			Model.sharedInstance.loginUeberpruefung(filledForm.get());
+			if (!filledForm.hasErrors()){
+				 session().clear();
+			     session("User", filledForm.get().benutzername);
+			     System.out.println(session());
+				return ok(mainPage.render(Model.sharedInstance.getKunde(),Model.sharedInstance.getProdukteAlle()));
+			} else {
+		        return badRequest(login.render(filledForm, Model.sharedInstance.getKunde()));
+			}
+		    		
+		} catch (Exception e) {
+			return ok(loginFehler.render(null));
+		}
+	}
+
 
 	/*
 	 * 
@@ -321,6 +343,7 @@ public class Application extends Controller {
 	 * Rendert die Logout Seite
 	 */
 
+
 	public static Result logout() {
 		String username = session("User1");
 		if (username != null) {
@@ -330,6 +353,7 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
+
 	}
 
 	public static Result autovervollstaendigungSuche(String produkt) {
