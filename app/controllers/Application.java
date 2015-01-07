@@ -1,4 +1,4 @@
-﻿package controllers;
+package controllers;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -116,14 +116,12 @@ public class Application extends Controller {
 
 	public static Result holzInnen() {
 		String username = session("User1");
+		
 		if (username != null) {
-			return ok(holzInnen.render(username,
-					Model.sharedInstance.getProdukteInnen()));
+			return ok(holzInnen.render(username, Model.sharedInstance.getProdukteInnen()));
 		} else {
-			return ok(holzInnen.render("guest",
-					Model.sharedInstance.getProdukteInnen()));
+			return ok(holzInnen.render("guest",Model.sharedInstance.getProdukteInnen()));
 		}
-
 	}
 
 	/*
@@ -251,25 +249,7 @@ public class Application extends Controller {
 	 */
 
 
-	
-	public static Result submitLogin() {
-		Form<Kunde> filledForm = userForm.bindFromRequest();
 
-		try {
-			Model.sharedInstance.loginUeberpruefung(filledForm.get());
-			if (!filledForm.hasErrors()){
-				 session().clear();
-			     session("User", filledForm.get().benutzername);
-			     System.out.println(session());
-				return ok(mainPage.render(Model.sharedInstance.getKunde(),Model.sharedInstance.getProdukteAlle()));
-			} else {
-		        return badRequest(login.render(filledForm, Model.sharedInstance.getKunde()));
-			}
-		    		
-		} catch (Exception e) {
-			return ok(loginFehler.render(null));
-		}
-	}
 
 
 	/*
@@ -345,13 +325,10 @@ public class Application extends Controller {
 
 
 	public static Result logout() {
-		String username = session("User1");
-		if (username != null) {
+		
 			session().clear();
-			return redirect("/");
-		} else {
-			return redirect("/");
-		}
+			return redirect("/mainPage");
+		
 		
 
 	}
@@ -459,5 +436,6 @@ public class Application extends Controller {
 			return ok(loginFehler.render(null));
 		}
 	}
+
 
 }

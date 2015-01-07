@@ -1,4 +1,4 @@
-﻿package models;
+package models;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -363,8 +363,8 @@ public class Model extends Observable {
 	 */
 
 
-	public void getWarenkorb() {
-
+	public List<Produkt> getWarenkorb(String kundenNummer) {
+		List<Produkt> produkte = new ArrayList<Produkt>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -397,31 +397,6 @@ public class Model extends Observable {
 								lagermenge, bestellmenge));
 	
 					}
-
-
-				rs = stmt
-						.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
-								+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-								+ this.kunde.getKundenNummer() + "';");
-				System.out
-						.println(getTime() + ": Lade Warenkorb des Kunden...");
-				this.kunde.clearWarenkorb();
-				while (rs.next()) {
-					double preis = rs.getDouble("preis");
-					String artikelNummer = rs.getString("artikelNummer");
-					String artikelBezeichnung = rs
-							.getString("artikelBezeichnung");
-					String bildPfad = rs.getString("bildPfad");
-					String kategorie = rs.getString("kategorie");
-					int lagermenge = rs.getInt("lagermenge");
-					int bestellmenge = rs.getInt("bestellmenge");
-
-					this.kunde.setWarenkorb(new Produkt(preis, artikelNummer,
-							artikelBezeichnung, bildPfad, kategorie,
-							lagermenge, bestellmenge));
-
-				}
-
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -475,35 +450,23 @@ public class Model extends Observable {
 	/*
 	 * Login Daten werden überprüft
 	 */
-<<<<<<< HEAD
-	
-	public Kunde loginUeberpruefung(Kunde kunde) throws Exception {
-=======
 
-	public void loginUeberpruefung(Kunde kunde) throws Exception {
->>>>>>> cfacd3f0ceee8916e7ec9530095b94b79789d04a
+
+	public Kunde loginUeberpruefung(Kunde kunde) throws Exception {
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-<<<<<<< HEAD
+
 		Kunde kundeLoggedIn = null;
-		
-		try {
-			conn = DB.getConnection();
-			stmt = conn.createStatement();
-			rs = stmt
-					.executeQuery("SELECT * FROM Kunde WHERE benutzername ='"
-							+ kunde.getBenutzername() + "'AND passwort = '"
-							+ verschluesselPW(kunde.getPasswort()) + "';");
-=======
-		String select = "SELECT * FROM users WHERE username = ? AND pass = ?;";
+
+		String select = "SELECT * FROM Kunde WHERE benutzername = ? AND passwort = ?;";
 		try {
 			conn = DB.getConnection();
 			stmt = conn.prepareStatement(select);
 			stmt.setString(1, kunde.getBenutzername());
 			stmt.setString(2, verschluesselPW(kunde.getPasswort()));
 			rs = stmt.executeQuery();
->>>>>>> cfacd3f0ceee8916e7ec9530095b94b79789d04a
 
 			if (rs.next()) {
 				System.out.println(getTime() + ": pw richtig");
@@ -534,27 +497,10 @@ public class Model extends Observable {
 			ex.printStackTrace();
 			System.out.println(getTime() + ": Fehler login");
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
-		
-		
 		return kundeLoggedIn;
 	}
 
@@ -566,38 +512,13 @@ public class Model extends Observable {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
-		String insert = "insert into users(kundenNummer,anrede,vorname,nachname,"
-				+ "username,email,str,hausnr,plz,ort,telefonnr,pass,admin)"
-				+ " values((SELECT MAX (kundenNummer) FROM users)+1, "
+		String insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+				+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
+				+ " values((SELECT MAX (kundenNummer) FROM Kunde)+1, "
 				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		try {
 			conn = DB.getConnection();
-<<<<<<< HEAD
-			stmt = conn.createStatement();
-			stmt.executeUpdate("insert into users values((SELECT MAX (kundenNummer) FROM users)+1, '"
-					+ kunde.getAnrede()
-					+ "', '"
-					+ kunde.getVorname()
-					+ "', '"
-					+ kunde.getNachname()
-					+ "', '"
-					+ kunde.getBenutzername()
-					+ "', '"
-					+ kunde.getEmail()
-					+ "', '"
-					+ kunde.getStrasse()
-					+ "', '"
-					+ kunde.getHausnummer()
-					+ "', '"
-					+ kunde.getPlz()
-					+ "', '"
-					+ kunde.getOrt()
-					+ "', '"
-					+ kunde.getTelefon()
-					+ "', '"
-					+ verschluesselPW(kunde.getPasswort()) + "','nein');");
-			System.out.println(getTime() + ": " + stmt
-=======
+
 			stmt = conn.prepareStatement(insert);
 			stmt.setString(1, kunde.getAnrede());
 			stmt.setString(2, kunde.getVorname());
@@ -608,14 +529,11 @@ public class Model extends Observable {
 			stmt.setString(7, kunde.getHausnummer());	
 			stmt.setString(8, kunde.getPlz());	
 			stmt.setString(9, kunde.getOrt());	
-			stmt.setString(10, kunde.getTelefonnummer());	
+			stmt.setString(10, kunde.getTelefon());	
 			stmt.setString(11, verschluesselPW(kunde.getPasswort()));	
 			stmt.setString(12, "nein");	
 			stmt.executeUpdate();
 
-			System.out.println(getTime() + ": " + 99
->>>>>>> cfacd3f0ceee8916e7ec9530095b94b79789d04a
-					+ " Kunde wurde hinzugefügt...");
 
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Kunden inserieren");
@@ -898,26 +816,15 @@ public class Model extends Observable {
 		}
 		
 		warenkorbDatenbankLeeren(kundenNummer);
-		
-
 	}
-<<<<<<< HEAD
-	
-	
-	
+
+
 	/*
 	 * Löscht Produkte aus der Warenkorb anhand der Kundennumer
 	 */
-	
+
 	public void warenkorbDatenbankLeeren(String kundenNummer) {
-=======
 
-	/*
-	 * Löscht Produkte aus der Warenkorb anhand der Kundennumer
-	 */
-
-	public void warenkorbDatenbankLeeren() {
->>>>>>> cfacd3f0ceee8916e7ec9530095b94b79789d04a
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -927,17 +834,11 @@ public class Model extends Observable {
 			stmt = conn.createStatement();
 
 			int anzahl = stmt
-					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"
-<<<<<<< HEAD
-							+ kundenNummer + "';");
-			if(anzahl==1){
-				System.out.println(getTime() + ": " + anzahl+ " Eintrag aus Warenkorb geloescht");
-=======
-							+ this.kunde.getKundenNummer() + "';");
+					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"+ kundenNummer + "';");
+			
 			if (anzahl == 1) {
 				System.out.println(getTime() + ": " + anzahl
 						+ " Eintrag aus Warenkorb geloescht");
->>>>>>> cfacd3f0ceee8916e7ec9530095b94b79789d04a
 
 			} else {
 				System.out.println(getTime() + ": " + anzahl
@@ -947,25 +848,11 @@ public class Model extends Observable {
 			System.out.println(getTime() + ": Fehler beim aendern der Menge");
 			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
+			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
+			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
+			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
 		}
 	}
+	
 
 }

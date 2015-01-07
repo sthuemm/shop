@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//app/controllers/Application.java=UTF-8
+encoding//app/models/Model.java=UTF-8
 encoding//app/views/agb.scala.html=UTF-8
 encoding//app/views/artikel.scala.html=UTF-8
 encoding//app/views/brennholz.scala.html=UTF-8
