@@ -98,8 +98,8 @@ public class Model extends Observable {
 	 * Menge inserieren
 	 */
 
-	public void setWarenkorb(String artikelnr, String menge) {
-		if (kunde != null) {
+	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
+		
 
 			Connection conn = null;
 			Statement stmt = null;
@@ -111,7 +111,7 @@ public class Model extends Observable {
 				int anzahl = stmt
 						.executeUpdate("insert into Warenkorb values ("
 								+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
-								+ kunde.getKundenNummer() + "," + artikelnr
+								+ kundenNummer + "," + artikelnr
 								+ "," + menge + ");");
 				System.out.println(getTime() + ": " + anzahl
 						+ " Artikel in Warenkorb gelegt");
@@ -138,9 +138,7 @@ public class Model extends Observable {
 					}
 				}
 			}
-		} else {
-			System.out.println(getTime() + ": nicht eingeloggt");
-		}
+		
 		
 
 	}

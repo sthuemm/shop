@@ -91,7 +91,7 @@
 	
 		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*", '_id -> "benutzername")
 		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort*", '_id -> "passwort")
-		@helper.inputRadioGroup(userForm("anrede"), options = Seq("H" -> "Herr","F" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")
+		@helper.inputRadioGroup(userForm("anrede"), options = Seq("Herr" -> "Herr","Frau" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")
 		@helper.inputText(userForm("vorname"), '_label -> "Vorname*", '_id -> "vorname")
 		@helper.inputText(userForm("nachname"), '_label -> "Nachname*", '_id -> "nachname")
 		@helper.inputText(userForm("strasse"), '_label -> "Straße*", '_id -> "strasse")

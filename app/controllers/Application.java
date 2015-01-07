@@ -399,7 +399,7 @@ public class Application extends Controller {
 	public static Result inWarenkorb(String ausgewaehltesProdukt, String menge) {
 		String username = session("User1");
 		if (username != null) {
-			Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge);
+			Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge, session("UserKundennummer"));
 			return ok(warenkorb.render(username, Model.sharedInstance.getWarenkorb(session("UserKundennummer"))));
 		} else {
 			return redirect("/login");
