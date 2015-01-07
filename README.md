@@ -23,6 +23,7 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 - Neuheiten
 - Sprachen
 
+![Alternativer Text](/shop/public/images/wireframe/artikel.JPG "Artikelseite")
 ====
 
 ## Architektur
