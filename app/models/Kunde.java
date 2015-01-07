@@ -32,6 +32,7 @@ public class Kunde {
 	
 	public Kunde(){
 		this.benutzername = "guest";
+		this.kundenNummer = "0000";
 	}
 	
 	public Kunde(String benutzername){

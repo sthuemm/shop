@@ -452,7 +452,7 @@ public class Model extends Observable {
 	 */
 
 
-	public Kunde loginUeberpruefung(Kunde kunde) throws Exception {
+	public Kunde loginUeberpruefung(Kunde kunde) {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -485,12 +485,12 @@ public class Model extends Observable {
 						rs.getString("plz"), rs.getString("ort"),
 						rs.getString("telefon"), rs.getString("passwort"),
 						isAdmin);
-				System.out.println(getTime() + ": Login von:\n " + this.kunde);
+				System.out.println(getTime() + ": Login von:\n " + kundeLoggedIn);
 
 				
 				// Kunden
 			} else {
-				System.out.println(getTime() + ": passwortwort nicht korrekt...");
+				System.out.println(getTime() + ": passwort nicht korrekt...");
 				
 			}
 		} catch (SQLException ex) {
@@ -640,17 +640,23 @@ public class Model extends Observable {
 	 * Verschlüsselung des passwortworts
 	 */
 
-	public static String verschluesselPW(String passwort)
-			throws NoSuchAlgorithmException {
-
-		MessageDigest md = MessageDigest.getInstance("SHA");
-		md.update(passwort.getBytes());
-		String passwortwortString = "";
-		for (byte b : md.digest()) {
-			passwortwortString += Byte.toString(b);
+	public static String verschluesselPW(String passwort) {
+		String passwortString = "";
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA");
+			md.update(passwort.getBytes());
+			
+			for (byte b : md.digest()) {
+				passwortString += Byte.toString(b);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 
-		return passwortwortString;
+		return passwortString;
 	}
 
 	/*

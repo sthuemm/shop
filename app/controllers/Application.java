@@ -417,24 +417,29 @@ public class Application extends Controller {
 		session().clear();
 		return ok(login.render(userForm, "guest"));
 	}
+	
+	public static Result loginError(){
+		return ok(loginFehler.render("guest"));
+	}
 
 	public static Result submitLogin() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
-		try {
+	
 
 			session().clear();
-			session("User1",
-					Model.sharedInstance.loginUeberpruefung(filledForm.get()).vorname);
-			session("UserKundennummer",
-					Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
-			System.out.println(session("User1"));
-			System.out.println(session("UserKundennummer"));
-			return redirect("/mainPage");
+			if(Model.sharedInstance.loginUeberpruefung(filledForm.get())!=null){
+				session("User1",Model.sharedInstance.loginUeberpruefung(filledForm.get()).vorname);
+				session("UserKundennummer",Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
+				System.out.println(session("User1"));
+				System.out.println(session("UserKundennummer"));
+				return redirect("/mainPage");
+			} else {
+				return redirect("/loginFehler");
+			}
+			
 
-		} catch (Exception e) {
-			return ok(loginFehler.render(null));
-		}
+		
 	}
 
 
