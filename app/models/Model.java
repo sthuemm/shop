@@ -735,9 +735,9 @@ public class Model extends Observable {
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		JsonNode json = obj;
+		
 		JsonNode jsonMenge = null;
-		String artikelNummer = obj.get("Artikel").asText();
+		String artikelNummer = obj.get("Artikelnummer").asText();
 		Integer menge = null;
 
 		try {
@@ -752,8 +752,8 @@ public class Model extends Observable {
 			}
 
 			ObjectMapper mapper = new ObjectMapper();
-			jsonMenge = mapper.readTree("{\"Menge\":\"" + menge.toString()
-					+ "\"}");
+			jsonMenge = mapper.readTree("{\"Artikelnummer\":\""+artikelNummer+"\",\"Menge\":\"" + menge.toString()	+ "\"}");
+			System.out.println("JSON-Menge: "+jsonMenge);
 
 		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
@@ -782,7 +782,7 @@ public class Model extends Observable {
 		return jsonMenge;
 	}
 
-	public void mengeAendern(String artikelnr, int menge) {
+	public void mengeAendern(String artikelNummer, int menge) {
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -795,11 +795,16 @@ public class Model extends Observable {
 					.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - "
 							+ menge
 							+ " WHERE artikelNummer = '"
-							+ artikelnr
+							+ artikelNummer
 							+ "';");
 			if (anzahl != 0) {
-				System.out.println(getTime() + " ArtikelNummer " + artikelnr
+				System.out.println(getTime() + " ArtikelNummer " + artikelNummer
 						+ " bestellt...");
+				if(countObservers()>0){
+					setChanged();
+					notifyObservers(artikelNummer);
+				}
+				
 			}
 			stmt.close();
 			conn.close();

@@ -28,8 +28,12 @@
 		
 		function receiveEvent(event){
 			var obj = JSON.parse(event.data);
+		
+		
 			
-			$("#output").html("<p>aktuelle Restmenge: "+obj.Menge+" Stück</p>");
+			//$("#output").html("<p>aktuelle Restmenge: "+obj.Menge+" Stück</p>");
+			$("#menge"+obj.Artikelnummer).html("<p>"+obj.Menge+" Stück auf Lager</p>");
+			
 		};
 
 		
@@ -63,7 +67,7 @@
 		<div class="col-md-4" style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; width: 300px; padding: 15px" >
 			<img src=/assets/@produkt.bildPfad width="250" height="150">
 			<p>@produkt.artikelBezeichnung</p>
-			<div id="output">
+			<div id="menge@produkt.artikelNummer">
 		
 				@if(produkt.lagermenge < 10){
 					<p">nur noch @produkt.lagermenge Stück auf Lager</p>

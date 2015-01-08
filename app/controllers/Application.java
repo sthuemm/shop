@@ -1,6 +1,11 @@
 package controllers;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -16,6 +21,9 @@ import play.mvc.WebSocket;
 public class Application extends Controller {
 	// Erstellt ein Formular für den Login
 	final static Form<Kunde> userForm = Form.form(Kunde.class);
+	static HashMap<Integer, ShopObserver> observer = new HashMap<>();
+	
+	
 
 	/*
 	 * Rendert die Main Seite
@@ -23,9 +31,9 @@ public class Application extends Controller {
 
 
 	public static Result index() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(mainPage.render(username,
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(mainPage.render(kunde,
 					Model.sharedInstance.getProdukte("alle")));
 		} else {
 			return ok(mainPage.render("guest",
@@ -42,9 +50,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result agb() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(agb.render(username));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(agb.render(kunde));
 		} else {
 			return ok(agb.render("guest"));
 		}
@@ -56,9 +64,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result artikel(String ausgewaehltesProdukt) {
-		String username = session("User1");
-		if (username != null) {
-			return ok(artikel.render(username, Model.sharedInstance
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(artikel.render(kunde, Model.sharedInstance
 					.artikelnummerSuchen(ausgewaehltesProdukt), userForm));
 		} else {
 			return ok(artikel.render("guest", Model.sharedInstance
@@ -72,9 +80,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result datenschutz() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(datenschutz.render(username));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(datenschutz.render(kunde));
 		} else {
 			return ok(datenschutz.render("guest"));
 		}
@@ -85,9 +93,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result holzAussen() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(holzAussen.render(username,
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(holzAussen.render(kunde,
 					Model.sharedInstance.getProdukteAussen()));
 		} else {
 			return ok(holzAussen.render("guest",
@@ -101,9 +109,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result impressum() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(impressum.render(username));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(impressum.render(kunde));
 		} else {
 			return ok(impressum.render("guest"));
 		}
@@ -115,10 +123,10 @@ public class Application extends Controller {
 	 */
 
 	public static Result holzInnen() {
-		String username = session("User1");
+		String kunde = session("kunde");
 		
-		if (username != null) {
-			return ok(holzInnen.render(username, Model.sharedInstance.getProdukteInnen()));
+		if (kunde != null) {
+			return ok(holzInnen.render(kunde, Model.sharedInstance.getProdukteInnen()));
 		} else {
 			return ok(holzInnen.render("guest",Model.sharedInstance.getProdukteInnen()));
 		}
@@ -129,9 +137,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result brennholz() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(brennholz.render(username,
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(brennholz.render(kunde,
 					Model.sharedInstance.getProdukteBrennholz()));
 		} else {
 			return ok(brennholz.render("guest",
@@ -145,9 +153,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result kontakt() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(kontakt.render(username));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(kontakt.render(kunde));
 		} else {
 			return ok(kontakt.render("guest"));
 		}
@@ -158,9 +166,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result konto() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(konto.render(username, userForm));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(konto.render(kunde, userForm));
 		} else {
 			return ok(konto.render("guest", userForm));
 		}
@@ -172,10 +180,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result bestellungAbschliessen() {
-		String username = session("User1");
-		if (username != null) {
-			Model.sharedInstance
-					.bestellArtikelAusWarenkorb(session("UserKundennummer"));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			Model.sharedInstance.bestellArtikelAusWarenkorb(session("Kundennummer"));
 			return redirect("/");
 		} else {
 			return redirect("/login");
@@ -187,16 +194,20 @@ public class Application extends Controller {
 	 */
 
 	public static WebSocket<JsonNode> socket() {
-
+		
 		return new WebSocket<JsonNode>() {
-			public void onReady(WebSocket.In<JsonNode> in,
-					final WebSocket.Out<JsonNode> out) {
-				System.out.println(Model.sharedInstance.getTime()
-						+ ": WebSocketArtikel ready...");
+			
+			public void onReady(WebSocket.In<JsonNode> in, final WebSocket.Out<JsonNode> out) {
+				System.out.println(Model.sharedInstance.getTime()+ ": WebSocketArtikel ready...");
+				final ShopObserver obs = new ShopObserver();
+				obs.shop = out;
+				final Integer id = new Integer(obs.hashCode());
+				observer.put(id,obs);
+				System.out.println(Model.sharedInstance.getTime()+" Anzahl observer: "+observer.size());
 				in.onMessage(new Callback<JsonNode>() {
 					public void invoke(JsonNode obj) {
 
-						out.write(Model.sharedInstance.zeigeAktuelleMenge(obj));
+//						out.write(Model.sharedInstance.zeigeAktuelleMenge(obj));
 
 					}
 
@@ -204,8 +215,11 @@ public class Application extends Controller {
 
 				in.onClose(new Callback0() {
 					public void invoke() {
-						System.out.println(Model.sharedInstance.getTime()
-								+ ": Artikelansicht verlassen...");
+						observer.remove(id);
+						Model.sharedInstance.deleteObserver(obs);
+						
+						System.out.println(Model.sharedInstance.getTime()+ ": Artikelansicht verlassen...");
+						System.out.println(Model.sharedInstance.getTime()+" Anzahl observer: "+Model.sharedInstance.countObservers());
 					}
 				});
 
@@ -217,32 +231,32 @@ public class Application extends Controller {
 	 * 
 	 */
 
-	public static WebSocket<String> socketInWarenkorb() {
-
-		return new WebSocket<String>() {
-			public void onReady(WebSocket.In<String> in,
-					final WebSocket.Out<String> out) {
-				System.out.println(Model.sharedInstance.getTime()
-						+ ": WebSocketArtikel ready...");
-				in.onMessage(new Callback<String>() {
-					public void invoke(String artikelNummer) {
-						System.out.println("neue Menge...");
-						out.write(Model.sharedInstance
-								.getProduktJson(artikelNummer));
-
-					}
-				});
-
-				in.onClose(new Callback0() {
-					public void invoke() {
-						System.out.println(Model.sharedInstance.getTime()
-								+ ": Artikelansicht verlassen...");
-					}
-				});
-
-			}
-		};
-	}
+//	public static WebSocket<String> socketInWarenkorb() {
+//
+//		return new WebSocket<String>() {
+//			public void onReady(WebSocket.In<String> in,
+//					final WebSocket.Out<String> out) {
+//				System.out.println(Model.sharedInstance.getTime()
+//						+ ": WebSocketArtikel ready...");
+//				in.onMessage(new Callback<String>() {
+//					public void invoke(String artikelNummer) {
+//						System.out.println("neue Menge...");
+//						out.write(Model.sharedInstance
+//								.getProduktJson(artikelNummer));
+//
+//					}
+//				});
+//
+//				in.onClose(new Callback0() {
+//					public void invoke() {
+//						System.out.println(Model.sharedInstance.getTime()
+//								+ ": Artikelansicht verlassen...");
+//					}
+//				});
+//
+//			}
+//		};
+//	}
 
 	/*
 	 * Rendert die Login Seite
@@ -258,10 +272,10 @@ public class Application extends Controller {
 
 	public static Result submitKundendaten() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
-		String username = session("User1");
+		String kunde = session("kunde");
 
-		if (username != null) {
-			return ok(mainPage.render(username,
+		if (kunde != null) {
+			return ok(mainPage.render(kunde,
 					Model.sharedInstance.getProdukteAlle()));
 		} else {
 			return redirect("/");
@@ -274,10 +288,10 @@ public class Application extends Controller {
 	 */
 
 	public static Result mainPage() {
-		String username = session("User1");
+		String kunde = session("kunde");
 
-		if (username != null) {
-			return ok(mainPage.render(username,
+		if (kunde != null) {
+			return ok(mainPage.render(kunde,
 					Model.sharedInstance.getProdukte("alle")));
 		} else {
 			return ok(mainPage.render("guest",
@@ -291,10 +305,10 @@ public class Application extends Controller {
 
 	public static Result neuheiten() {
 
-		String username = session("User1");
+		String kunde = session("kunde");
 
-		if (username != null) {
-			return ok(neuheiten.render(username,
+		if (kunde != null) {
+			return ok(neuheiten.render(kunde,
 					Model.sharedInstance.getProdukteAlle()));
 		} else {
 			return ok(neuheiten.render("guest",
@@ -308,10 +322,10 @@ public class Application extends Controller {
 	 */
 
 	public static Result registrierung() {
-		String username = session("User1");
+		String kunde = session("kunde");
 
-		if (username != null) {
-			return ok(registrierung.render(userForm, username));
+		if (kunde != null) {
+			return ok(registrierung.render(userForm, kunde));
 		} else {
 			return ok(registrierung.render(userForm, "guest"));
 		}
@@ -343,7 +357,7 @@ public class Application extends Controller {
 	 */
 
 	public static Result neuerUser() {
-		String username = session("User1");
+		String kunde = session("kunde");
 		
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 		System.out.println(filledForm.get());
@@ -352,8 +366,8 @@ public class Application extends Controller {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		if (username != null) {
-			return ok(mainPage.render(username,	Model.sharedInstance.getProdukteAlle()));
+		if (kunde != null) {
+			return ok(mainPage.render(kunde,	Model.sharedInstance.getProdukteAlle()));
 		} else {
 			return ok(mainPage.render("guest", Model.sharedInstance.getProdukteAlle()));
 		}
@@ -365,9 +379,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result suche(String produkt) {
-		String username = session("User1");
-		if (username != null) {
-			return ok(suchergebnisse.render(username, Model.sharedInstance.produktSuchen(produkt)));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(suchergebnisse.render(kunde, Model.sharedInstance.produktSuchen(produkt)));
 		} else {
 			return ok(suchergebnisse.render("guest", Model.sharedInstance.produktSuchen(produkt)));
 		}
@@ -383,9 +397,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result warenkorb() {
-		String username = session("User1");
-		if (username != null) {
-			return ok(warenkorb.render(session("User1"), Model.sharedInstance.getWarenkorb(session("UserKundennummer"))));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			return ok(warenkorb.render(session("kunde"), Model.sharedInstance.getWarenkorb(session("Kundennummer"))));
 		} else {
 			return redirect("/login");
 		}
@@ -397,16 +411,13 @@ public class Application extends Controller {
 	 */
 
 	public static Result inWarenkorb(String ausgewaehltesProdukt, String menge) {
-		String username = session("User1");
-		if (username != null) {
-			Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge, session("UserKundennummer"));
-			return ok(warenkorb.render(username, Model.sharedInstance.getWarenkorb(session("UserKundennummer"))));
+		String kunde = session("kunde");
+		if (kunde != null) {
+			Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge, session("Kundennummer"));
+			return ok(warenkorb.render(kunde, Model.sharedInstance.getWarenkorb(session("Kundennummer"))));
 		} else {
 			return redirect("/login");
 		}
-		
-		
-
 	}
 
 	/*
@@ -429,10 +440,10 @@ public class Application extends Controller {
 
 			session().clear();
 			if(Model.sharedInstance.loginUeberpruefung(filledForm.get())!=null){
-				session("User1",Model.sharedInstance.loginUeberpruefung(filledForm.get()).vorname);
-				session("UserKundennummer",Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
-				System.out.println(session("User1"));
-				System.out.println(session("UserKundennummer"));
+				session("kunde",Model.sharedInstance.loginUeberpruefung(filledForm.get()).vorname);
+				session("Kundennummer",Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
+				System.out.println(session("kunde"));
+				System.out.println(session("Kundennummer"));
 				return redirect("/mainPage");
 			} else {
 				return redirect("/loginFehler");
@@ -441,6 +452,8 @@ public class Application extends Controller {
 
 		
 	}
+
+	
 
 
 }
