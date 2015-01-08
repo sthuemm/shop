@@ -16,4 +16,3 @@ libraryDependencies ++= Seq(
   "org.json"%"org.json"%"chargebee-1.0"
   )
 
- play.Project.playJavaSettings

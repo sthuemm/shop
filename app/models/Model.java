@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Model extends Observable {
+public class Model extends Observable{
 
 	public static Model sharedInstance = new Model();
 	private Kunde kunde = new Kunde();
@@ -32,7 +32,7 @@ public class Model extends Observable {
 	/*
 	 * Konstruktor
 	 */
-
+	
 	private Model() {
 		System.out.println("Play: " + play.core.PlayVersion.current());
 	}
