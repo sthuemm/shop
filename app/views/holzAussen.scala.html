@@ -1,7 +1,23 @@
 @(kunde: String, produkte: List[Produkt])
 @main("Holz im Aussenbereich")(kunde){
 
+<script>
+		//WebSocket Skript
+
+		var webSocket;
+		$(function() {
+			var WS = window["MozWebSocket"] ? MozWebSocket : WebSocket;
+			webSocket = new WS("@routes.Application.socket().webSocketURL(request)");
+			webSocket.onmessage = receiveEvent;
+		})
+				
+		function receiveEvent(event){
+			var obj = JSON.parse(event.data);
 		
+			$("#menge"+obj.Artikelnummer).html("<p>Menge: "+obj.Menge);
+			
+		};
+</script>		
 		<center>
 			@for(produkt <- produkte) {
 				<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
@@ -11,7 +27,7 @@
 						<img src=assets/@produkt.bildPfad width="250" height="150">
 						<div>
 							<wbr> @produkt.artikelBezeichnung
-							<p>Preis: @produkt.preis</p><p>Menge: @produkt.lagermenge</p>
+							<p>Preis: @produkt.preis</p><span id="menge@produkt.artikelNummer"><p>Menge: @produkt.lagermenge</p></span>
 						</div>
 					</div>
 				</div>	
