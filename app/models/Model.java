@@ -129,8 +129,8 @@ public class Model extends Observable{
 				stmt = conn.createStatement();
 				rs = stmt.executeQuery("SELECT MAX (wkn) FROM warenkorb");
 				int anzahl = 0;
-				System.out.println("WKN: "+rs);
-				if(rs == null){
+				System.out.println("WKN: "+rs.getString("wkn"));
+				if(rs.getString("wkn") == null){
 					anzahl = stmt
 							.executeUpdate("insert into Warenkorb values ("
 									+ "1, "
