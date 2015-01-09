@@ -339,8 +339,10 @@ public class Application extends Controller {
 
 
 	public static Result logout() {
-		
+			String kunde = session("Kundennummer");
+			Model.sharedInstance.removeCustomerFromMap(kunde);
 			session().clear();
+	
 			return redirect("/mainPage");
 		
 		
@@ -440,9 +442,7 @@ public class Application extends Controller {
 
 			session().clear();
 			if(Model.sharedInstance.loginUeberpruefung(filledForm.get())!=null){
-				session("kunde",Model.sharedInstance.loginUeberpruefung(filledForm.get()).vorname);
 				session("Kundennummer",Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
-				System.out.println(session("Kundennummer"));
 				return redirect("/mainPage");
 			} else {
 				return redirect("/loginFehler");

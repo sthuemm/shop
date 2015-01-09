@@ -31,7 +31,7 @@ public class Kunde {
 
 	
 	public Kunde(){
-		this.benutzername = "guest";
+		this.vorname = "guest";
 		this.kundenNummer = "0000";
 	}
 	

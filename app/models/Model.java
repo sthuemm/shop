@@ -43,8 +43,9 @@ public class Model extends Observable{
 		kunden.put(kundeGast.kundenNummer, kundeGast);
 	}
 	
-	public void loggeKundenAus(String kundenNummer){
+	public void removeCustomerFromMap(String kundenNummer){
 		kunden.remove(kundenNummer);
+		System.out.println(getTime() + ": removed from HashMap: "+kundenNummer);
 	}
 	
 	public String getCustomerName(String kundenNummer){
@@ -501,8 +502,9 @@ public class Model extends Observable{
 						rs.getString("plz"), rs.getString("ort"),
 						rs.getString("telefon"), rs.getString("passwort"),
 						isAdmin);
-				System.out.println(getTime() + ": Login von:\n " + kundeLoggedIn);
+				System.out.println(getTime() + ": Login von " + kundeLoggedIn.vorname+" "+kundeLoggedIn.nachname);
 				kunden.put(kundeLoggedIn.kundenNummer, kundeLoggedIn);
+				System.out.println(getTime() + ": Added to HashMap: "+kundeLoggedIn.kundenNummer);
 				
 				// Kunden
 			} else {
