@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/holzshop -Dhttp.port=${PORT} -DapplyEvolutions.default=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${"DATABASE_URL"}
+web: target/universal/stage/bin/holzshop -Dhttp.port=${PORT} -DapplyEvolutions.default=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${"DATABASE_URL"} -db.default.user=yrllzzedntvlrp -db.default.password=MbeEMrL124a21EPKX2wv78y2Tz
