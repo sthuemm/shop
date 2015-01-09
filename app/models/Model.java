@@ -2,11 +2,13 @@ package models;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
+
 import models.*;
 import play.db.*;
 
@@ -29,14 +31,24 @@ public class Model extends Observable{
 
 	public static Model sharedInstance = new Model();
 	private Kunde kunde = new Kunde();
+	private HashMap<String,Kunde> kunden = new HashMap<>();
 	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-
+	Kunde kundeGast = new Kunde();
 	/*
 	 * Konstruktor
 	 */
 	
 	private Model() {
 		System.out.println("Play: " + play.core.PlayVersion.current());
+		kunden.put(kundeGast.kundenNummer, kundeGast);
+	}
+	
+	public void loggeKundenAus(String kundenNummer){
+		kunden.remove(kundenNummer);
+	}
+	
+	public String getCustomerName(String kundenNummer){
+		return kunden.get(kundenNummer).benutzername;
 	}
 
 	/*
@@ -486,7 +498,7 @@ public class Model extends Observable{
 						rs.getString("telefon"), rs.getString("passwort"),
 						isAdmin);
 				System.out.println(getTime() + ": Login von:\n " + kundeLoggedIn);
-
+				kunden.put(kundeLoggedIn.kundenNummer, kundeLoggedIn);
 				
 				// Kunden
 			} else {

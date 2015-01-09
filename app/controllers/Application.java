@@ -201,9 +201,9 @@ public class Application extends Controller {
 				System.out.println(Model.sharedInstance.getTime()+ ": WebSocketArtikel ready...");
 				final ShopObserver obs = new ShopObserver();
 				obs.shop = out;
-				final Integer id = new Integer(obs.hashCode());
-				observer.put(id,obs);
-				System.out.println(Model.sharedInstance.getTime()+" Anzahl observer: "+observer.size());
+//				final Integer id = new Integer(obs.hashCode());
+//				observer.put(id,obs);
+				System.out.println(Model.sharedInstance.getTime()+": Anzahl observer: "+Model.sharedInstance.countObservers());
 				in.onMessage(new Callback<JsonNode>() {
 					public void invoke(JsonNode obj) {
 
@@ -215,11 +215,11 @@ public class Application extends Controller {
 
 				in.onClose(new Callback0() {
 					public void invoke() {
-						observer.remove(id);
+//						observer.remove(id);
 						Model.sharedInstance.deleteObserver(obs);
 						
-						System.out.println(Model.sharedInstance.getTime()+ ": Artikelansicht verlassen...");
-						System.out.println(Model.sharedInstance.getTime()+" Anzahl observer: "+Model.sharedInstance.countObservers());
+						System.out.println(Model.sharedInstance.getTime()+": Artikelansicht verlassen...");
+						System.out.println(Model.sharedInstance.getTime()+": Anzahl observer: "+Model.sharedInstance.countObservers());
 					}
 				});
 
