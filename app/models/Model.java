@@ -127,11 +127,22 @@ public class Model extends Observable{
 			try {
 				conn = DB.getConnection();
 				stmt = conn.createStatement();
-				int anzahl = stmt
-						.executeUpdate("insert into Warenkorb values ("
-								+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
-								+ kundenNummer + "," + artikelnr
-								+ "," + menge + ");");
+				rs = stmt.executeQuery("SELECT MAX (wkn) FROM warenkorb");
+				int anzahl = 0;
+				if(rs == null){
+					anzahl = stmt
+							.executeUpdate("insert into Warenkorb values ("
+									+ "1, "
+									+ kundenNummer + "," + artikelnr
+									+ "," + menge + ");");
+				} else {
+					anzahl = stmt
+							.executeUpdate("insert into Warenkorb values ("
+									+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
+									+ kundenNummer + "," + artikelnr
+									+ "," + menge + ");");
+				}
+				
 				System.out.println(getTime() + ": " + anzahl
 						+ " Artikel in Warenkorb gelegt");
 			} catch (SQLException ex) {
