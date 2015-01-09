@@ -48,7 +48,11 @@ public class Model extends Observable{
 	}
 	
 	public String getCustomerName(String kundenNummer){
-		return kunden.get(kundenNummer).benutzername;
+		String vorname = "guest";
+		if(kunden.containsKey(kundenNummer)){
+			vorname = kunden.get(kundenNummer).vorname;
+		}
+		return vorname;
 	}
 
 	/*

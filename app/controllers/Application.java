@@ -31,12 +31,12 @@ public class Application extends Controller {
 
 
 	public static Result index() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(mainPage.render(kunde,
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukte("alle")));
 		} else {
-			return ok(mainPage.render("guest",
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName("0000"),
 					Model.sharedInstance.getProdukte("alle")));
 		}
 
@@ -50,11 +50,11 @@ public class Application extends Controller {
 	 */
 
 	public static Result agb() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(agb.render(kunde));
+			return ok(agb.render(Model.sharedInstance.getCustomerName(kunde)));
 		} else {
-			return ok(agb.render("guest"));
+			return ok(agb.render(Model.sharedInstance.getCustomerName("0000")));
 		}
 
 	}
@@ -64,12 +64,12 @@ public class Application extends Controller {
 	 */
 
 	public static Result artikel(String ausgewaehltesProdukt) {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(artikel.render(kunde, Model.sharedInstance
+			return ok(artikel.render(Model.sharedInstance.getCustomerName(kunde), Model.sharedInstance
 					.artikelnummerSuchen(ausgewaehltesProdukt), userForm));
 		} else {
-			return ok(artikel.render("guest", Model.sharedInstance
+			return ok(artikel.render(Model.sharedInstance.getCustomerName("0000"), Model.sharedInstance
 					.artikelnummerSuchen(ausgewaehltesProdukt), userForm));
 		}
 
@@ -80,11 +80,11 @@ public class Application extends Controller {
 	 */
 
 	public static Result datenschutz() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(datenschutz.render(kunde));
+			return ok(datenschutz.render(Model.sharedInstance.getCustomerName(kunde)));
 		} else {
-			return ok(datenschutz.render("guest"));
+			return ok(datenschutz.render(Model.sharedInstance.getCustomerName("0000")));
 		}
 	}
 
@@ -93,12 +93,12 @@ public class Application extends Controller {
 	 */
 
 	public static Result holzAussen() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(holzAussen.render(kunde,
+			return ok(holzAussen.render(Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukteAussen()));
 		} else {
-			return ok(holzAussen.render("guest",
+			return ok(holzAussen.render(Model.sharedInstance.getCustomerName("0000"),
 					Model.sharedInstance.getProdukteAussen()));
 		}
 
@@ -109,11 +109,11 @@ public class Application extends Controller {
 	 */
 
 	public static Result impressum() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(impressum.render(kunde));
+			return ok(impressum.render(Model.sharedInstance.getCustomerName(kunde)));
 		} else {
-			return ok(impressum.render("guest"));
+			return ok(impressum.render(Model.sharedInstance.getCustomerName("0000")));
 		}
 
 	}
@@ -123,12 +123,12 @@ public class Application extends Controller {
 	 */
 
 	public static Result holzInnen() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		
 		if (kunde != null) {
-			return ok(holzInnen.render(kunde, Model.sharedInstance.getProdukteInnen()));
+			return ok(holzInnen.render(Model.sharedInstance.getCustomerName(kunde), Model.sharedInstance.getProdukteInnen()));
 		} else {
-			return ok(holzInnen.render("guest",Model.sharedInstance.getProdukteInnen()));
+			return ok(holzInnen.render(Model.sharedInstance.getCustomerName("0000"),Model.sharedInstance.getProdukteInnen()));
 		}
 	}
 
@@ -137,12 +137,12 @@ public class Application extends Controller {
 	 */
 
 	public static Result brennholz() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(brennholz.render(kunde,
+			return ok(brennholz.render(Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukteBrennholz()));
 		} else {
-			return ok(brennholz.render("guest",
+			return ok(brennholz.render(Model.sharedInstance.getCustomerName("0000"),
 					Model.sharedInstance.getProdukteBrennholz()));
 		}
 
@@ -153,11 +153,11 @@ public class Application extends Controller {
 	 */
 
 	public static Result kontakt() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(kontakt.render(kunde));
+			return ok(kontakt.render(Model.sharedInstance.getCustomerName(kunde)));
 		} else {
-			return ok(kontakt.render("guest"));
+			return ok(kontakt.render(Model.sharedInstance.getCustomerName("0000")));
 		}
 	}
 
@@ -166,11 +166,11 @@ public class Application extends Controller {
 	 */
 
 	public static Result konto() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(konto.render(kunde, userForm));
+			return ok(konto.render(Model.sharedInstance.getCustomerName(kunde), userForm));
 		} else {
-			return ok(konto.render("guest", userForm));
+			return ok(konto.render(Model.sharedInstance.getCustomerName("0000"), userForm));
 		}
 
 	}
@@ -180,9 +180,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result bestellungAbschliessen() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			Model.sharedInstance.bestellArtikelAusWarenkorb(session("Kundennummer"));
+			Model.sharedInstance.bestellArtikelAusWarenkorb(kunde);
 			return redirect("/");
 		} else {
 			return redirect("/login");
@@ -272,10 +272,10 @@ public class Application extends Controller {
 
 	public static Result submitKundendaten() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 
 		if (kunde != null) {
-			return ok(mainPage.render(kunde,
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukteAlle()));
 		} else {
 			return redirect("/");
@@ -288,13 +288,13 @@ public class Application extends Controller {
 	 */
 
 	public static Result mainPage() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 
 		if (kunde != null) {
-			return ok(mainPage.render(kunde,
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukte("alle")));
 		} else {
-			return ok(mainPage.render("guest",
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName("0000"),
 					Model.sharedInstance.getProdukte("alle")));
 		}
 	}
@@ -305,13 +305,13 @@ public class Application extends Controller {
 
 	public static Result neuheiten() {
 
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 
 		if (kunde != null) {
-			return ok(neuheiten.render(kunde,
+			return ok(neuheiten.render(Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukteAlle()));
 		} else {
-			return ok(neuheiten.render("guest",
+			return ok(neuheiten.render(Model.sharedInstance.getCustomerName("0000"),
 					Model.sharedInstance.getProdukteAlle()));
 		}
 
@@ -322,12 +322,12 @@ public class Application extends Controller {
 	 */
 
 	public static Result registrierung() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 
 		if (kunde != null) {
-			return ok(registrierung.render(userForm, kunde));
+			return ok(registrierung.render(userForm, Model.sharedInstance.getCustomerName(kunde)));
 		} else {
-			return ok(registrierung.render(userForm, "guest"));
+			return ok(registrierung.render(userForm, Model.sharedInstance.getCustomerName("0000")));
 		}
 		
 
@@ -357,7 +357,7 @@ public class Application extends Controller {
 	 */
 
 	public static Result neuerUser() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 		System.out.println(filledForm.get());
@@ -367,9 +367,9 @@ public class Application extends Controller {
 			e.printStackTrace();
 		}
 		if (kunde != null) {
-			return ok(mainPage.render(kunde,	Model.sharedInstance.getProdukteAlle()));
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName(kunde),	Model.sharedInstance.getProdukteAlle()));
 		} else {
-			return ok(mainPage.render("guest", Model.sharedInstance.getProdukteAlle()));
+			return ok(mainPage.render(Model.sharedInstance.getCustomerName("0000"), Model.sharedInstance.getProdukteAlle()));
 		}
 		
 	}
@@ -379,11 +379,11 @@ public class Application extends Controller {
 	 */
 
 	public static Result suche(String produkt) {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(suchergebnisse.render(kunde, Model.sharedInstance.produktSuchen(produkt)));
+			return ok(suchergebnisse.render(Model.sharedInstance.getCustomerName(kunde), Model.sharedInstance.produktSuchen(produkt)));
 		} else {
-			return ok(suchergebnisse.render("guest", Model.sharedInstance.produktSuchen(produkt)));
+			return ok(suchergebnisse.render(Model.sharedInstance.getCustomerName("0000"), Model.sharedInstance.produktSuchen(produkt)));
 		}
 		
 	}
@@ -397,9 +397,9 @@ public class Application extends Controller {
 	 */
 
 	public static Result warenkorb() {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(warenkorb.render(session("kunde"), Model.sharedInstance.getWarenkorb(session("Kundennummer"))));
+			return ok(warenkorb.render(Model.sharedInstance.getCustomerName(kunde), Model.sharedInstance.getWarenkorb(session("Kundennummer"))));
 		} else {
 			return redirect("/login");
 		}
@@ -411,10 +411,10 @@ public class Application extends Controller {
 	 */
 
 	public static Result inWarenkorb(String ausgewaehltesProdukt, String menge) {
-		String kunde = session("kunde");
+		String kunde = session("Kundennummer");
 		if (kunde != null) {
 			Model.sharedInstance.setWarenkorb(ausgewaehltesProdukt, menge, session("Kundennummer"));
-			return ok(warenkorb.render(kunde, Model.sharedInstance.getWarenkorb(session("Kundennummer"))));
+			return ok(warenkorb.render(Model.sharedInstance.getCustomerName(kunde), Model.sharedInstance.getWarenkorb(session("Kundennummer"))));
 		} else {
 			return redirect("/login");
 		}
@@ -430,7 +430,7 @@ public class Application extends Controller {
 	}
 	
 	public static Result loginError(){
-		return ok(loginFehler.render("guest"));
+		return ok(loginFehler.render(Model.sharedInstance.getCustomerName("0000")));
 	}
 
 	public static Result submitLogin() {
@@ -442,7 +442,6 @@ public class Application extends Controller {
 			if(Model.sharedInstance.loginUeberpruefung(filledForm.get())!=null){
 				session("kunde",Model.sharedInstance.loginUeberpruefung(filledForm.get()).vorname);
 				session("Kundennummer",Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
-				System.out.println(session("kunde"));
 				System.out.println(session("Kundennummer"));
 				return redirect("/mainPage");
 			} else {
