@@ -1,0 +1,39 @@
+CREATE TABLE `Bestellung` (
+	`kundenNummer`	INTEGER NOT NULL,
+	`artikelNummer`	INTEGER NOT NULL,
+	PRIMARY KEY(kundenNummer,artikelNummer)
+);
+
+CREATE TABLE `Kunde` (
+	`kundenNummer`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`anrede`	TEXT,
+	`vorname`	varchar(20) NOT NULL,
+	`nachname`	varchar(20) NOT NULL,
+	`benutzername`	TEXT NOT NULL UNIQUE,
+	`email`	TEXT,
+	`strasse`	TEXT NOT NULL,
+	`hausnummer`	TEXT NOT NULL,
+	`plz`	TEXT NOT NULL,
+	`ort`	TEXT NOT NULL,
+	`telefon`	TEXT,
+	`passwort`	varchar(10) NOT NULL,
+	`isAdmin`	TEXT
+);
+
+CREATE TABLE `Warenkorb` (
+	`wkn`	INTEGER NOT NULL,
+	`kundenNummer`	INTEGER NOT NULL,
+	`artikelNummer`	INTEGER NOT NULL,
+	`bestellmenge`	INTEGER NOT NULL,
+	PRIMARY KEY(wkn)
+);
+
+CREATE TABLE `produkt` (
+	`preis`	double NOT NULL,
+	`artikelNummer`	INTEGER NOT NULL,
+	`artikelBezeichnung`	varchar(50) NOT NULL,
+	`bildPfad`	varchar(20),
+	`kategorie`	varchar(20) NOT NULL,
+	`lagermenge`	INTEGER,
+	PRIMARY KEY(artikelNummer)
+);
