@@ -130,7 +130,7 @@ public class Model extends Observable{
 				rs = stmt.executeQuery("SELECT * FROM warenkorb");
 				int anzahl = 0;
 				
-				if(rs == null){
+				if(!rs.next()){
 					anzahl = stmt
 							.executeUpdate("insert into Warenkorb values ("
 									+ "1, "
