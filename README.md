@@ -34,14 +34,23 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 
 ## Architektur
 
-
+![Klassendiagramm](/public/images/Klassendiagramm.jpg "Klassendiagramm")
 
 ====
 
 ## Verwendete Technologien
 
-HTML, HTML5, CSS, JavaScript mit jQuery, SQLite, Java mit Playframework, Bootstrap,
-AJAX, WebSockets, JSON. 
+HTML5 - für die Erstellung der Webseiten, 
+CSS - Design der Artikel, 
+Bootstrap - Design der Webseiten,
+JavaScript - Registrierung,
+jQuery - Animation der Kategorien in der main und in neuheiten, 
+SQLite, 
+Java mit Playframework - bei der modelierung von Model Applicatiin , 
+Scala - vom Webseeiten Produkt oder Kunde an der Application weiterzugeben, Übergabe der Werte aus der Registrierung,
+AJAX - für die Suche entweder nach Preis, Kategorie oder Artikelname, 
+WebSockets, 
+JSON. 
 
 ====
 
@@ -53,6 +62,6 @@ Viel.
 
 ## Probleme
 
-Die grössten Probleme waren bei der Playframework Einführung. Datenbanken locks und Deployment auf Heroku.
+Die grössten Probleme waren bei der Playframework Einführung, Datenbanken locks und Deployment auf Heroku.
 
 ====

@@ -34,10 +34,7 @@ public class Model extends Observable{
 	private HashMap<String,Kunde> kunden = new HashMap<>();
 	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 	Kunde kundeGast = new Kunde();
-	/*
-	 * Konstruktor
-	 */
-	
+
 	private Model() {
 		System.out.println("Play: " + play.core.PlayVersion.current());
 		kunden.put(kundeGast.kundenNummer, kundeGast);
@@ -56,18 +53,10 @@ public class Model extends Observable{
 		return vorname;
 	}
 
-	/*
-	 * Aktuelles Datum und zeit
-	 */
-
 	public String getTime() {
 		Date currentTime = new Date(System.currentTimeMillis());
 		return formatter.format(currentTime);
 	}
-
-	/*
-	 * Produkte in die DB inserieren
-	 */
 
 	public void produktInserieren(double preis, String artikelBezeichnung,
 			String bildPfad, String kategorie, String lagermenge) {
@@ -111,11 +100,6 @@ public class Model extends Observable{
 			}
 		}
 	}
-
-	/*
-	 * In Tabelle Warenkorb Warenkorbnummer, Kundennummer, Artikelnummer und die
-	 * Menge inserieren
-	 */
 
 	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
 		
@@ -174,10 +158,6 @@ public class Model extends Observable{
 
 	}
 
-	/*
-	 * Produktsuche anhand der Artikelnummer
-	 */
-
 	public Produkt artikelnummerSuchen(String ausgewaehltesProdukt) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -232,10 +212,6 @@ public class Model extends Observable{
 		return gesuchtesProdukt;
 	}
 
-	/*
-	 * Methode zum
-	 */
-
 	public List<Produkt> getProdukte(String wo) {
 		List<Produkt> produkte = new ArrayList<Produkt>();
 		Connection conn = null;
@@ -250,35 +226,19 @@ public class Model extends Observable{
 
 			case "alle":
 				rs = stmt.executeQuery("SELECT * FROM produkt;");
-
 				break;
 			case "aussen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
-
 				break;
 			case "innen":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'innen' ;");
-
 				break;
 			case "brennbar":
 				rs = stmt
 						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
-
 				break;
-			// case "warenkorb": //eigene Methode, weil die Abfragen beim
-			// Warenkorb abweichen
-			// if (this.kunde != null) {
-			// rs = stmt
-			// .executeQuery("SELECT DISTINCT p.* FROM produkt p, Warenkorb w WHERE "
-			// + "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-			// + this.kunde.getKundenNummer() + "';");
-			// } else {
-			// rs.close(); stmt.close(); conn.close();
-			// return produkte;
-			// }
-			// break;
 			default:
 				String select = "SELECT * FROM produkt WHERE preis = ?  "
 						+ "OR artikelBezeichnung = ? OR kategorie = ?;";
@@ -298,7 +258,6 @@ public class Model extends Observable{
 				String bildPfad = rs.getString("bildPfad");
 				String kategorie = rs.getString("kategorie");
 				int lagermenge = rs.getInt("lagermenge");
-				// int bestellmenge = rs.getInt("bestellmenge");
 				produkte.add(new Produkt(preis, artikelNummer,
 						artikelBezeichnung, bildPfad, kategorie, lagermenge));
 			}
@@ -331,10 +290,6 @@ public class Model extends Observable{
 		return produkte;
 	}
 
-	/*
-	 * Gesuchtes Produkt
-	 */
-
 	public List<Produkt> produktSuchen(String gesuchterWert) {
 
 		List<Produkt> gesuchteProdukte = getProdukte(gesuchterWert);
@@ -343,20 +298,12 @@ public class Model extends Observable{
 
 	}
 
-	/*
-	 * Alle Produkte
-	 */
-
 	public List<Produkt> getProdukteAlle() {
 
 		List<Produkt> produkteAlleList = getProdukte("alle");
 
 		return produkteAlleList;
 	}
-
-	/*
-	 * Produkte aus Kategorie Aussen
-	 */
 
 	public List<Produkt> getProdukteAussen() {
 
@@ -365,10 +312,6 @@ public class Model extends Observable{
 		return produkteAussen;
 	}
 
-	/*
-	 * Produkte aus Kategorie Innen
-	 */
-
 	public List<Produkt> getProdukteInnen() {
 
 		List<Produkt> produkteInnen = getProdukte("innen");
@@ -376,21 +319,12 @@ public class Model extends Observable{
 		return produkteInnen;
 	}
 
-	/*
-	 * Produkte aus Kategorie Brennstoffe
-	 */
-
 	public List<Produkt> getProdukteBrennholz() {
 
 		List<Produkt> produkteBrennstoff = getProdukte("brennbar");
 
 		return produkteBrennstoff;
 	}
-
-	/*
-	 * Produkte aus dem Warenkorb werden gezeigt/geholt
-	 */
-
 
 	public List<Produkt> getWarenkorb(String kundenNummer) {
 		List<Produkt> produkte = new ArrayList<Produkt>();
@@ -458,28 +392,15 @@ public class Model extends Observable{
 
 	}
 
-	/*
-	 * 
-	 */
-
 	public Kunde getKunde() {
 
 		return kunde;
 	}
 
-	/*
-	 * Logout
-	 */
-
 	public Kunde logout() {
 		kunde = new Kunde();
 		return getKunde();
 	}
-
-	/*
-	 * Login Daten werden überprüft
-	 */
-
 
 	public Kunde loginUeberpruefung(Kunde kunde) {
 
@@ -534,10 +455,6 @@ public class Model extends Observable{
 		return kundeLoggedIn;
 	}
 
-	/*
-	 * Kunde wird im DB hinzugefügt
-	 */
-
 	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -584,10 +501,6 @@ public class Model extends Observable{
 			}
 		}
 	}
-
-	/*
-	 * Autovervollständigung bei der Suche
-	 */
 
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
@@ -658,17 +571,9 @@ public class Model extends Observable{
 		return ergebnis;
 	}
 
-	/*
-	 * 
-	 */
-
 	public void setKunde(Kunde kunde) {
 		this.kunde = kunde;
 	}
-
-	/*
-	 * Verschlüsselung des passwortworts
-	 */
 
 	public static String verschluesselPW(String passwort) {
 		String passwortString = "";
@@ -684,14 +589,8 @@ public class Model extends Observable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
 		return passwortString;
 	}
-
-	/*
-	 * 
-	 */
 
 	public String getProduktJson(String artikelNummer) {
 		Connection conn = null;
@@ -739,10 +638,6 @@ public class Model extends Observable{
 		return menge.toString();
 	}
 
-	/*
-	 * KEINE AHNUNG
-	 * :)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-	 */
 	public static JSONArray convertToJson(ResultSet resultSet) throws Exception {
 		JSONArray jsonArray = new JSONArray();
 		while (resultSet.next()) {
@@ -757,10 +652,6 @@ public class Model extends Observable{
 		return jsonArray;
 
 	}
-
-	/*
-	 * Ändert die Menge der vorhandenen Produkte im DB
-	 */
 
 	public static JsonNode zeigeAktuelleMenge(JsonNode obj) {
 		Connection conn = null;
@@ -865,10 +756,6 @@ public class Model extends Observable{
 		}
 	}
 
-	/*
-	 * 
-	 */
-
 	public void bestellArtikelAusWarenkorb(String kundenNummer) {
 
 		for (Produkt produkt : getWarenkorb(kundenNummer)) {
@@ -877,11 +764,6 @@ public class Model extends Observable{
 		
 		warenkorbDatenbankLeeren(kundenNummer);
 	}
-
-
-	/*
-	 * Löscht Produkte aus der Warenkorb anhand der Kundennumer
-	 */
 
 	public void warenkorbDatenbankLeeren(String kundenNummer) {
 
