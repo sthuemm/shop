@@ -60,48 +60,48 @@ public class Model extends Observable{
 		return formatter.format(currentTime);
 	}
 
-	public void produktInserieren(double preis, String artikelBezeichnung,
-			String bildPfad, String kategorie, String lagermenge) {
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = DB.getConnection();
-			stmt = conn.createStatement();
-			stmt.executeUpdate("insert into produkt values (" + preis + ","
-					+ "(SELECT MAX (artikelNummer) FROM produkt)+1,'"
-					+ artikelBezeichnung + "'," + " '" + bildPfad + "','"
-					+ kategorie + "'," + "" + lagermenge + ");");
-			System.out.println(getTime() + ":" + stmt
-					+ "Produkt(e) hinzugefügt");
-		}
-
-		catch (SQLException ex) {
-			ex.printStackTrace();
-			System.out.println(getTime() + ": Fehler Produkt inserieren");
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-	}
+//	public void produktInserieren(double preis, String artikelBezeichnung,
+//			String bildPfad, String kategorie, String lagermenge) {
+//
+//		Connection conn = null;
+//		Statement stmt = null;
+//		ResultSet rs = null;
+//
+//		try {
+//			conn = DB.getConnection();
+//			stmt = conn.createStatement();
+//			stmt.executeUpdate("insert into Produkt values (" + preis + ","
+//					+ "(SELECT MAX (artikelNummer) FROM Produkt)+1,'"
+//					+ artikelBezeichnung + "'," + " '" + bildPfad + "','"
+//					+ kategorie + "'," + "" + lagermenge + ");");
+//			System.out.println(getTime() + ":" + stmt
+//					+ "Produkt(e) hinzugefügt");
+//		}
+//
+//		catch (SQLException ex) {
+//			ex.printStackTrace();
+//			System.out.println(getTime() + ": Fehler Produkt inserieren");
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException e) {
+//				}
+//			}
+//			if (stmt != null) {
+//				try {
+//					stmt.close();
+//				} catch (SQLException e) {
+//				}
+//			}
+//			if (conn != null) {
+//				try {
+//					conn.close();
+//				} catch (SQLException e) {
+//				}
+//			}
+//		}
+//	}
 
 	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
 		
@@ -169,7 +169,7 @@ public class Model extends Observable{
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt
-					.executeQuery("SELECT * FROM produkt Where artikelNummer ="
+					.executeQuery("SELECT * FROM Produkt Where artikelNummer ="
 							+ ausgewaehltesProdukt + ";");
 			if (rs.next()) {
 				double preis = rs.getDouble("preis");
@@ -227,22 +227,22 @@ public class Model extends Observable{
 			switch (wo) {
 
 			case "alle":
-				rs = stmt.executeQuery("SELECT * FROM produkt;");
+				rs = stmt.executeQuery("SELECT * FROM Produkt;");
 				break;
 			case "aussen":
 				rs = stmt
-						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'aussen' ;");
+						.executeQuery("SELECT * FROM Produkt WHERE kategorie = 'aussen' ;");
 				break;
 			case "innen":
 				rs = stmt
-						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'innen' ;");
+						.executeQuery("SELECT * FROM Produkt WHERE kategorie = 'innen' ;");
 				break;
 			case "brennbar":
 				rs = stmt
-						.executeQuery("SELECT * FROM produkt WHERE kategorie = 'brennbar' ;");
+						.executeQuery("SELECT * FROM Produkt WHERE kategorie = 'brennbar' ;");
 				break;
 			default:
-				String select = "SELECT * FROM produkt WHERE preis = ?  "
+				String select = "SELECT * FROM Produkt WHERE preis = ?  "
 						+ "OR artikelBezeichnung = ? OR kategorie = ?;";
 				prep = conn.prepareStatement(select);
 				prep.setString(1, wo);
@@ -342,7 +342,7 @@ public class Model extends Observable{
 			
 				
 					rs = stmt
-							.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM produkt p, Warenkorb w WHERE "
+							.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM Produkt p, Warenkorb w WHERE "
 									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
 									+ kundenNummer + "';");
 					System.out.println(getTime()+": Lade Warenkorb des Kunden...");
@@ -514,7 +514,7 @@ public class Model extends Observable{
 		try {
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT artikelBezeichnung FROM produkt;");
+			rs = stmt.executeQuery("SELECT artikelBezeichnung FROM Produkt;");
 			while (rs.next()) {
 				produktbezeichnungen.add(rs.getString("artikelBezeichnung"));
 			}
@@ -603,7 +603,7 @@ public class Model extends Observable{
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt
-					.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
+					.executeQuery("SELECT * FROM Produkt WHERE artikelNummer = "
 							+ artikelNummer + ";");
 
 			if (rs.next()) {
@@ -669,7 +669,7 @@ public class Model extends Observable{
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt
-					.executeQuery("SELECT * FROM produkt WHERE artikelNummer = '"
+					.executeQuery("SELECT * FROM Produkt WHERE artikelNummer = '"
 							+ artikelNummer + "' ;");
 
 			if (rs.next()) {
@@ -717,7 +717,7 @@ public class Model extends Observable{
 			stmt = conn.createStatement();
 
 			int anzahl = stmt
-					.executeUpdate("UPDATE produkt SET lagermenge = lagermenge - "
+					.executeUpdate("UPDATE Produkt SET lagermenge = lagermenge - "
 							+ menge
 							+ " WHERE artikelNummer = '"
 							+ artikelNummer
@@ -809,24 +809,27 @@ public class Model extends Observable{
 			e1.printStackTrace();
 		}
 		try {
+			DatabaseMetaData meta = conn.getMetaData();
+			ResultSet rs = meta.getTables(null, null, "Produkt", null);
+			if(!rs.next()){							//prüft ob Tabellen bereits initialisiert wurden
 			stmt.executeUpdate(
-					"CREATE TABLE produkt ("
+					"CREATE TABLE Produkt ("
 					+ "`preis` double NOT NULL,	"
 					+ "`artikelNummer`	INTEGER NOT NULL,"
 					+ "`artikelBezeichnung`	varchar(50) NOT NULL,"
 					+ "`bildPfad`	varchar(20),`kategorie`	varchar(20) NOT NULL,"
 					+ "`lagermenge`	INTEGER,PRIMARY KEY(artikelNummer));"
-					+ "INSERT INTO `produkt` VALUES('99.99',1,'Gartenzaun','images/Palissaden.jpg','aussen',90);"
-					+ "INSERT INTO `produkt` VALUES('119.99',2,'Palisaden fuer den Garten','images/Pfaehle.jpg','aussen',98);"
-					+ "INSERT INTO `produkt` VALUES('249.99',3,'Terassenbelaege','images/Terrasse.jpg','aussen',7);"
-					+ "INSERT INTO `produkt` VALUES('49.99',4,'Terassenmoebel','images/bruecke.jpg','aussen',9);"
-					+ "INSERT INTO `produkt` VALUES('49.99',5,'Esstisch','images/esstisch.jpg','innen',60);"
-					+ "INSERT INTO `produkt` VALUES('4.99',6,'Pellets','images/Pellets.jpg','brennbar',79);"
-					+ "INSERT INTO `produkt` VALUES('22.99',7,'Holzfahrrad','images/Holzfahrrad.jpg','aussen',9);"
-					+ "INSERT INTO `produkt` VALUES('19.99',12,'Stuhl','images/stuhl.jpg','innen',80);"
-					+ "INSERT INTO `produkt` VALUES('44.99',13,'Vertäfelung','images/Vertaefelung.jpg','innen',90);"
-					+ "INSERT INTO `produkt` VALUES('4.99',14,'Echtes Kiefernholz','images/Kiefernholz.jpg','brennbar',4);"
-					+ "INSERT INTO `produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);"
+					+ "INSERT INTO `Produkt` VALUES('99.99',1,'Gartenzaun','images/Palissaden.jpg','aussen',90);"
+					+ "INSERT INTO `Produkt` VALUES('119.99',2,'Palisaden fuer den Garten','images/Pfaehle.jpg','aussen',98);"
+					+ "INSERT INTO `Produkt` VALUES('249.99',3,'Terassenbelaege','images/Terrasse.jpg','aussen',7);"
+					+ "INSERT INTO `Produkt` VALUES('49.99',4,'Terassenmoebel','images/bruecke.jpg','aussen',9);"
+					+ "INSERT INTO `Produkt` VALUES('49.99',5,'Esstisch','images/esstisch.jpg','innen',60);"
+					+ "INSERT INTO `Produkt` VALUES('4.99',6,'Pellets','images/Pellets.jpg','brennbar',79);"
+					+ "INSERT INTO `Produkt` VALUES('22.99',7,'Holzfahrrad','images/Holzfahrrad.jpg','aussen',9);"
+					+ "INSERT INTO `Produkt` VALUES('19.99',12,'Stuhl','images/stuhl.jpg','innen',80);"
+					+ "INSERT INTO `Produkt` VALUES('44.99',13,'Vertäfelung','images/Vertaefelung.jpg','innen',90);"
+					+ "INSERT INTO `Produkt` VALUES('4.99',14,'Echtes Kiefernholz','images/Kiefernholz.jpg','brennbar',4);"
+					+ "INSERT INTO `Produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);"
 					+ "CREATE TABLE Warenkorb ("
 							+ "	`wkn`	INTEGER NOT NULL,"
 							+ "	`kundenNummer`	INTEGER NOT NULL,"
@@ -870,6 +873,7 @@ public class Model extends Observable{
 							+ "	PRIMARY KEY(kundenNummer,artikelNummer)"
 							+ ");"
 							+ ";");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
