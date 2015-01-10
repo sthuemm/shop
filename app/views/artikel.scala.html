@@ -12,7 +12,7 @@
 		var webSocket;
 		$(function() {
 			var WS = window["MozWebSocket"] ? MozWebSocket : WebSocket;
-			webSocket = new WS("wss://@routes.Application.socket().webSocketURL(request)");
+			webSocket = new WS("@routes.Application.socket().webSocketURL(request)");
 			webSocket.onmessage = receiveEvent;
 		})
 		
