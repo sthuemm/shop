@@ -457,41 +457,57 @@ public class Model extends Observable{
 		return kundeLoggedIn;
 	}
 
-	public void addKunden(Kunde kunde) throws NoSuchAlgorithmException {
+	public void addCustomer(Kunde kunde) throws NoSuchAlgorithmException {
 		Connection conn = null;
-		PreparedStatement stmt = null;
-
-		String insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
-				+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
-				+ " values((SELECT MAX (kundenNummer) FROM Kunde)+1, "
-				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		Statement stmtCheckKundeIsEmpty = null;
+		PreparedStatement stmtAddKunde = null;
+		ResultSet rs = null;
+		String insert="";
+		
 		try {
 			conn = DB.getConnection();
-
-			stmt = conn.prepareStatement(insert);
-			stmt.setString(1, kunde.getAnrede());
-			stmt.setString(2, kunde.getVorname());
-			stmt.setString(3, kunde.getNachname());
-			stmt.setString(4, kunde.getBenutzername());
-			stmt.setString(5, kunde.getEmail());	
-			stmt.setString(6, kunde.getStrasse());	
-			stmt.setString(7, kunde.getHausnummer());	
-			stmt.setString(8, kunde.getPlz());	
-			stmt.setString(9, kunde.getOrt());	
-			stmt.setString(10, kunde.getTelefon());	
-			stmt.setString(11, verschluesselPW(kunde.getPasswort()));	
-			stmt.setString(12, "nein");	
-			stmt.executeUpdate();
-
-
+			stmtCheckKundeIsEmpty = conn.createStatement();
+			rs = stmtCheckKundeIsEmpty.executeQuery("SELECT * FROM Kunde");
+			if(!rs.next()){		//noch keine Kunden
+				 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+						+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
+						+ " values(1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			} else {			
+				 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+						+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
+						+ " values((SELECT MAX (kundenNummer) FROM Kunde)+1, "
+						+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			}
+			stmtAddKunde = conn.prepareStatement(insert);
+			stmtAddKunde.setString(1, kunde.getAnrede());
+			stmtAddKunde.setString(2, kunde.getVorname());
+			stmtAddKunde.setString(3, kunde.getNachname());
+			stmtAddKunde.setString(4, kunde.getBenutzername());
+			stmtAddKunde.setString(5, kunde.getEmail());	
+			stmtAddKunde.setString(6, kunde.getStrasse());	
+			stmtAddKunde.setString(7, kunde.getHausnummer());	
+			stmtAddKunde.setString(8, kunde.getPlz());	
+			stmtAddKunde.setString(9, kunde.getOrt());	
+			stmtAddKunde.setString(10, kunde.getTelefon());	
+			stmtAddKunde.setString(11, verschluesselPW(kunde.getPasswort()));	
+			stmtAddKunde.setString(12, "nein");	
+			stmtAddKunde.executeUpdate();
+			
+			
 		} catch (SQLException e) {
 			System.out.println(getTime() + ": Fehler Kunden inserieren");
 			e.printStackTrace();
 		} finally {
 			
-			if (stmt != null) {
+			if (stmtAddKunde != null) {
 				try {
-					stmt.close();
+					stmtAddKunde.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmtCheckKundeIsEmpty != null) {
+				try {
+					stmtCheckKundeIsEmpty.close();
 				} catch (SQLException e) {
 				}
 			}
@@ -811,37 +827,43 @@ public class Model extends Observable{
 		try {
 			DatabaseMetaData meta = conn.getMetaData();
 			ResultSet rs = meta.getTables(null, null, "Produkt", null);
-			if(!rs.next()){							//prüft ob Tabellen bereits initialisiert wurden
+			if(!rs.next()){							//prüft ob Tabelle "Produkt" bereits initialisiert wurde
 			stmt.executeUpdate(
-					"CREATE TABLE Produkt ("
-					+ "`preis` double NOT NULL,	"
-					+ "`artikelNummer`	INTEGER NOT NULL,"
-					+ "`artikelBezeichnung`	varchar(50) NOT NULL,"
-					+ "`bildPfad`	varchar(20),`kategorie`	varchar(20) NOT NULL,"
-					+ "`lagermenge`	INTEGER,PRIMARY KEY(artikelNummer));"
-					+ "INSERT INTO `Produkt` VALUES('99.99',1,'Gartenzaun','images/Palissaden.jpg','aussen',90);"
-					+ "INSERT INTO `Produkt` VALUES('119.99',2,'Palisaden fuer den Garten','images/Pfaehle.jpg','aussen',98);"
-					+ "INSERT INTO `Produkt` VALUES('249.99',3,'Terassenbelaege','images/Terrasse.jpg','aussen',7);"
-					+ "INSERT INTO `Produkt` VALUES('49.99',4,'Terassenmoebel','images/bruecke.jpg','aussen',9);"
-					+ "INSERT INTO `Produkt` VALUES('49.99',5,'Esstisch','images/esstisch.jpg','innen',60);"
-					+ "INSERT INTO `Produkt` VALUES('4.99',6,'Pellets','images/Pellets.jpg','brennbar',79);"
-					+ "INSERT INTO `Produkt` VALUES('22.99',7,'Holzfahrrad','images/Holzfahrrad.jpg','aussen',9);"
-					+ "INSERT INTO `Produkt` VALUES('19.99',12,'Stuhl','images/stuhl.jpg','innen',80);"
-					+ "INSERT INTO `Produkt` VALUES('44.99',13,'Vertäfelung','images/Vertaefelung.jpg','innen',90);"
-					+ "INSERT INTO `Produkt` VALUES('4.99',14,'Echtes Kiefernholz','images/Kiefernholz.jpg','brennbar',4);"
-					+ "INSERT INTO `Produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);"
-					+ "CREATE TABLE Warenkorb ("
-							+ "	`wkn`	INTEGER NOT NULL,"
-							+ "	`kundenNummer`	INTEGER NOT NULL,"
-							+ "	`artikelNummer`	INTEGER NOT NULL,"
-							+ "	`bestellmenge`	INTEGER NOT NULL,"
-							+ "	PRIMARY KEY(wkn)"
-							+ ");"
-					+ "INSERT INTO `Warenkorb` VALUES(1,0,7,1);"
-					+ "INSERT INTO `Warenkorb` VALUES(2,0,14,1);"
-					+ "INSERT INTO `Warenkorb` VALUES(3,1011,1,1);"
-					+ "INSERT INTO `Warenkorb` VALUES(4,1011,1,1);"
-					+ "CREATE TABLE Kunde ("
+				"CREATE TABLE Produkt ("
+				+ "`preis` double NOT NULL,	"
+				+ "`artikelNummer`	INTEGER NOT NULL,"
+				+ "`artikelBezeichnung`	varchar(50) NOT NULL,"
+				+ "`bildPfad`	varchar(20),`kategorie`	varchar(20) NOT NULL,"
+				+ "`lagermenge`	INTEGER,PRIMARY KEY(artikelNummer));"
+				+ "INSERT INTO `Produkt` VALUES('99.99',1,'Gartenzaun','images/Palissaden.jpg','aussen',90);"
+				+ "INSERT INTO `Produkt` VALUES('119.99',2,'Palisaden fuer den Garten','images/Pfaehle.jpg','aussen',98);"
+				+ "INSERT INTO `Produkt` VALUES('249.99',3,'Terassenbelaege','images/Terrasse.jpg','aussen',7);"
+				+ "INSERT INTO `Produkt` VALUES('49.99',4,'Terassenmoebel','images/bruecke.jpg','aussen',9);"
+				+ "INSERT INTO `Produkt` VALUES('49.99',5,'Esstisch','images/esstisch.jpg','innen',60);"
+				+ "INSERT INTO `Produkt` VALUES('4.99',6,'Pellets','images/Pellets.jpg','brennbar',79);"
+				+ "INSERT INTO `Produkt` VALUES('22.99',7,'Holzfahrrad','images/Holzfahrrad.jpg','aussen',9);"
+				+ "INSERT INTO `Produkt` VALUES('19.99',12,'Stuhl','images/stuhl.jpg','innen',80);"
+				+ "INSERT INTO `Produkt` VALUES('44.99',13,'Vertäfelung','images/Vertaefelung.jpg','innen',90);"
+				+ "INSERT INTO `Produkt` VALUES('4.99',14,'Echtes Kiefernholz','images/Kiefernholz.jpg','brennbar',4);"
+				+ "INSERT INTO `Produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);"
+				+ ";");
+			}
+			rs = meta.getTables(null, null, "Warenkorb", null);
+			if(!rs.next()){							//prüft ob Tabelle "Warenkorb" bereits initialisiert wurde
+			stmt.executeUpdate(
+				"CREATE TABLE Warenkorb ("
+						+ "	`wkn`	INTEGER NOT NULL,"
+						+ "	`kundenNummer`	INTEGER NOT NULL,"
+						+ "	`artikelNummer`	INTEGER NOT NULL,"
+						+ "	`bestellmenge`	INTEGER NOT NULL,"
+						+ "	PRIMARY KEY(wkn)"
+						+ ");"
+				+ ";");
+			}
+			rs = meta.getTables(null, null, "Kunde", null);
+			if(!rs.next()){							//prüft ob Tabelle "Kunde" bereits initialisiert wurde
+			stmt.executeUpdate(
+					"CREATE TABLE Kunde ("
 					+ "	`kundenNummer`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 					+ "	`anrede`	TEXT,"
 					+ "	`vorname`	varchar(20) NOT NULL,"
@@ -867,12 +889,18 @@ public class Model extends Observable{
 					+ "INSERT INTO `Kunde` VALUES(1009,'H','depp','vom','depp','gibts@nicht.de','dienst',1337,12,'hier',01901,'-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
 					+ "INSERT INTO `Kunde` VALUES(1010,'Herr','sdf','sdf','deppi','sdf','sdf','sdf','sdf','sdf','sdfsdf','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
 					+ "INSERT INTO `Kunde` VALUES(1011,'Frau','Agnes','Klein','Ackness','senga1@gmx.net','Buhlenweg 38','Buhlenweg 38',78467,'Konstanz','+4915115331366','113-60293-39-119123547962-69-76447279-1261012128','nein');"
-					+ "CREATE TABLE Bestellung ("
-							+ "	`kundenNummer`	INTEGER NOT NULL,"
-							+ "	`artikelNummer`	INTEGER NOT NULL,"
-							+ "	PRIMARY KEY(kundenNummer,artikelNummer)"
-							+ ");"
-							+ ";");
+					+ ";");
+			}
+			rs = meta.getTables(null, null, "Bestellung", null);
+			if(!rs.next()){							//prüft ob Tabelle "Bestellung" bereits initialisiert wurde
+			stmt.executeUpdate(
+					"CREATE TABLE Bestellung ("
+						+ "	`kundenNummer`	INTEGER NOT NULL,"
+						+ "	`artikelNummer`	INTEGER NOT NULL,"
+						+ "	PRIMARY KEY(kundenNummer,artikelNummer)"
+						+ ");"
+						+ ";");
+							
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -299,7 +299,7 @@ public class Application extends Controller {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 		System.out.println(filledForm.get());
 		try {
-			Model.sharedInstance.addKunden(filledForm.get());
+			Model.sharedInstance.addCustomer(filledForm.get());
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
