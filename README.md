@@ -1,5 +1,5 @@
 #Holzshop
-<http://www.amazon.de/>
+<http://www.holzshop.herokuapp.com>
 ## Projektbeschreibung
 
 Ein Shop zur bestellen von verschiedenen Holzprodukte. Es beinhaltet entweder Produkte die im Außenbereich, 
@@ -12,6 +12,7 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 ![Use-Case Diagramm](/public/images/UseCase.jpg "Use-Case")
 
 ====
+
 ## Erste Ideen
 
 - Login / Registrieren
@@ -40,31 +41,42 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 
 ## Verwendete Technologien
 
-HTML5 - für die Erstellung der Webseiten; 
-CSS - Design der Artikel; 
+HTML - für die Erstellung der Webseiten;
+
+CSS - Design Artikel; 
+
 Bootstrap - Design der Webseiten;
-JavaScript - Registrierung;
+
+JavaScript - überall (Registrierung, artikel usw.);
+
 jQuery - Animation der Kategorien in der main und in neuheiten;
+
 Postgresql - Datenbank (Kunde, Produkt, Warenkorb); 
-Java mit Playframework - bei der modelierung von Model Application ; 
-Scala - vom Webseeiten Produkt oder Kunde an der Application weiterzugeben, Übergabe der Werte aus der Registrierung;
-AJAX - für die Suche entweder nach Preis, Kategorie oder Artikelname; 
-WebSockets - Änderung der Produktenmänge; 
-JSON. 
+
+Java mit Playframework - bei der modelierung von Model, Application; 
+
+Scala - einfache Lögik in den views;
+
+AJAX - für die Suche entweder nach Preis, Kategorie oder Artikelname;
+
+WebSockets - Änderung der Produktenmenge;
+ 
+JSON - Übergabe der aktuellen Menge der einzelnen Produkte.  
 
 ====
 
 ## Gelerntes
 
-Viel.
+Viel. Alles was im "Verwendete Technologien" steht. 
 
 ====
 
 ## Probleme
 
-Die grössten Probleme waren bei der Playframework Einführung, Datenbanken locks und Deployment auf Heroku.
+Die grössten Probleme waren bei der **Datenbanken locks**, Playframework Einführung, Deployment auf Heroku.
 
 ====
 
 ## Code
 
+Siehe `code`.
