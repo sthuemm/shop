@@ -20,7 +20,7 @@ import play.mvc.WebSocket;
 
 public class Application extends Controller {
 	final static Form<Kunde> userForm = Form.form(Kunde.class);
-	static HashMap<Integer, ShopObserver> observer = new HashMap<>();
+
 
 	public static Result index() {
 		String kunde = session("Kundennummer");
@@ -169,8 +169,6 @@ public class Application extends Controller {
 						+ ": WebSocketArtikel ready...");
 				final ShopObserver obs = new ShopObserver();
 				obs.shop = out;
-				// final Integer id = new Integer(obs.hashCode());
-				// observer.put(id,obs);
 				System.out.println(Model.sharedInstance.getTime()
 						+ ": Anzahl observer: "
 						+ Model.sharedInstance.countObservers());
@@ -329,9 +327,9 @@ public class Application extends Controller {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 
 		session().clear();
-		if (Model.sharedInstance.loginUeberpruefung(filledForm.get()) != null) {
-			session("Kundennummer",
-					Model.sharedInstance.loginUeberpruefung(filledForm.get()).kundenNummer);
+		Kunde kunde = Model.sharedInstance.loginUeberpruefung(filledForm.get());
+		if (kunde != null) {
+			session("Kundennummer",kunde.kundenNummer);
 			return redirect("/mainPage");
 		} else {
 			return redirect("/loginFehler");
