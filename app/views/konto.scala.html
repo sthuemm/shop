@@ -7,6 +7,7 @@
 	<a href><button>offene Bestellungen ansehen</button></a>
 	<a href><button>abgeschlossene Bestellungen ansehen</button></a>
 
+	<div id="outputKundenkonto">
 	@helper.form(action = routes.Application.submitKundendaten(), 'id -> "userForm") {
 		@helper.inputPassword(userForm("passwort"))
 		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
@@ -21,4 +22,5 @@
 		<input type ="submit" value="senden">
 	
 	}
+	</div>
 }

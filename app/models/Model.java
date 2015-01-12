@@ -102,6 +102,48 @@ public class Model extends Observable{
 //			}
 //		}
 //	}
+	
+	public boolean isWarenkorbEmpty(){
+		boolean isEmpty = false;
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM warenkorb");
+			if(!rs.next()){
+				isEmpty = true;
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		
+	
+		
+		return isEmpty;
+	}
 
 	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
 		
@@ -109,14 +151,15 @@ public class Model extends Observable{
 			Connection conn = null;
 			Statement stmt = null;
 			ResultSet rs = null;
+			
 
 			try {
 				conn = DB.getConnection();
 				stmt = conn.createStatement();
-				rs = stmt.executeQuery("SELECT * FROM warenkorb");
 				int anzahl = 0;
 				
-				if(!rs.next()){
+				if(isWarenkorbEmpty()){
+					
 					anzahl = stmt
 							.executeUpdate("insert into Warenkorb values ("
 									+ "1, "
@@ -817,16 +860,13 @@ public class Model extends Observable{
 	public void inizializeDatabase(){
 		Connection conn = null;
 		Statement stmt = null;
-		conn = DB.getConnection();
+		ResultSet rs = null;
+		
 		try {
-			stmt = conn.createStatement();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
+			conn = DB.getConnection();
 			DatabaseMetaData meta = conn.getMetaData();
-			ResultSet rs = meta.getTables(null, null, "Produkt", null);
+			stmt = conn.createStatement();
+			rs = meta.getTables(null, null, "Produkt", null);
 			if(!rs.next()){							//prüft ob Tabelle "Produkt" bereits initialisiert wurde
 			stmt.executeUpdate(
 				"CREATE TABLE Produkt ("
@@ -848,6 +888,7 @@ public class Model extends Observable{
 				+ "INSERT INTO `Produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);"
 				+ ";");
 			}
+			rs.close();
 			rs = meta.getTables(null, null, "Warenkorb", null);
 			if(!rs.next()){							//prüft ob Tabelle "Warenkorb" bereits initialisiert wurde
 			stmt.executeUpdate(
@@ -860,6 +901,7 @@ public class Model extends Observable{
 						+ ");"
 				+ ";");
 			}
+			rs.close();
 			rs = meta.getTables(null, null, "Kunde", null);
 			if(!rs.next()){							//prüft ob Tabelle "Kunde" bereits initialisiert wurde
 			stmt.executeUpdate(
@@ -891,6 +933,7 @@ public class Model extends Observable{
 					+ "INSERT INTO `Kunde` VALUES(1011,'Frau','Agnes','Klein','Ackness','senga1@gmx.net','Buhlenweg 38','Buhlenweg 38',78467,'Konstanz','+4915115331366','113-60293-39-119123547962-69-76447279-1261012128','nein');"
 					+ ";");
 			}
+			rs.close();
 			rs = meta.getTables(null, null, "Bestellung", null);
 			if(!rs.next()){							//prüft ob Tabelle "Bestellung" bereits initialisiert wurde
 			stmt.executeUpdate(
@@ -905,6 +948,26 @@ public class Model extends Observable{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
 
 			
