@@ -144,7 +144,54 @@ public class Model extends Observable{
 		
 		return isEmpty;
 	}
+	
+	public boolean checkKundeArtikelWarenkorb(String artikelnr,
+			String kundenNummer) {
 
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		boolean articleExists = false;
+		
+		try {
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM warenkorb WHERE "
+					+ "kundenNummer ='"+kundenNummer+"';");
+			while(rs.next()){
+				
+				if(artikelnr.equals(rs.getString("artikelNummer"))){
+					articleExists = true;
+				}		
+			}
+			
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println(getTime() + ": Fehler Check Artikel Warenkorb");
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		System.out.println("artikel existiert:"+articleExists);
+		return articleExists;
+	}
 	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
 		
 
@@ -157,24 +204,34 @@ public class Model extends Observable{
 				conn = DB.getConnection();
 				stmt = conn.createStatement();
 				int anzahl = 0;
-				
-				if(isWarenkorbEmpty()){
+				rs = stmt.executeQuery("SELECT * FROM warenkorb WHERE "
+						+ "kundenNummer ="+kundenNummer+" AND artikelNummer = "+artikelnr+" ;");
+				if(rs.next()){
+					String wkn = rs.getString("wkn");
+					stmt.executeUpdate("UPDATE warenkorb "
+							+ "SET bestellmenge = bestellmenge + "+menge+" WHERE wkn = "+wkn+";");
+					System.out.println("Menge Artikel Warenkorb geändert");
+				}
+				else{
+					if(isWarenkorbEmpty()){
+						
+						anzahl = stmt
+								.executeUpdate("insert into Warenkorb values ("
+										+ "1, "
+										+ kundenNummer + "," + artikelnr
+										+ "," + menge + ");");
+					} else {
+						anzahl = stmt
+								.executeUpdate("insert into Warenkorb values ("
+										+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
+										+ kundenNummer + "," + artikelnr
+										+ "," + menge + ");");
+					}
 					
-					anzahl = stmt
-							.executeUpdate("insert into Warenkorb values ("
-									+ "1, "
-									+ kundenNummer + "," + artikelnr
-									+ "," + menge + ");");
-				} else {
-					anzahl = stmt
-							.executeUpdate("insert into Warenkorb values ("
-									+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
-									+ kundenNummer + "," + artikelnr
-									+ "," + menge + ");");
+					System.out.println(getTime() + ": " + anzahl
+							+ " Artikel in Warenkorb gelegt");
 				}
 				
-				System.out.println(getTime() + ": " + anzahl
-						+ " Artikel in Warenkorb gelegt");
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 				System.out.println(getTime() + ": Fehler Warenkorb inserieren");

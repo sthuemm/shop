@@ -40,16 +40,16 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 
 ## Verwendete Technologien
 
-HTML5 - für die Erstellung der Webseiten, 
-CSS - Design der Artikel, 
-Bootstrap - Design der Webseiten,
-JavaScript - Registrierung,
-jQuery - Animation der Kategorien in der main und in neuheiten, 
-SQLite, 
-Java mit Playframework - bei der modelierung von Model Applicatiin , 
-Scala - vom Webseeiten Produkt oder Kunde an der Application weiterzugeben, Übergabe der Werte aus der Registrierung,
-AJAX - für die Suche entweder nach Preis, Kategorie oder Artikelname, 
-WebSockets, 
+HTML5 - für die Erstellung der Webseiten; 
+CSS - Design der Artikel; 
+Bootstrap - Design der Webseiten;
+JavaScript - Registrierung;
+jQuery - Animation der Kategorien in der main und in neuheiten;
+Postgresql - Datenbank (Kunde, Produkt, Warenkorb); 
+Java mit Playframework - bei der modelierung von Model Application ; 
+Scala - vom Webseeiten Produkt oder Kunde an der Application weiterzugeben, Übergabe der Werte aus der Registrierung;
+AJAX - für die Suche entweder nach Preis, Kategorie oder Artikelname; 
+WebSockets - Änderung der Produktenmänge; 
 JSON. 
 
 ====
@@ -65,3 +65,6 @@ Viel.
 Die grössten Probleme waren bei der Playframework Einführung, Datenbanken locks und Deployment auf Heroku.
 
 ====
+
+## Code
+
