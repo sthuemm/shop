@@ -145,53 +145,6 @@ public class Model extends Observable{
 		return isEmpty;
 	}
 	
-	public boolean checkKundeArtikelWarenkorb(String artikelnr,
-			String kundenNummer) {
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		boolean articleExists = false;
-		
-		try {
-			conn = DB.getConnection();
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM warenkorb WHERE "
-					+ "kundenNummer ='"+kundenNummer+"';");
-			while(rs.next()){
-				
-				if(artikelnr.equals(rs.getString("artikelNummer"))){
-					articleExists = true;
-				}		
-			}
-			
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			System.out.println(getTime() + ": Fehler Check Artikel Warenkorb");
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-		System.out.println("artikel existiert:"+articleExists);
-		return articleExists;
-	}
 	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
 		
 
