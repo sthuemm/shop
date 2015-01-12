@@ -510,68 +510,101 @@ public class Model extends Observable{
 		return kundeLoggedIn;
 	}
 
-	public void addCustomer(Kunde kunde) throws NoSuchAlgorithmException {
+	public boolean addCustomer(Kunde kunde) throws NoSuchAlgorithmException {
 		Connection conn = null;
 		Statement stmtCheckKundeIsEmpty = null;
 		PreparedStatement stmtAddKunde = null;
 		ResultSet rs = null;
 		String insert="";
+		boolean kundeAngelegt = false;
 		
-		try {
-			conn = DB.getConnection();
-			stmtCheckKundeIsEmpty = conn.createStatement();
-			rs = stmtCheckKundeIsEmpty.executeQuery("SELECT * FROM Kunde");
-			if(!rs.next()){		//noch keine Kunden
-				 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
-						+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
-						+ " values(1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-			} else {			
-				 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
-						+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
-						+ " values((SELECT MAX (kundenNummer) FROM Kunde)+1, "
-						+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-			}
-			stmtAddKunde = conn.prepareStatement(insert);
-			stmtAddKunde.setString(1, kunde.getAnrede());
-			stmtAddKunde.setString(2, kunde.getVorname());
-			stmtAddKunde.setString(3, kunde.getNachname());
-			stmtAddKunde.setString(4, kunde.getBenutzername());
-			stmtAddKunde.setString(5, kunde.getEmail());	
-			stmtAddKunde.setString(6, kunde.getStrasse());	
-			stmtAddKunde.setString(7, kunde.getHausnummer());	
-			stmtAddKunde.setString(8, kunde.getPlz());	
-			stmtAddKunde.setString(9, kunde.getOrt());	
-			stmtAddKunde.setString(10, kunde.getTelefon());	
-			stmtAddKunde.setString(11, verschluesselPW(kunde.getPasswort()));	
-			stmtAddKunde.setString(12, "nein");	
-			stmtAddKunde.executeUpdate();
+		
+		
+		
+		if(checkForValidRegistration(kunde)){		//Regex für Einträge in Registrierung
+	
+			try {
+				conn = DB.getConnection();
+				stmtCheckKundeIsEmpty = conn.createStatement();
+				rs = stmtCheckKundeIsEmpty.executeQuery("SELECT * FROM Kunde");
+				if(!rs.next()){		//noch keine Kunden
+					 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+							+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
+							+ " values(1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				} else {			
+					 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+							+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
+							+ " values((SELECT MAX (kundenNummer) FROM Kunde)+1, "
+							+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				}
+				stmtAddKunde = conn.prepareStatement(insert);
+				stmtAddKunde.setString(1, kunde.getAnrede());
+				stmtAddKunde.setString(2, kunde.getVorname());
+				stmtAddKunde.setString(3, kunde.getNachname());
+				stmtAddKunde.setString(4, kunde.getBenutzername());
+				stmtAddKunde.setString(5, kunde.getEmail());	
+				stmtAddKunde.setString(6, kunde.getStrasse());	
+				stmtAddKunde.setString(7, kunde.getHausnummer());	
+				stmtAddKunde.setString(8, kunde.getPlz());	
+				stmtAddKunde.setString(9, kunde.getOrt());	
+				stmtAddKunde.setString(10, kunde.getTelefon());	
+				stmtAddKunde.setString(11, verschluesselPW(kunde.getPasswort()));	
+				stmtAddKunde.setString(12, "nein");	
+				stmtAddKunde.executeUpdate();
 			
-			
-		} catch (SQLException e) {
-			System.out.println(getTime() + ": Fehler Kunden inserieren");
-			e.printStackTrace();
-		} finally {
-			
-			if (stmtAddKunde != null) {
-				try {
-					stmtAddKunde.close();
-				} catch (SQLException e) {
+				kundeAngelegt = true;
+				
+			} catch (SQLException e) {
+				System.out.println(getTime() + ": Fehler Kunden inserieren");
+				e.printStackTrace();
+			} finally {
+				
+				if (stmtAddKunde != null) {
+					try {
+						stmtAddKunde.close();
+					} catch (SQLException e) {
+					}
+				}
+				if (stmtCheckKundeIsEmpty != null) {
+					try {
+						stmtCheckKundeIsEmpty.close();
+					} catch (SQLException e) {
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+					}
 				}
 			}
-			if (stmtCheckKundeIsEmpty != null) {
-				try {
-					stmtCheckKundeIsEmpty.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
+		} 
+		
+		return kundeAngelegt;
 	}
+	
+	/*
+	 * Überprüfung der Einträge im Registrierungsformular. Durchführung im Code und nicht in Java-
+	 * skript, da JS deaktiviert werden kann...
+	 */
+	
+	public boolean checkForValidRegistration(Kunde kunde){
+		boolean registrationIsValid = true;
+		
+		String regexEmail = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+		String regexStrasse = "\\D";
+		
+		
+		if(!kunde.email.matches(regexEmail)){
+			registrationIsValid = false;
+		}
+		if(!kunde.strasse.matches(regexStrasse)){   //keine Hausnummer im Strassennamen
+			registrationIsValid = false;
+		}
+		
+		return registrationIsValid;
+	}
+	
 
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();

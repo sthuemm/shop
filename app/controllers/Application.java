@@ -234,7 +234,7 @@ public class Application extends Controller {
 					Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukteAlle()));
 		} else {
-			return redirect("/");
+			return redirect("/registrierung");
 		}
 
 	}
@@ -293,18 +293,22 @@ public class Application extends Controller {
 
 	public static Result neuerUser() {
 		String kunde = session("Kundennummer");
-
+		boolean kundeAngelegt = true;
 		Form<Kunde> filledForm = userForm.bindFromRequest();
 		System.out.println(filledForm.get());
 		try {
-			Model.sharedInstance.addCustomer(filledForm.get());
+			if(!Model.sharedInstance.addCustomer(filledForm.get())){
+				kundeAngelegt = false;
+			}
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		if (kunde != null) {
+		if (kunde != null && kundeAngelegt) {
 			return ok(mainPage.render(
 					Model.sharedInstance.getCustomerName(kunde),
 					Model.sharedInstance.getProdukteAlle()));
+		} else if (!kundeAngelegt){
+			return redirect("/registrierung");
 		} else {
 			return ok(mainPage.render(
 					Model.sharedInstance.getCustomerName("0000"),

@@ -9,73 +9,85 @@
 
 <script type="text/javascript">
 
-	
 
-	function farbe(){
-		if(document.getElementById('benutzername').value == null || document.getElementById('benutzername').value == ""){
-			document.getElementById('benutzername').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('passwort').value == null || document.getElementById('passwort').value == ""){
-			document.getElementById('passwort').style.backgroundColor = "#FF6A6A";
-		} 
-		if(!document.getElementById('anrede_F').checked && !document.getElementById('anrede_H').checked ){
+	
+	function checkEmptyInputFields(){
+	
+		if(document.getElementById('benutzername').value.length == 0){
+			document.getElementById('benutzername').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('benutzername').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('passwort').value.length == 0){
+			document.getElementById('passwort').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('benutzername').style.borderColor = "#04B404";
+		}
+		
+		if(!document.getElementById('anrede_Frau').checked && !document.getElementById('anrede_Herr').checked ){
 			document.getElementById('anrede').style.backgroundColor = "#FF6A6A";
-		}		
-		if(document.getElementById('vorname').value == null || document.getElementById('vorname').value == ""){
-			document.getElementById('vorname').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('nachname').value == null || document.getElementById('nachname').value == ""){
-			document.getElementById('nachname').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('strasse').value == null || document.getElementById('strasse').value == ""){
-			document.getElementById('strasse').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('hausnummer').value == null || document.getElementById('hausnummer').value == ""){
-			document.getElementById('hausnummer').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('plz').value == null || document.getElementById('plz').value == ""){
-			document.getElementById('plz').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('ort').value == null || document.getElementById('ort').value == ""){
-			document.getElementById('ort').style.backgroundColor = "#FF6A6A";
-		} 
-		if(document.getElementById('email').value == null || document.getElementById('email').value == ""){
-			document.getElementById('email').style.backgroundColor = "#FF6A6A";
-		} 
+		}	
+		
+		if(document.getElementById('vorname').value.length == 0){
+			document.getElementById('vorname').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('vorname').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('nachname').value.length == 0){
+			document.getElementById('nachname').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('nachname').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('strasse').value.length == 0){
+			document.getElementById('strasse').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('strasse').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('hausnummer').value.length == 0){
+			document.getElementById('hausnummer').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('hausnummer').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('plz').value.length == 0){
+			document.getElementById('plz').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('plz').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('ort').value.length == 0){
+			document.getElementById('ort').style.borderColor = "#FF6A6A";
+		} else {
+			document.getElementById('ort').style.borderColor = "#04B404";
+		}
+		
+		if(document.getElementById('email').value.length == 0){
+			document.getElementById('email').style.borderColor = "#FF6A6A";
+			
+		} else {
+			document.getElementById('email').style.borderColor = "#04B404";
+		}
 		
 	}
 	
 	function farbeStandard(){
-		if(document.getElementById('benutzername').value == null || document.getElementById('benutzername').value == ""){
-			document.getElementById('benutzername').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('passwort').value == null || document.getElementById('passwort').value == ""){
-			document.getElementById('passwort').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('anrede').value == null || document.getElementById('anrede').value == ""){
-			document.getElementById('anrede').style.backgroundColor = "#58FA82";
-		} 
-		if(document.getElementById('vorname').value == null || document.getElementById('vorname').value == ""){
-			document.getElementById('vorname').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('nachname').value == null || document.getElementById('nachname').value == ""){
-			document.getElementById('nachname').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('strasse').value == null || document.getElementById('strasse').value == ""){
-			document.getElementById('strasse').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('hausnummer').value == null || document.getElementById('hausnummer').value == ""){
-			document.getElementById('hausnummer').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('plz').value == null || document.getElementById('plz').value == ""){
-			document.getElementById('plz').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('ort').value == null || document.getElementById('ort').value == ""){
-			document.getElementById('ort').style.backgroundColor = "#FFFFFF";
-		} 
-		if(document.getElementById('email').value == null || document.getElementById('email').value == ""){
-			document.getElementById('email').style.backgroundColor = "#FFFFFF";
-		} 
+		
+		document.getElementById('benutzername').style.borderColor = "";
+		document.getElementById('passwort').style.borderColor = "";
+		document.getElementById('anrede').style.backgroundColor = "#58FA82";
+		document.getElementById('vorname').style.borderColor = "";
+		document.getElementById('vorname').style.borderColor = "";
+		document.getElementById('nachname').style.borderColor = "";
+		document.getElementById('strasse').style.borderColor = "";
+		document.getElementById('hausnummer').style.borderColor = "";
+		document.getElementById('plz').style.borderColor = "";
+		document.getElementById('ort').style.borderColor = "";
+		document.getElementById('email').style.borderColor = "";
+		
 	}
 	
 </script>
@@ -102,7 +114,7 @@
 		@helper.inputText(userForm("telefon"), '_label -> "Telefonnummer", 'id -> "telefonnummerID")
 
 		<p><span> * Pflichtfeld</span></p>
-		<input type ="submit" value="senden" onmouseover="farbe()" onmouseout="farbeStandard()">
+		<input type ="submit" value="senden" onmouseover="checkEmptyInputFields()" onmouseout="farbeStandard()">
 			
 		}
 </div>
