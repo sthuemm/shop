@@ -314,7 +314,6 @@ public class Application extends Controller {
 					Model.sharedInstance.getCustomerName("0000"),
 					Model.sharedInstance.getProdukteAlle()));
 		}
-
 	}
 
 	public static Result login() {

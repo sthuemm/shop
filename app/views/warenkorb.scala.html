@@ -14,7 +14,7 @@
 			@for(produkt <- produkte) {
 			
 					<div id="w@produkt.artikelNummer" class="row" style="padding:5%">
-					<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:20%;">
+					<div class="col-md-4" style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; width: 300px; padding: 15px" >
 						<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
 						<img src=/assets/@produkt.bildPfad  width="250" height="150"></a>
 						
