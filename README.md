@@ -2,8 +2,7 @@
 <http://www.holzshop.herokuapp.com>
 ## Projektbeschreibung
 
-Ein Shop zur bestellen von verschiedenen Holzprodukte. Es beinhaltet entweder Produkte die im Außenbereich, 
-Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
+Ein Shop für verschiedene Holzprodukte. Er beinhaltet Holzprodukte für den Innen- und Aussenbereich sowie Brennholz.
 
 ====
 
@@ -41,27 +40,23 @@ Innenbereich zu finden sind oder Produkte die zum Heizen benutzt werden.
 
 ## Verwendete Technologien
 
-HTML - für die Erstellung der Webseiten;
+HTML - zur Erstellung des Grundgerüsts der Webseite;
 
-CSS - Design Artikel; 
+CSS mit Bootstrap - Design der Webseite;
 
-Bootstrap - Design der Webseiten;
+JavaScript mit jQuery - Animation, Fehlerdarstellung im Registrierungsprozess;
 
-JavaScript - überall (Registrierung, artikel usw.);
+sqlite - Datenbank (Kunde, Produkt, Warenkorb); 
 
-jQuery - Animation der Kategorien in der main und in neuheiten;
+Play Framework mit Java für Backend;
 
-Postgresql - Datenbank (Kunde, Produkt, Warenkorb); 
+Scala - einfache Logik in den Views;
 
-Java mit Playframework - bei der modelierung von Model, Application; 
+AJAX - Um im Suchfenster Vorschläge direkt auf der Seite ohne Nachladen darstellen zu können;
 
-Scala - einfache Lögik in den views;
-
-AJAX - für die Suche entweder nach Preis, Kategorie oder Artikelname;
-
-WebSockets - Änderung der Produktenmenge;
+WebSockets - Um anderen Kunden jede Änderung der Restmengen ohne Reload der Seite darzustellen;
  
-JSON - Übergabe der aktuellen Menge der einzelnen Produkte.  
+JSON - Datenaustauschformat zwischen Websocket und View.  
 
 ====
 
@@ -73,7 +68,8 @@ Viel. Alles was im "Verwendete Technologien" steht.
 
 ## Probleme
 
-Die grössten Probleme waren bei der **Datenbanken locks**, Playframework Einführung, Deployment auf Heroku.
+Häufig vorkommende Probleme waren Datenbank-Locks, wobei der Grund meist schnell gefunden werden konnte. 
+Deployment auf Heroku hat am meisten Zeit beansprucht, da die Fehlermeldungen für uns nicht zielführend waren
 
 ====
 
