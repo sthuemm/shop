@@ -28,12 +28,12 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Model extends Observable{
+public class Model extends Observable {
 
 	public static Model sharedInstance = new Model();
 	private Kunde kunde = new Kunde();
-	private HashMap<String,Kunde> kunden = new HashMap<>();
-	SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+	private HashMap<String, Kunde> kunden = new HashMap<>();
+
 	Kunde kundeGast = new Kunde();
 
 	private Model() {
@@ -41,83 +41,90 @@ public class Model extends Observable{
 		inizializeDatabase();
 		kunden.put(kundeGast.kundenNummer, kundeGast);
 	}
-	
-	public void removeCustomerFromMap(String kundenNummer){
+
+	public void removeCustomerFromMap(String kundenNummer) {
 		kunden.remove(kundenNummer);
-		System.out.println(getTime() + ": removed from HashMap: "+kundenNummer);
+		System.out.println(getTime() + ": removed from HashMap: " + kundenNummer);
 	}
-	
-	public String getCustomerName(String kundenNummer){
+
+	public String getCustomerName(String kundenNummer) {
 		String vorname = "guest";
-		if(kunden.containsKey(kundenNummer)){
+		if (kunden.containsKey(kundenNummer)) {
 			vorname = kunden.get(kundenNummer).vorname;
 		}
 		return vorname;
 	}
 
 	public String getTime() {
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		Date currentTime = new Date(System.currentTimeMillis());
 		return formatter.format(currentTime);
 	}
 
-//	public void produktInserieren(double preis, String artikelBezeichnung,
-//			String bildPfad, String kategorie, String lagermenge) {
-//
-//		Connection conn = null;
-//		Statement stmt = null;
-//		ResultSet rs = null;
-//
-//		try {
-//			conn = DB.getConnection();
-//			stmt = conn.createStatement();
-//			stmt.executeUpdate("insert into Produkt values (" + preis + ","
-//					+ "(SELECT MAX (artikelNummer) FROM Produkt)+1,'"
-//					+ artikelBezeichnung + "'," + " '" + bildPfad + "','"
-//					+ kategorie + "'," + "" + lagermenge + ");");
-//			System.out.println(getTime() + ":" + stmt
-//					+ "Produkt(e) hinzugefügt");
-//		}
-//
-//		catch (SQLException ex) {
-//			ex.printStackTrace();
-//			System.out.println(getTime() + ": Fehler Produkt inserieren");
-//		} finally {
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//			if (stmt != null) {
-//				try {
-//					stmt.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//			if (conn != null) {
-//				try {
-//					conn.close();
-//				} catch (SQLException e) {
-//				}
-//			}
-//		}
-//	}
-	
-	public boolean isWarenkorbEmpty(){
+	public String getDate() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+		return formatter.format(new Date(System.currentTimeMillis()));
+
+	}
+
+	// public void produktInserieren(double preis, String artikelBezeichnung,
+	// String bildPfad, String kategorie, String lagermenge) {
+	//
+	// Connection conn = null;
+	// Statement stmt = null;
+	// ResultSet rs = null;
+	//
+	// try {
+	// conn = DB.getConnection();
+	// stmt = conn.createStatement();
+	// stmt.executeUpdate("insert into Produkt values (" + preis + ","
+	// + "(SELECT MAX (artikelNummer) FROM Produkt)+1,'"
+	// + artikelBezeichnung + "'," + " '" + bildPfad + "','"
+	// + kategorie + "'," + "" + lagermenge + ");");
+	// System.out.println(getTime() + ":" + stmt
+	// + "Produkt(e) hinzugefügt");
+	// }
+	//
+	// catch (SQLException ex) {
+	// ex.printStackTrace();
+	// System.out.println(getTime() + ": Fehler Produkt inserieren");
+	// } finally {
+	// if (rs != null) {
+	// try {
+	// rs.close();
+	// } catch (SQLException e) {
+	// }
+	// }
+	// if (stmt != null) {
+	// try {
+	// stmt.close();
+	// } catch (SQLException e) {
+	// }
+	// }
+	// if (conn != null) {
+	// try {
+	// conn.close();
+	// } catch (SQLException e) {
+	// }
+	// }
+	// }
+	// }
+
+	public boolean isWarenkorbEmpty() {
 		boolean isEmpty = false;
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM warenkorb");
-			if(!rs.next()){
+			if (!rs.next()) {
 				isEmpty = true;
 			}
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		} finally {
 			if (rs != null) {
@@ -139,77 +146,125 @@ public class Model extends Observable{
 				}
 			}
 		}
-		
-	
-		
+
 		return isEmpty;
 	}
-	
-	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
-		
 
-			Connection conn = null;
-			Statement stmt = null;
-			ResultSet rs = null;
-			
+	public Produkt getArticleByArticlenumber(String artikelNummer) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Produkt produkt = new Produkt();
 
-			try {
-				conn = DB.getConnection();
-				stmt = conn.createStatement();
-				int anzahl = 0;
-				rs = stmt.executeQuery("SELECT * FROM warenkorb WHERE "
-						+ "kundenNummer ="+kundenNummer+" AND artikelNummer = "+artikelnr+" ;");
-				if(rs.next()){
-					String wkn = rs.getString("wkn");
-					stmt.executeUpdate("UPDATE warenkorb "
-							+ "SET bestellmenge = bestellmenge + "+menge+" WHERE wkn = "+wkn+";");
-					System.out.println("Menge Artikel Warenkorb geändert");
-				}
-				else{
-					if(isWarenkorbEmpty()){
-						
-						anzahl = stmt
-								.executeUpdate("insert into Warenkorb values ("
-										+ "1, "
-										+ kundenNummer + "," + artikelnr
-										+ "," + menge + ");");
-					} else {
-						anzahl = stmt
-								.executeUpdate("insert into Warenkorb values ("
-										+ "(SELECT MAX (wkn) FROM warenkorb)+1, "
-										+ kundenNummer + "," + artikelnr
-										+ "," + menge + ");");
-					}
-					
-					System.out.println(getTime() + ": " + anzahl
-							+ " Artikel in Warenkorb gelegt");
-				}
-				
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-				System.out.println(getTime() + ": Fehler Warenkorb inserieren");
-			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException e) {
-					}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-					}
+		try {
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt
+					.executeQuery("SELECT * FROM produkt WHERE artikelNummer = "
+							+ artikelNummer + ";");
+			if (rs.next()) {
+
+				double preis = rs.getDouble("preis");
+				String artikelBezeichnung = rs.getString("artikelBezeichnung");
+				String kategorie = rs.getString("kategorie");
+				String bildPfad = rs.getString("bildPfad");
+				int lagermenge = rs.getInt("lagermenge");
+
+				produkt = new Produkt(preis, artikelNummer, artikelBezeichnung,
+						bildPfad, kategorie, lagermenge);
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
 				}
 			}
-		
-		
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		return produkt;
+	}
+
+	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+			int anzahl = 0;
+			/*
+			 * Prüfung ob Kunde gleichen Artikel bereits im Warenkorb hat
+			 */
+			rs = stmt.executeQuery("SELECT * FROM warenkorb WHERE " + "kundenNummer =" + kundenNummer
+					+ " AND artikelNummer = " + artikelnr + " ;");
+			if (rs.next()) { // Artikel im Warenkorb -> Menge wird erhöht
+				String wkn = rs.getString("wkn");
+				stmt.executeUpdate("UPDATE warenkorb " + "SET bestellmenge = bestellmenge + " + menge + " WHERE wkn = "
+						+ wkn + ";");
+				System.out.println("Menge Artikel Warenkorb geändert");
+				rs.close();
+			} else { 															// Artikel noch nicht im Warenkorb
+				if (isWarenkorbEmpty()) { 										// Prüfung ob Warenkorb leer ist, zur
+																				// Generierung des Primärschlüssels
+					anzahl = stmt.executeUpdate("INSERT INTO WARENKORB VALUES(1,"
+							+ kundenNummer + ","
+							+ artikelnr + ",'"
+							+ getArticleByArticlenumber(artikelnr).artikelBezeichnung + "',"
+							+ getArticleByArticlenumber(artikelnr).preis+"," 
+							+ menge + ");");
+				} else {
+					anzahl = stmt.executeUpdate("insert into 'Warenkorb' values("
+							+ "(SELECT MAX (wkn) FROM warenkorb)+1, " 
+							+ kundenNummer + "," + artikelnr + ",'"
+							+ getArticleByArticlenumber(artikelnr).artikelBezeichnung + "',"
+							+ getArticleByArticlenumber(artikelnr).preis +","
+							+ menge + ");");
+				}
+
+				System.out.println(getTime() + ": " + anzahl + " Artikel in Warenkorb gelegt");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println(getTime() + ": Fehler Warenkorb inserieren");
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
 
 	}
 
@@ -321,7 +376,7 @@ public class Model extends Observable{
 			System.out.println(getTime() + ": Fehler Produkt suchen");
 			e.printStackTrace();
 		} finally {
-			
+
 			if (rs != null) {
 				try {
 					rs.close();
@@ -392,29 +447,28 @@ public class Model extends Observable{
 				conn = DB.getConnection();
 				stmt = conn.createStatement();
 
-			
-				
-					rs = stmt
-							.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM Produkt p, Warenkorb w WHERE "
-									+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
-									+ kundenNummer + "';");
-					System.out.println(getTime()+": Lade Warenkorb des Kunden...");
-					
-					while (rs.next()) {
-						double preis = rs.getDouble("preis");
-						String artikelNummer = rs.getString("artikelNummer");
-						String artikelBezeichnung = rs
-								.getString("artikelBezeichnung");
-						String bildPfad = rs.getString("bildPfad");
-						String kategorie = rs.getString("kategorie");
-						int lagermenge = rs.getInt("lagermenge");
-						int bestellmenge = rs.getInt("bestellmenge");
-	
-						produkte.add(new Produkt(preis, artikelNummer,
-								artikelBezeichnung, bildPfad, kategorie,
-								lagermenge, bestellmenge));
-	
-					}
+				rs = stmt
+						.executeQuery("SELECT DISTINCT p.*, w.bestellmenge FROM Produkt p, Warenkorb w WHERE "
+								+ "p.artikelNummer = w.artikelNummer and w.kundenNummer = '"
+								+ kundenNummer + "';");
+				System.out
+						.println(getTime() + ": Lade Warenkorb des Kunden...");
+
+				while (rs.next()) {
+					double preis = rs.getDouble("preis");
+					String artikelNummer = rs.getString("artikelNummer");
+					String artikelBezeichnung = rs
+							.getString("artikelBezeichnung");
+					String bildPfad = rs.getString("bildPfad");
+					String kategorie = rs.getString("kategorie");
+					int lagermenge = rs.getInt("lagermenge");
+					int bestellmenge = rs.getInt("bestellmenge");
+
+					produkte.add(new Produkt(preis, artikelNummer,
+							artikelBezeichnung, bildPfad, kategorie,
+							lagermenge, bestellmenge));
+
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -442,7 +496,7 @@ public class Model extends Observable{
 
 			System.out.println(getTime() + ": Kunde nicht eingeloggt");
 		}
-		
+
 		return produkte;
 
 	}
@@ -490,22 +544,39 @@ public class Model extends Observable{
 						rs.getString("plz"), rs.getString("ort"),
 						rs.getString("telefon"), rs.getString("passwort"),
 						isAdmin);
-				System.out.println(getTime() + ": Login von " + kundeLoggedIn.vorname+" "+kundeLoggedIn.nachname);
+				System.out.println(getTime() + ": Login von "
+						+ kundeLoggedIn.vorname + " " + kundeLoggedIn.nachname);
 				kunden.put(kundeLoggedIn.kundenNummer, kundeLoggedIn);
-				System.out.println(getTime() + ": Added to HashMap: "+kundeLoggedIn.kundenNummer);
-				
+				System.out.println(getTime() + ": Added to HashMap: "
+						+ kundeLoggedIn.kundenNummer);
+
 				// Kunden
 			} else {
 				System.out.println(getTime() + ": passwort nicht korrekt...");
-				
+
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			System.out.println(getTime() + ": Fehler login");
 		} finally {
-			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
-			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
-			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
 		}
 		return kundeLoggedIn;
 	}
@@ -515,24 +586,22 @@ public class Model extends Observable{
 		Statement stmtCheckKundeIsEmpty = null;
 		PreparedStatement stmtAddKunde = null;
 		ResultSet rs = null;
-		String insert="";
+		String insert = "";
 		boolean kundeAngelegt = false;
-		
-		
-		
-		
-		if(checkForValidRegistration(kunde)){		//Regex für Einträge in Registrierung
-	
+
+		if (checkForValidRegistration(kunde)) { // Regex für Einträge in
+												// Registrierung
+
 			try {
 				conn = DB.getConnection();
 				stmtCheckKundeIsEmpty = conn.createStatement();
 				rs = stmtCheckKundeIsEmpty.executeQuery("SELECT * FROM Kunde");
-				if(!rs.next()){		//noch keine Kunden
-					 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+				if (!rs.next()) { // noch keine Kunden
+					insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
 							+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
 							+ " values(1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-				} else {			
-					 insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
+				} else {
+					insert = "insert into Kunde(kundenNummer,anrede,vorname,nachname,"
 							+ "benutzername,email,strasse,hausnummer,plz,ort,telefon,passwort,isAdmin)"
 							+ " values((SELECT MAX (kundenNummer) FROM Kunde)+1, "
 							+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -542,23 +611,24 @@ public class Model extends Observable{
 				stmtAddKunde.setString(2, kunde.getVorname());
 				stmtAddKunde.setString(3, kunde.getNachname());
 				stmtAddKunde.setString(4, kunde.getBenutzername());
-				stmtAddKunde.setString(5, kunde.getEmail());	
-				stmtAddKunde.setString(6, kunde.getStrasse());	
-				stmtAddKunde.setString(7, kunde.getHausnummer());	
-				stmtAddKunde.setString(8, kunde.getPlz());	
-				stmtAddKunde.setString(9, kunde.getOrt());	
-				stmtAddKunde.setString(10, kunde.getTelefon());	
-				stmtAddKunde.setString(11, verschluesselPW(kunde.getPasswort()));	
-				stmtAddKunde.setString(12, "nein");	
+				stmtAddKunde.setString(5, kunde.getEmail());
+				stmtAddKunde.setString(6, kunde.getStrasse());
+				stmtAddKunde.setString(7, kunde.getHausnummer());
+				stmtAddKunde.setString(8, kunde.getPlz());
+				stmtAddKunde.setString(9, kunde.getOrt());
+				stmtAddKunde.setString(10, kunde.getTelefon());
+				stmtAddKunde
+						.setString(11, verschluesselPW(kunde.getPasswort()));
+				stmtAddKunde.setString(12, "nein");
 				stmtAddKunde.executeUpdate();
-			
+
 				kundeAngelegt = true;
-				
+
 			} catch (SQLException e) {
 				System.out.println(getTime() + ": Fehler Kunden inserieren");
 				e.printStackTrace();
 			} finally {
-				
+
 				if (stmtAddKunde != null) {
 					try {
 						stmtAddKunde.close();
@@ -578,33 +648,32 @@ public class Model extends Observable{
 					}
 				}
 			}
-		} 
-		
+		}
+
 		return kundeAngelegt;
 	}
-	
+
 	/*
-	 * Überprüfung der Einträge im Registrierungsformular. Durchführung im Code und nicht in Java-
-	 * skript, da JS deaktiviert werden kann...
+	 * Überprüfung der Einträge im Registrierungsformular. Durchführung im Code
+	 * und nicht in Java- skript, da JS deaktiviert werden kann...
 	 */
-	
-	public boolean checkForValidRegistration(Kunde kunde){
+
+	public boolean checkForValidRegistration(Kunde kunde) {
 		boolean registrationIsValid = true;
-		
+
 		String regexEmail = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 		String regexStrasse = "\\D";
-		
-		
-		if(!kunde.email.matches(regexEmail)){
+
+		if (!kunde.email.matches(regexEmail)) {
 			registrationIsValid = false;
 		}
-		if(!kunde.strasse.matches(regexStrasse)){   //keine Hausnummer im Strassennamen
+		if (!kunde.strasse.matches(regexStrasse)) { // keine Hausnummer im
+													// Strassennamen
 			registrationIsValid = false;
 		}
-		
+
 		return registrationIsValid;
 	}
-	
 
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
@@ -685,7 +754,7 @@ public class Model extends Observable{
 		try {
 			md = MessageDigest.getInstance("SHA");
 			md.update(passwort.getBytes());
-			
+
 			for (byte b : md.digest()) {
 				passwortString += Byte.toString(b);
 			}
@@ -762,7 +831,6 @@ public class Model extends Observable{
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		
 		JsonNode jsonMenge = null;
 		String artikelNummer = obj.get("Artikelnummer").asText();
 		Integer menge = null;
@@ -779,8 +847,9 @@ public class Model extends Observable{
 			}
 
 			ObjectMapper mapper = new ObjectMapper();
-			jsonMenge = mapper.readTree("{\"Artikelnummer\":\""+artikelNummer+"\",\"Menge\":\"" + menge.toString()	+ "\"}");
-			System.out.println("JSON-Menge: "+jsonMenge);
+			jsonMenge = mapper.readTree("{\"Artikelnummer\":\"" + artikelNummer
+					+ "\",\"Menge\":\"" + menge.toString() + "\"}");
+			System.out.println("JSON-Menge: " + jsonMenge);
 
 		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
@@ -809,29 +878,59 @@ public class Model extends Observable{
 		return jsonMenge;
 	}
 
-	public void mengeAendern(String artikelNummer, int menge) {
+	public void ausWarenkorbInBestellung(Produkt bestelltesProdukt, String kundenNummer) {
 
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		int anzahlInBestellung = 0;
 		try {
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
 
-			int anzahl = stmt
+			int anzahlUpdate = stmt
 					.executeUpdate("UPDATE Produkt SET lagermenge = lagermenge - "
-							+ menge
+							+ bestelltesProdukt.bestellmenge
 							+ " WHERE artikelNummer = '"
-							+ artikelNummer
-							+ "';");
-			if (anzahl != 0) {
-				System.out.println(getTime() + " ArtikelNummer " + artikelNummer
-						+ " bestellt...");
-				if(countObservers()>0){
+							+ bestelltesProdukt.artikelNummer + "';");
+			rs = stmt.executeQuery("SELECT * FROM BESTELLUNG WHERE kundennummer = "+kundenNummer+";)");
+			if(!rs.next()){
+				anzahlInBestellung = stmt
+						.executeUpdate("INSERT INTO 'Bestellung' VALUES(1,"
+								+ kundenNummer + ",'"
+								+ bestelltesProdukt.artikelBezeichnung+"'," 
+								+ bestelltesProdukt.artikelNummer + "," 
+								+ bestelltesProdukt.bestellmenge + ","
+								+ bestelltesProdukt.preis + ",'"
+								+ getDate() + "',"
+								+ "'offen')");
+			} else {
+				anzahlInBestellung = stmt
+					.executeUpdate("INSERT INTO 'Bestellung' VALUES((SELECT MAX (bestellNummer) FROM Bestellung)+1,"
+							+ kundenNummer + ",'"
+							+ bestelltesProdukt.artikelBezeichnung+"'," 
+							+ bestelltesProdukt.artikelNummer + "," 
+							+ bestelltesProdukt.bestellmenge + ","
+							+ bestelltesProdukt.preis + ",'"
+							+ getDate() + "',"
+							+ "'offen')");
+			}
+			if (anzahlUpdate != 0 && anzahlInBestellung != 0) {
+				System.out.println(getTime() + " ArtikelNummer "
+						+ bestelltesProdukt.artikelNummer + " bestellt...");
+				if (countObservers() > 0) {
 					setChanged();
-					notifyObservers(artikelNummer);
+					notifyObservers(bestelltesProdukt.artikelNummer);
 				}
-				
+
+			} else if (anzahlUpdate != 0 ^ anzahlInBestellung != 0) {
+				if (anzahlUpdate != 0) {
+					System.out
+							.println("Fehler beim Uebertag in Tabelle Bestellung");
+				} else {
+					System.out
+							.println("Fehler beim Loeschen aus Tabelle Warenkorb");
+				}
 			}
 			stmt.close();
 			conn.close();
@@ -860,17 +959,8 @@ public class Model extends Observable{
 		}
 	}
 
-	public void bestellArtikelAusWarenkorb(String kundenNummer) {
-
-		for (Produkt produkt : getWarenkorb(kundenNummer)) {
-			mengeAendern(produkt.artikelNummer, produkt.bestellmenge);
-		}
-		
-		warenkorbDatenbankLeeren(kundenNummer);
-	}
-
-	public void warenkorbDatenbankLeeren(String kundenNummer) {
-
+	public List<Produkt> bestellungenKunde(String kundenNummer) {
+		List<Produkt> bestellungenKunde = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -878,121 +968,23 @@ public class Model extends Observable{
 		try {
 			conn = DB.getConnection();
 			stmt = conn.createStatement();
+			rs = stmt
+					.executeQuery("SELECT * FROM Bestellung WHERE kundenNummer = " + kundenNummer + ";");
 
-			int anzahl = stmt
-					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"+ kundenNummer + "';");
-			
-			if (anzahl == 1) {
-				System.out.println(getTime() + ": " + anzahl
-						+ " Eintrag aus Warenkorb geloescht");
+			while (rs.next()) {
+				String artikelNummer = rs.getString("artikelNummer");
+				String artikelBezeichnung = rs.getString("artikelBezeichnung");
+				double preis = rs.getDouble("preis");
+				int bestellmenge = rs.getInt("bestellmenge");
+				String status = rs.getString("status");
+				String bestelldatum = rs.getString("bestelldatum");
+				bestellungenKunde.add(new Produkt(artikelNummer,artikelBezeichnung, bestellmenge, status, preis,bestelldatum));
+			}
 
-			} else {
-				System.out.println(getTime() + ": " + anzahl
-						+ " Eintraege aus Warenkorb geloescht");
-			}
-		} catch (SQLException e) {
-			System.out.println(getTime() + ": Fehler beim aendern der Menge");
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {try {rs.close();} catch (SQLException e) {}}
-			if (stmt != null) {try {stmt.close();} catch (SQLException e) {}}
-			if (conn != null) {try {conn.close();} catch (SQLException e) {}}
-		}
-	}
-	
-	public void inizializeDatabase(){
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = DB.getConnection();
-			DatabaseMetaData meta = conn.getMetaData();
-			stmt = conn.createStatement();
-			rs = meta.getTables(null, null, "Produkt", null);
-			if(!rs.next()){							//prüft ob Tabelle "Produkt" bereits initialisiert wurde
-			stmt.executeUpdate(
-				"CREATE TABLE Produkt ("
-				+ "`preis` double NOT NULL,	"
-				+ "`artikelNummer`	INTEGER NOT NULL,"
-				+ "`artikelBezeichnung`	varchar(50) NOT NULL,"
-				+ "`bildPfad`	varchar(20),`kategorie`	varchar(20) NOT NULL,"
-				+ "`lagermenge`	INTEGER,PRIMARY KEY(artikelNummer));"
-				+ "INSERT INTO `Produkt` VALUES('99.99',1,'Gartenzaun','images/Palissaden.jpg','aussen',90);"
-				+ "INSERT INTO `Produkt` VALUES('119.99',2,'Palisaden fuer den Garten','images/Pfaehle.jpg','aussen',98);"
-				+ "INSERT INTO `Produkt` VALUES('249.99',3,'Terassenbelaege','images/Terrasse.jpg','aussen',7);"
-				+ "INSERT INTO `Produkt` VALUES('49.99',4,'Terassenmoebel','images/bruecke.jpg','aussen',9);"
-				+ "INSERT INTO `Produkt` VALUES('49.99',5,'Esstisch','images/esstisch.jpg','innen',60);"
-				+ "INSERT INTO `Produkt` VALUES('4.99',6,'Pellets','images/Pellets.jpg','brennbar',79);"
-				+ "INSERT INTO `Produkt` VALUES('22.99',7,'Holzfahrrad','images/Holzfahrrad.jpg','aussen',9);"
-				+ "INSERT INTO `Produkt` VALUES('19.99',12,'Stuhl','images/stuhl.jpg','innen',80);"
-				+ "INSERT INTO `Produkt` VALUES('44.99',13,'Vertäfelung','images/Vertaefelung.jpg','innen',90);"
-				+ "INSERT INTO `Produkt` VALUES('4.99',14,'Echtes Kiefernholz','images/Kiefernholz.jpg','brennbar',4);"
-				+ "INSERT INTO `Produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);"
-				+ ";");
-			}
-			rs.close();
-			rs = meta.getTables(null, null, "Warenkorb", null);
-			if(!rs.next()){							//prüft ob Tabelle "Warenkorb" bereits initialisiert wurde
-			stmt.executeUpdate(
-				"CREATE TABLE Warenkorb ("
-						+ "	`wkn`	INTEGER NOT NULL,"
-						+ "	`kundenNummer`	INTEGER NOT NULL,"
-						+ "	`artikelNummer`	INTEGER NOT NULL,"
-						+ "	`bestellmenge`	INTEGER NOT NULL,"
-						+ "	PRIMARY KEY(wkn)"
-						+ ");"
-				+ ";");
-			}
-			rs.close();
-			rs = meta.getTables(null, null, "Kunde", null);
-			if(!rs.next()){							//prüft ob Tabelle "Kunde" bereits initialisiert wurde
-			stmt.executeUpdate(
-					"CREATE TABLE Kunde ("
-					+ "	`kundenNummer`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-					+ "	`anrede`	TEXT,"
-					+ "	`vorname`	varchar(20) NOT NULL,"
-					+ "	`nachname`	varchar(20) NOT NULL,"
-					+ "	`benutzername`	TEXT NOT NULL UNIQUE,"
-					+ "	`email`	TEXT,"
-					+ "	`strasse`	TEXT NOT NULL,"
-					+ "	`hausnummer`	TEXT NOT NULL,"
-					+ "	`plz`	TEXT NOT NULL,"
-					+ "	`ort`	TEXT NOT NULL,"
-					+ "	`telefon`	TEXT,"
-					+ "	`passwort`	varchar(10) NOT NULL,"
-					+ "	`isAdmin`	TEXT);"
-					+ "INSERT INTO `Kunde` VALUES(1000,'Herr','Dumitru','Mihu','Dumitru','ist@bekannt.de','Brauneggerstrasse',55,78467,'Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','ja');"
-					+ "INSERT INTO `Kunde` VALUES(1001,'Herr','Georg','Mohr','Georg','ist@bekannt.de','Brauneggerstrasse',55,'78467','Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','ja');"
-					+ "INSERT INTO `Kunde` VALUES(1002,'Herr','Sebastian','Thuemmel','Basti','ist@bekannt.de','Brauneggerstrasse',55,78467,'Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','ja');"
-					+ "INSERT INTO `Kunde` VALUES(1003,'Herr','Max','Mustermann','Maxi','Max@Mustermann.de','Mustermannstrasse',1337,78467,'Musterstadt','0190/666666','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1004,'Herr','Bernd','Brot','broti','ich@du.de','Pupsweg',13,78467,'Konstanz',0190,'-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1005,'Herr','Jim','Levenstein','Kuchenficker','hab@ich.de','weiß','ich','nicht','stadt',0191,'-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1006,'Frau','Gina','Wilde','Gina','asd@aa.de','Funstr','22a',74689,'KN',92381,'-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1007,'Frau','Anna','huh','AM','gsdad@asas.de','sadas',12,2112,'asasd','','-376-17122789612731-52-11010-4250-102109-14-33-103-92-24','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1008,'F','Agnes','Klein','Agi','Agnes@Klein.de','hier',17,78467,'Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1009,'H','depp','vom','depp','gibts@nicht.de','dienst',1337,12,'hier',01901,'-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1010,'Herr','sdf','sdf','deppi','sdf','sdf','sdf','sdf','sdf','sdfsdf','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','nein');"
-					+ "INSERT INTO `Kunde` VALUES(1011,'Frau','Agnes','Klein','Ackness','senga1@gmx.net','Buhlenweg 38','Buhlenweg 38',78467,'Konstanz','+4915115331366','113-60293-39-119123547962-69-76447279-1261012128','nein');"
-					+ ";");
-			}
-			rs.close();
-			rs = meta.getTables(null, null, "Bestellung", null);
-			if(!rs.next()){							//prüft ob Tabelle "Bestellung" bereits initialisiert wurde
-			stmt.executeUpdate(
-					"CREATE TABLE Bestellung ("
-						+ "	`kundenNummer`	INTEGER NOT NULL,"
-						+ "	`artikelNummer`	INTEGER NOT NULL,"
-						+ "	PRIMARY KEY(kundenNummer,artikelNummer)"
-						+ ");"
-						+ ";");
-							
-			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			
 			if (rs != null) {
 				try {
 					rs.close();
@@ -1013,8 +1005,180 @@ public class Model extends Observable{
 			}
 		}
 
-			
+		return bestellungenKunde;
 	}
-	
+
+	public void bestellArtikelAusWarenkorb(String kundenNummer) {
+
+		for (Produkt produkt : getWarenkorb(kundenNummer)) {
+			ausWarenkorbInBestellung(produkt, kundenNummer);
+		}
+
+		warenkorbDatenbankLeeren(kundenNummer);
+	}
+
+	public void warenkorbDatenbankLeeren(String kundenNummer) {
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DB.getConnection();
+			stmt = conn.createStatement();
+
+			int anzahl = stmt
+					.executeUpdate("DELETE FROM Warenkorb WHERE kundenNummer = '"
+							+ kundenNummer + "';");
+
+			if (anzahl == 1) {
+				System.out.println(getTime() + ": " + anzahl
+						+ " Eintrag aus Warenkorb geloescht");
+
+			} else {
+				System.out.println(getTime() + ": " + anzahl
+						+ " Eintraege aus Warenkorb geloescht");
+			}
+		} catch (SQLException e) {
+			System.out.println(getTime() + ": Fehler beim aendern der Menge");
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+
+	public void inizializeDatabase() {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DB.getConnection();
+			DatabaseMetaData meta = conn.getMetaData();
+			stmt = conn.createStatement();
+			rs = meta.getTables(null, null, "Produkt", null);
+			if (!rs.next()) { // prüft ob Tabelle "Produkt" bereits
+								// initialisiert wurde
+				stmt.executeUpdate("CREATE TABLE Produkt ("
+						+ "`preis` double NOT NULL,	"
+						+ "`artikelNummer`	INTEGER NOT NULL,"
+						+ "`artikelBezeichnung`	varchar(50) NOT NULL,"
+						+ "`bildPfad`	varchar(20),`kategorie`	varchar(20) NOT NULL,"
+						+ "`lagermenge`	INTEGER,PRIMARY KEY(artikelNummer));"
+						+ "INSERT INTO `Produkt` VALUES('99.99',1,'Gartenzaun','images/Palissaden.jpg','aussen',90);"
+						+ "INSERT INTO `Produkt` VALUES('119.99',2,'Palisaden fuer den Garten','images/Pfaehle.jpg','aussen',98);"
+						+ "INSERT INTO `Produkt` VALUES('249.99',3,'Terassenbelaege','images/Terrasse.jpg','aussen',7);"
+						+ "INSERT INTO `Produkt` VALUES('49.99',4,'Terassenmoebel','images/bruecke.jpg','aussen',9);"
+						+ "INSERT INTO `Produkt` VALUES('49.99',5,'Esstisch','images/esstisch.jpg','innen',60);"
+						+ "INSERT INTO `Produkt` VALUES('4.99',6,'Pellets','images/Pellets.jpg','brennbar',79);"
+						+ "INSERT INTO `Produkt` VALUES('22.99',7,'Holzfahrrad','images/Holzfahrrad.jpg','aussen',9);"
+						+ "INSERT INTO `Produkt` VALUES('19.99',12,'Stuhl','images/stuhl.jpg','innen',80);"
+						+ "INSERT INTO `Produkt` VALUES('44.99',13,'Vertäfelung','images/Vertaefelung.jpg','innen',90);"
+						+ "INSERT INTO `Produkt` VALUES('4.99',14,'Echtes Kiefernholz','images/Kiefernholz.jpg','brennbar',4);"
+						+ "INSERT INTO `Produkt` VALUES('5.99',15,'Echtes Buchenholz','images/Buchenholz.jpg','brennbar',5);");
+				System.out.println(getTime() + " : Datenbank-Tabelle Produkt erstellt");
+			}
+
+			rs.close();
+			rs = meta.getTables(null, null, "Warenkorb", null);
+			if (!rs.next()) { // prüft ob Tabelle "Warenkorb" bereits
+								// initialisiert wurde
+				stmt.executeUpdate("CREATE TABLE Warenkorb ("
+						+ "	`wkn`	INTEGER NOT NULL,"
+						+ "	`kundenNummer`	INTEGER NOT NULL,"
+						+ "	`artikelNummer`	INTEGER NOT NULL,"
+						+ " 'artikelBezeichnung' TEXT NOT NULL,"
+						+ " 'preis' double NOT NULL,"
+						+ "	`bestellmenge`	INTEGER NOT NULL,"
+						+ "	PRIMARY KEY(wkn)" + ");" + ";");
+				System.out.println(getTime()
+						+ " : Datenbank-Tabelle Warenkorb erstellt");
+			}
+
+			rs.close();
+			rs = meta.getTables(null, null, "Kunde", null);
+			if (!rs.next()) { // prüft ob Tabelle "Kunde" bereits initialisiert
+								// wurde
+				stmt.executeUpdate("CREATE TABLE Kunde ("
+						+ "	`kundenNummer`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+						+ "	`anrede`	TEXT,"
+						+ "	`vorname`	varchar(20) NOT NULL,"
+						+ "	`nachname`	varchar(20) NOT NULL,"
+						+ "	`benutzername`	TEXT NOT NULL UNIQUE,"
+						+ "	`email`	TEXT NOT NULL UNIQUE,"
+						+ "	`strasse`	TEXT NOT NULL,"
+						+ "	`hausnummer`	TEXT NOT NULL,"
+						+ "	`plz`	TEXT NOT NULL,"
+						+ "	`ort`	TEXT NOT NULL,"
+						+ "	`telefon`	TEXT,"
+						+ "	`passwort`	varchar(10) NOT NULL,"
+						+ "	`isAdmin`	TEXT);"
+						+ "INSERT INTO `Kunde` VALUES(1000,'Herr','Dumitru','Mihu','Dumitru','Dumitru@Mihu.de','Brauneggerstrasse',55,78467,'Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','ja');"
+						+ "INSERT INTO `Kunde` VALUES(1001,'Herr','Georg','Mohr','Georg','Georg@Mohr.de','Brauneggerstrasse',55,'78467','Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','ja');"
+						+ "INSERT INTO `Kunde` VALUES(1002,'Herr','Sebastian','Thuemmel','Basti','Basti@Thuemmel.de','Brauneggerstrasse',55,78467,'Konstanz','','-8774-113-27-52-79-101-9028768115-45-111-23-121-10447-69-45','ja');"
+						+ "INSERT INTO `Kunde` VALUES(1011,'Frau','Agnes','Klein','Ackness','senga1@gmx.net','Buhlenweg 38','Buhlenweg 38',78467,'Konstanz','+4915115331366','113-60293-39-119123547962-69-76447279-1261012128','nein');"
+						+ ";");
+				System.out.println(getTime()
+						+ " : Datenbank-Tabelle Kunde erstellt");
+			}
+			rs.close();
+			rs = meta.getTables(null, null, "Bestellung", null);
+			if (!rs.next()) { // prüft ob Tabelle "Bestellung" bereits
+								// initialisiert wurde
+				stmt.executeUpdate("CREATE TABLE Bestellung ("
+						+ "	`bestellNummer`	INTEGER PRIMARY KEY,"
+						+ "	`kundenNummer`	INTEGER NOT NULL,"
+						+ " 'artikelBezeichnung' TEXT NOT NULL,"
+						+ "	`artikelNummer`	INTEGER NOT NULL,"
+						+ "	`bestellmenge`	INTEGER NOT NULL,"
+						+ " 'preis' DOUBLE NOT NULL,"
+						+ " 'bestelldatum' DATE NOT NULL,"
+						+ " 'status' TEXT NOT NULL);" + ";");
+				System.out.println(getTime() + ": Datenbank-Tabelle Bestellung erstellt");
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+	}
 
 }

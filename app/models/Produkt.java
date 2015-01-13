@@ -16,15 +16,17 @@ public class Produkt  {
 	public String kategorie;
 	public int lagermenge;
 	public int bestellmenge = 0;
+	public String statusBestellung = "";
+	public String bestellDatum;
 
 	public Produkt() {}	// Standardkonstruktor
 
 	/*
 	 * Konstruktor ohne Bestellmenge
 	 */
-	public Produkt(double price, String artikelNummer,
+	public Produkt(double preis, String artikelNummer,
 			String artikelBezeichnung, String pfad, String kategorie, int lagermenge) {
-		this.preis = price;
+		this.preis = preis;
 		this.artikelNummer = artikelNummer;
 		this.artikelBezeichnung = artikelBezeichnung;
 		this.bildPfad = pfad;
@@ -47,6 +49,18 @@ public class Produkt  {
 		this.bestellmenge = bestellmenge;
 	}
 	
+	/*
+	 * Konstruktor für Artikel in der Übersicht des Kundenkontos
+	 */
+	
+	public Produkt(String artikelNummer, String artikelBezeichnung, int menge, String status, double preis, String bestellDatum){
+		this.artikelNummer = artikelNummer;
+		this.artikelBezeichnung = artikelBezeichnung;
+		this.preis = preis;
+		this.bestellmenge = menge;
+		this.statusBestellung = status;
+		this.bestellDatum = bestellDatum;
+	}
 
 	@Override
 	public String toString() {

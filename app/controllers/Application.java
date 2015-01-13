@@ -140,11 +140,10 @@ public class Application extends Controller {
 	public static Result konto() {
 		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(konto.render(Model.sharedInstance.getCustomerName(kunde),
+			return ok(konto.render(Model.sharedInstance.getCustomerName(kunde),Model.sharedInstance.bestellungenKunde(kunde),
 					userForm));
 		} else {
-			return ok(konto.render(
-					Model.sharedInstance.getCustomerName("0000"), userForm));
+			return redirect("/login");
 		}
 
 	}

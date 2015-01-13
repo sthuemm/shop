@@ -1,13 +1,38 @@
-@(kunde: String, userForm: Form[models.Kunde])
+@(kunde: String, produkte: List[Produkt], userForm: Form[models.Kunde])
 @import helper._
-
 @main("Login")(kunde){
+<script type="text/javascript" src=@routes.Assets.at("javascripts/jquery-2.1.1.min.js")></script>
+<script>
+	
 
-	<a href><button>Kundendaten ändern</button></a>
-	<a href><button>offene Bestellungen ansehen</button></a>
-	<a href><button>abgeschlossene Bestellungen ansehen</button></a>
+	function kundendaten(){
+		$("#outputKundenkonto").show();
+		$("#outputOffeneBestellungen").hide();
+		$("#outputAbgeschlosseneBestellungen").hide();
+	}
+	
+	function offeneBestellungen(){
+		$("#outputKundenkonto").hide();
+		$("#outputOffeneBestellungen").show();
+		$("#outputAbgeschlosseneBestellungen").hide();
+	}
+	
+	function abgeschlosseneBestellungen(){
+		$("#outputKundenkonto").hide();
+		$("#outputOffeneBestellungen").hide();
+		$("#outputAbgeschlosseneBestellungen").show();
+	}
 
-	<div id="outputKundenkonto">
+</script>
+
+
+
+
+	<a href><button onclick="kundendaten()">Kundendaten ändern</button></a>
+	<a href><button onclick="offeneBestellungen()">offene Bestellungen ansehen</button></a>
+	<a href><button onclick="abgeschlosseneBestellungen()">abgeschlossene Bestellungen ansehen</button></a>
+
+	<div id="outputKundenkonto" >
 	@helper.form(action = routes.Application.submitKundendaten(), 'id -> "userForm") {
 		@helper.inputPassword(userForm("passwort"))
 		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
@@ -24,4 +49,48 @@
 	
 	}
 	</div>
+	<div id="outputOffeneBestellungen" style="display:none">
+			@for(produkt <- produkte) {
+				@if(produkt.statusBestellung.equals("offen")){
+				<div class="row">
+					<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
+					<div id="k@produkt.artikelNummer"  class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
+						<div class="item" style="padding:5%"">
+							
+							
+							<div>
+								<p>Bestellung vom @produkt.bestellDatum</p>
+								<wbr>@produkt.artikelBezeichnung
+								<p>Preis: @produkt.preis</p><span id="menge@produkt.artikelNummer"><p>Menge: @produkt.bestellmenge</p></span>
+							</div>
+						</div>
+					</div>	
+					</a>
+				</div>
+				}
+			}
+	
+	
+	</div>
+	<div id="outputAbgeschlosseneBestellungen" style="display:none">
+			@for(produkt <- produkte) {
+				@if(!produkt.statusBestellung.equals("offen")){
+				<div class="row">
+					<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
+					<div id="k@produkt.artikelNummer"  class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
+						<div class="item" style="padding:5%"">
+							
+							
+							<div>
+								<wbr> @produkt.artikelBezeichnung
+								<p>Preis: @produkt.preis</p><span id="menge@produkt.artikelNummer"><p>Menge: @produkt.bestellmenge</p></span>
+							</div>
+						</div>
+					</div>	
+					</a>
+				</div>
+				}
+			}
+			</div>
+	
 }
