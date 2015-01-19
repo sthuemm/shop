@@ -1,5 +1,6 @@
 @(kunde: String, produkte: List[Produkt])
 @main("Neuheiten")(kunde){
+ <center id="center">
 	@if(produkte.isEmpty){
 		<wbr>keine Neuheiten verfügbar. Bitte besuchen Sie uns später noch einmal (wenn die Datenbank wieder läuft)
 	} else {
@@ -56,4 +57,5 @@
 			</ul>
 	</div>
 	}
+	</center>
 }

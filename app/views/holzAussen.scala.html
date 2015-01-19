@@ -1,6 +1,6 @@
 @(kunde: String, produkte: List[Produkt])
 @main("Holz im Aussenbereich")(kunde){
-
+ <center id="centerholzAussen">
 <script>
 		//WebSocket Skript
 
@@ -18,11 +18,11 @@
 			
 		};
 </script>		
-		<center>
+
 			@for(produkt <- produkte) {
-				<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
+				<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" id="linkSchrift">
 				<div id="k@produkt.artikelNummer"  class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
-					<div class="item" style="padding:5%"">
+					<div class="item">
 						
 						<img src=assets/@produkt.bildPfad width="250" height="150">
 						<div>

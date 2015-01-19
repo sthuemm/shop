@@ -73,6 +73,8 @@ left : 500px;
 position : absolute;
 top : 95px;
 left : 600px;
+width: 285px;
+height: 129px;
 }
 #pflicht{
 position:absolute;
@@ -103,7 +105,6 @@ left : 600px;
 	width: 100px;
 
 }
-
 #suchfeld{
 	position:absolute;
 	align:center;
@@ -111,7 +112,6 @@ left : 600px;
 	left : 15%;
 	width:400px;
 }
-
 #SucheButton{
 	position:absolute;
 	top:10%;
@@ -143,17 +143,13 @@ left : 600px;
 	bottom: 10%;
 	left:15%;
 }
-
 #Widerrufsformular {
 	 style="border: 1px solid #000000; 
 	 padding: 10px;
 }
-
 .ohneAufzaehlung {
 	list-style-type: none;
 }
-
-
 #mainMainpage{
 top:0;
 left:0;
@@ -169,13 +165,11 @@ text-align:center;
 
 
 }
-
 #test.imageHold {
   padding: 55px 85px; /* damit der container die höhe des großen bildes annimmt */
   /* andere formatierung, z.B. zentrieren/etc: */
   /* .... */
 }
-
 #test.imageHold div {
   float: left;
   width: 230px;
@@ -184,16 +178,42 @@ text-align:center;
   und sonstiges der bilder eintragen */
   margin-left: 50px;
 }
-
 #test.imageHold img {
   width: 230px;  /* wir skalieren das große bild auf die kleine größe */
   height: 150px; /* um verpixelung beim vergößern zu verhindern       */
 }
-
 #test.imageHold img:hover {
   position: absolute;
   margin-left: -85px; /* die hälfte des größenunterschiedes der bilder */
   margin-top: -55px;  /* hier genau so */
   width: 400px;       /* die weite beim vergrößern */
   height: 260px;      /* die höhe beim vergrößern */
+}
+#navMain{
+z-index: 1;
+}
+#bildBanner{
+width:100%;
+}
+#eingabefeld{
+width: 162px;
+}
+#auswahlbox{
+position:absolute;
+background:withe;
+z-index:2;
+width:162px;
+}
+.auswahlzeile{
+color:black;
+text-decoration: none;
+}
+.auswahldiv{
+border-bottom:solid 1px;
+}
+#center{
+margin-top:200px;
+}
+#centerholzAussen{
+margin-top:85px;
 }

@@ -2,20 +2,20 @@
 @import helper._
 
 @main("Login")(kunde){
-
+<center id="center">
 
 	<a href="#outputKundenkonto"><button>Kundendaten ändern</button></a>
 	<a href="#outputOffeneBestellungen"><button>offene Bestellungen ansehen</button></a>
 	<a href="#outputAbgeschlosseneBestellungen"><button>abgeschlossene Bestellungen ansehen</button></a>
 
 <div class="row">
-	<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
+	<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto">
 		<wbr> KUNDENDATEN ÄNDERN
 	</div>
 </div>
 <div class="row">
 	<a id ="outputKundenkonto" class="kundenKonto" ></a>
-	<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
+	<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto" >
 	@helper.form(action = routes.Application.submitKundendaten(), 'id -> "userForm") {
 		@helper.inputPassword(userForm("passwort"))
 		@helper.input(userForm("vorname")) { (id, name, value, args) => <input type="text"  @toHtmlArgs(args)>}
@@ -34,7 +34,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
+	<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto">
 		<wbr> OFFENE BESTELLUNGEN
 	</div>
 </div>
@@ -43,9 +43,9 @@
 			@for(produkt <- produkte) {
 				@if(produkt.statusBestellung.equals("offen")){
 				<div class="row">
-					<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
-					<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
-						<div class="item" style="padding:5%">
+					<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" id="linkSchrift">
+					<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto">
+						<div class="item">
 							<div>
 								<p>Bestellung vom @produkt.bestellDatum</p>
 								<wbr>@produkt.artikelBezeichnung
@@ -60,7 +60,7 @@
 	
 </div>
 <div class="row">
-	<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">
+	<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto">
 		<wbr> ABGESCHLOSSENE BESTELLUNGEN
 	</div>
 </div>
@@ -70,8 +70,8 @@
 			@for(produkt <- produkte) {
 				@if(!produkt.statusBestellung.equals("offen")){
 				<div class="row">
-					<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
-						<div class="col-md-4 col-md-offset-1 row top-buffer" style= "background-color: #58FA82; box-sizing: border-box; box-shadow:8px 8px 8px #666; width:300px;">	
+					<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" id="linkSchrift" >
+						<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto">	
 							
 								<div>
 									<wbr> @produkt.artikelBezeichnung
@@ -85,5 +85,5 @@
 				}
 			}
 </div>
-	
+	</center>
 }

@@ -3,7 +3,7 @@
  
  @main("Artikel")(kunde){
  
-
+ <center id="center">
 
 <script type="text/javascript" src=@routes.Assets.at("javascripts/jquery-2.1.1.min.js")></script>
 <script>
@@ -64,8 +64,8 @@
 		<p>Produkt konnte leider nicht gefunden werden</p>
 	} else {
 	<div class="row">
-		<div class="col-md-4" style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; width: 300px; padding: 15px" >
-			<img src=/assets/@produkt.bildPfad width="250" height="150">
+		<div class="col-md-4" id="divArtikelBild">
+			<img src=/assets/@produkt.bildPfad id="bildArtikel">
 			<p>@produkt.artikelBezeichnung</p>
 			<div id="menge@produkt.artikelNummer">
 		
@@ -78,7 +78,7 @@
 		
 			</div>	
 				@if(!kunde.equals("guest")){
-				<form action="/inWarenkorb/" style="position: relative; padding-top: 10%;">
+				<form action="/inWarenkorb/" id="formArtikel">
 					<p>Menge: 
 						<input id="anzahl" type="number" value="1" max="@produkt.lagermenge"
 							min="0" name="menge" onmousemove="ueberpruefeMenge()" onchange="neueMenge()">
@@ -92,8 +92,8 @@
 				}
 		</div>
 		<div class="col-md-4" id="kundenAusgabe"></div>
-		<div id="loginWindow" class="col-md-4"  style="box-shadow:8px 8px 8px #666; background-color: #58FA82; width:300px; height:200px; display:none">
-			<div style="position:relative; padding-left:25% ; padding-top: 5%">
+		<div id="loginWindow" class="col-md-4">
+			<div id="loginWindowInnenArtikel" >
 			
 				@helper.form(action = routes.Application.submitLogin(), 'id -> "userForm") {
 				@helper.inputText(userForm("benutzername"), '_label -> "Benutzername", '_id -> "username")
@@ -105,5 +105,5 @@
 		</div>
 	</div>
 	}
-	
+	</center>
 } 

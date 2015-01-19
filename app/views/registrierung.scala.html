@@ -93,12 +93,12 @@
 </script>
 
 
-<div style="position:absolute; top:0px ;left:75%; background-color: #58FA82;box-sizing: border-box; width:15%; box-shadow:8px 8px 8px #666;" >
-<p style="padding-left:30px"> Sie sind bereits registriert?<br/>dann loggen Sie sich hier ein</p>
-<p style="padding-left:25%" ><form style="padding-left:25%" method="LINK" action= /login><input type="submit" value="Jetzt Einloggen"></form>
+<div id="divRegistrierungAussen" >
+<p id="p1Registrierung"> Sie sind bereits registriert?<br/>dann loggen Sie sich hier ein</p>
+<p id="p2Registrierung"><form id="p2Registrierung" method="LINK" action= /login><input type="submit" value="Jetzt Einloggen"></form>
 </div>
 
-<div style="box-shadow:8px 8px 8px #666; background-color: #58FA82 ;width:45%; position:absolute; top:0px ; right:45%; padding-left:2%; padding-top:1%; padding-bottom:5%">
+<div id="divRegistrierungInnen">
 		@helper.form(action = routes.Application.neuerUser(), 'id -> "userForm", 'class -> "control-group") {
 	
 		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*", '_id -> "benutzername")

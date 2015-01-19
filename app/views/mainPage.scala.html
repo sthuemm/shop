@@ -3,7 +3,7 @@
 	
 			
 	
- <center>
+ <center id="center">
 	<div class="container-fluid" id=mainp">
 			<ul id=mainUl>
 				<li id=mainLi>
@@ -22,7 +22,7 @@
 								
 					var nr = Math.floor(Math.random()*bilder.length); //Random-Selektion des Bilds bei "Neuheiten"
 					var bild = bilder[nr];
-					document.getElementById("mainAA").innerHTML = '<img src=/assets/'+bild+'  width="250"; height="110"/>';
+					document.getElementById("mainAA").innerHTML = '<img src=/assets/'+bild+'  width="250" height="110"/>';
 					
 					// ]]>
 				</script></div>
@@ -46,7 +46,7 @@
 				</li>
 				<li id=mainLi>
 					<a href='/brennstoffe' id=mainA>
-						<img src=@routes.Assets.at("images/Brennholz.jpg")  width="250" height="110">
+						<img src=@routes.Assets.at("images/Brennholz.jpg") width="250" height="110">
 						<h2 id=mainH2>Brennstoffe</h2>
 						<p id=mainP> </p>
 					</a>

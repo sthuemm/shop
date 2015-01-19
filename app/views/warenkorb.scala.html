@@ -2,7 +2,7 @@
  @main("Warenkorb")(kunde){
  
 
-
+ <center id="center">
 	
 		@if(kunde.equals("guest")){
 			<div><wbr>Bitte loggen Sie sich ein</div>
@@ -14,8 +14,8 @@
 			@for(produkt <- produkte) {
 			
 					<div id="w@produkt.artikelNummer" class="row" style="padding:5%">
-					<div class="col-md-4" style="box-shadow: 8px 8px 8px #666; background-color: #58FA82; width: 300px; padding: 15px" >
-						<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" style="font-family:Georgia;color:black">
+					<div class="col-md-4" id="divWarenkorb">
+						<a href="/artikel/?ausgewaehltesProdukt=@produkt.artikelNummer" id="linkSchrift">
 						<img src=/assets/@produkt.bildPfad  width="250" height="150"></a>
 						
 						<wbr>@produkt.artikelBezeichnung
@@ -29,5 +29,5 @@
 			</form>
 			
 		}}
-	
+	</center>
 }
