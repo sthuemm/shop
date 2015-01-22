@@ -33,12 +33,12 @@
 	}
 	</div>
 </div>
-<div class="row">
+<div class="row" id="offeneBest">
 	<div class="col-md-4 col-md-offset-1 row top-buffer" id="divKonto">
 		<wbr> OFFENE BESTELLUNGEN
 	</div>
 </div>
-<div class="row">
+<div class="row" id="offeneBest">
 	<a id="outputOffeneBestellungen" class="kundenKonto"></a>
 			@for(produkt <- produkte) {
 				@if(produkt.statusBestellung.equals("offen")){
