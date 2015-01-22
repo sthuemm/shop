@@ -937,7 +937,7 @@ public class Model extends Observable {
 							+ bestelltesProdukt.bestellmenge
 							+ " WHERE artikelNummer = '"
 							+ bestelltesProdukt.artikelNummer + "';");
-			rs = stmt.executeQuery("SELECT * FROM BESTELLUNG WHERE kundennummer = "+kundenNummer+";)");
+			rs = stmt.executeQuery("SELECT * FROM BESTELLUNG");
 			if(!rs.next()){
 				anzahlInBestellung = stmt
 						.executeUpdate("INSERT INTO 'Bestellung' VALUES(1,"
