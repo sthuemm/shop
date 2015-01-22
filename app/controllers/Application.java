@@ -140,7 +140,7 @@ public class Application extends Controller {
 	public static Result konto() {
 		String kunde = session("Kundennummer");
 		if (kunde != null) {
-			return ok(konto.render(Model.sharedInstance.getCustomerName(kunde),Model.sharedInstance.bestellungenKunde(kunde),
+			return ok(konto.render(Model.sharedInstance.getCustomer(kunde),Model.sharedInstance.bestellungenKunde(kunde),
 					userForm));
 		} else {
 			return redirect("/login");
@@ -226,8 +226,9 @@ public class Application extends Controller {
 
 	public static Result submitKundendaten() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
+		System.out.println(filledForm);
 		String kunde = session("Kundennummer");
-
+		Model.sharedInstance.aendereKundendaten(filledForm.get());
 		if (kunde != null) {
 			return ok(mainPage.render(
 					Model.sharedInstance.getCustomerName(kunde),
@@ -327,7 +328,7 @@ public class Application extends Controller {
 
 	public static Result submitLogin() {
 		Form<Kunde> filledForm = userForm.bindFromRequest();
-
+System.out.println(filledForm);
 		session().clear();
 		Kunde kunde = Model.sharedInstance.loginUeberpruefung(filledForm.get());
 		if (kunde != null) {

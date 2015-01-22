@@ -54,6 +54,14 @@ public class Model extends Observable {
 		}
 		return vorname;
 	}
+	
+	public Kunde getCustomer(String kundenNummer) {
+		Kunde gesuchterKunde = null;
+		if (kunden.containsKey(kundenNummer)) {
+			gesuchterKunde = kunden.get(kundenNummer);
+		}
+		return gesuchterKunde;
+	}
 
 	public String getTime() {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -509,6 +517,42 @@ public class Model extends Observable {
 	public Kunde logout() {
 		kunde = new Kunde();
 		return getKunde();
+	}
+	
+	public void aendereKundendaten(Kunde kunde){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String select = "SELECT * FROM Kunde WHERE benutzername = ? AND passwort = ?;";
+		conn = DB.getConnection();
+		try {
+			System.out.println(kunde);
+			stmt = conn.prepareStatement(select);
+			stmt.setString(1, kunde.getBenutzername());
+			stmt.setString(2, verschluesselPW(kunde.getPasswort()));
+			rs = stmt.executeQuery();
+			if(rs.next()){
+				int anzahl = stmt.executeUpdate("Update Kunde SET "
+						+ "vorname = "+kunde.vorname+", "
+						+ "nachname ="+kunde.nachname+", "
+						+ "benutzername="+kunde.benutzername+","
+						+ "email ="+kunde.email+","
+						+ "strasse="+kunde.strasse+","
+						+ "hausnummer ="+kunde.hausnummer+","
+						+ "plz ="+kunde.plz+","
+						+ " ort ="+kunde.ort+","
+						+ "telefon="+kunde.telefon+""
+						+ " WHERE kundenNummer = "+kunde.kundenNummer+";");
+				System.out.println(anzahl+"Eintraege geaendert");
+			} else {
+				System.out.println("benutzername oder passwort falsch");
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public Kunde loginUeberpruefung(Kunde kunde) {
