@@ -36,16 +36,35 @@ public class Model extends Observable {
 
 	Kunde kundeGast = new Kunde();
 
+	/*
+	 * Konstruktor für SharedInstance
+	 */
+	
 	private Model() {
 		System.out.println("Play: " + play.core.PlayVersion.current());
 		inizializeDatabase();
 		kunden.put(kundeGast.kundenNummer, kundeGast);
 	}
+	
+
+	
+	public Kunde getKunde() {
+
+		return kunde;
+	}
+	
+	/*
+	 * entfernt den Kunden beim Logout aus der Map
+	 */
 
 	public void removeCustomerFromMap(String kundenNummer) {
 		kunden.remove(kundenNummer);
 		System.out.println(getTime() + ": removed from HashMap: " + kundenNummer);
 	}
+	
+	/*
+	 * gibt Vorname des eingeloggten Kunden für "Hallo ...." aus
+	 */
 
 	public String getCustomerName(String kundenNummer) {
 		String vorname = "guest";
@@ -62,6 +81,11 @@ public class Model extends Observable {
 		}
 		return gesuchterKunde;
 	}
+	
+	/*
+	 * Ausgaben von Datum und Uhrzeit zur besseren Nachvollziehbarkeit und Unterscheidung
+	 * der Logausgaben
+	 */
 
 	public String getTime() {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
@@ -75,49 +99,145 @@ public class Model extends Observable {
 
 	}
 
-	// public void produktInserieren(double preis, String artikelBezeichnung,
-	// String bildPfad, String kategorie, String lagermenge) {
-	//
-	// Connection conn = null;
-	// Statement stmt = null;
-	// ResultSet rs = null;
-	//
-	// try {
-	// conn = DB.getConnection();
-	// stmt = conn.createStatement();
-	// stmt.executeUpdate("insert into Produkt values (" + preis + ","
-	// + "(SELECT MAX (artikelNummer) FROM Produkt)+1,'"
-	// + artikelBezeichnung + "'," + " '" + bildPfad + "','"
-	// + kategorie + "'," + "" + lagermenge + ");");
-	// System.out.println(getTime() + ":" + stmt
-	// + "Produkt(e) hinzugefügt");
-	// }
-	//
-	// catch (SQLException ex) {
-	// ex.printStackTrace();
-	// System.out.println(getTime() + ": Fehler Produkt inserieren");
-	// } finally {
-	// if (rs != null) {
-	// try {
-	// rs.close();
-	// } catch (SQLException e) {
-	// }
-	// }
-	// if (stmt != null) {
-	// try {
-	// stmt.close();
-	// } catch (SQLException e) {
-	// }
-	// }
-	// if (conn != null) {
-	// try {
-	// conn.close();
-	// } catch (SQLException e) {
-	// }
-	// }
-	// }
-	// }
+	/*
+	 * Hilfsmethoden zur Produktsuche, unterteilt nach Kategorien
+	 */
 
+	public List<Produkt> produktSuchen(String gesuchterWert) {
+
+		List<Produkt> gesuchteProdukte = getProdukte(gesuchterWert);
+
+		return gesuchteProdukte;
+
+	}
+
+	public List<Produkt> getProdukteAlle() {
+
+		List<Produkt> produkteAlleList = getProdukte("alle");
+
+		return produkteAlleList;
+	}
+
+	public List<Produkt> getProdukteAussen() {
+
+		List<Produkt> produkteAussen = getProdukte("aussen");
+
+		return produkteAussen;
+	}
+
+	public List<Produkt> getProdukteInnen() {
+
+		List<Produkt> produkteInnen = getProdukte("innen");
+
+		return produkteInnen;
+	}
+
+	public List<Produkt> getProdukteBrennholz() {
+
+		List<Produkt> produkteBrennstoff = getProdukte("brennbar");
+
+		return produkteBrennstoff;
+	}
+
+	
+	/*
+	 *  Logout und Gast als neue Begrüßung
+	 */
+	
+	public Kunde logout() {
+		kunde = new Kunde();
+		return kunde;
+	}
+	
+
+	/*
+	 * Überprüfung der Einträge im Registrierungsformular. Durchführung im Code
+	 * und nicht in Java- skript, da JS deaktiviert werden kann...
+	 */
+
+	public boolean checkForValidRegistration(Kunde kunde) {
+		boolean registrationIsValid = true;
+
+		String regexEmail = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+		String regexStrasse = "\\D";
+
+		if (!kunde.email.matches(regexEmail)) {
+			registrationIsValid = false;
+		}
+		if (!kunde.strasse.matches(regexStrasse)) { // keine Hausnummer im
+													// Strassennamen
+			registrationIsValid = false;
+		}
+
+		return registrationIsValid;
+	}
+
+	
+
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
+	}
+	
+	/*
+	 * Passwort verschlüsseln
+	 */
+
+	public static String verschluesselPW(String passwort) {
+		String passwortString = "";
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA");
+			md.update(passwort.getBytes());
+
+			for (byte b : md.digest()) {
+				passwortString += Byte.toString(b);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return passwortString;
+	}
+
+	
+	/*
+	 * 	Artikel aus Warenkorb werden bestellt
+	 */
+	
+	public void bestellArtikelAusWarenkorb(String kundenNummer) {
+
+		for (Produkt produkt : getWarenkorb(kundenNummer)) {
+			ausWarenkorbInBestellung(produkt, kundenNummer);
+		}
+
+		warenkorbDatenbankLeeren(kundenNummer);
+	}
+	
+	/*
+	 * 	JSON 
+	 */
+	
+	public static JSONArray convertToJson(ResultSet resultSet) throws Exception {
+		JSONArray jsonArray = new JSONArray();
+		while (resultSet.next()) {
+			int total_rows = resultSet.getMetaData().getColumnCount();
+			JSONObject obj = new JSONObject();
+			for (int i = 0; i < total_rows; i++) {
+				obj.put(resultSet.getMetaData().getColumnLabel(i + 1)
+						.toLowerCase(), resultSet.getObject(i + 1));
+			}
+			jsonArray.put(obj);
+		}
+		return jsonArray;
+
+	}
+	
+	
+
+	/*
+	 * JDBC
+	 */
+	
 	public boolean isWarenkorbEmpty() {
 		boolean isEmpty = false;
 		Connection conn = null;
@@ -157,7 +277,7 @@ public class Model extends Observable {
 
 		return isEmpty;
 	}
-
+	
 	public Produkt getArticleByArticlenumber(String artikelNummer) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -207,7 +327,7 @@ public class Model extends Observable {
 
 		return produkt;
 	}
-
+	
 	public void setWarenkorb(String artikelnr, String menge, String kundenNummer) {
 
 		Connection conn = null;
@@ -275,7 +395,7 @@ public class Model extends Observable {
 		}
 
 	}
-
+	
 	public Produkt artikelnummerSuchen(String ausgewaehltesProdukt) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -329,7 +449,7 @@ public class Model extends Observable {
 		ausgewaehltesProdukt = null;
 		return gesuchtesProdukt;
 	}
-
+	
 	public List<Produkt> getProdukte(String wo) {
 		List<Produkt> produkte = new ArrayList<Produkt>();
 		Connection conn = null;
@@ -407,43 +527,7 @@ public class Model extends Observable {
 
 		return produkte;
 	}
-
-	public List<Produkt> produktSuchen(String gesuchterWert) {
-
-		List<Produkt> gesuchteProdukte = getProdukte(gesuchterWert);
-
-		return gesuchteProdukte;
-
-	}
-
-	public List<Produkt> getProdukteAlle() {
-
-		List<Produkt> produkteAlleList = getProdukte("alle");
-
-		return produkteAlleList;
-	}
-
-	public List<Produkt> getProdukteAussen() {
-
-		List<Produkt> produkteAussen = getProdukte("aussen");
-
-		return produkteAussen;
-	}
-
-	public List<Produkt> getProdukteInnen() {
-
-		List<Produkt> produkteInnen = getProdukte("innen");
-
-		return produkteInnen;
-	}
-
-	public List<Produkt> getProdukteBrennholz() {
-
-		List<Produkt> produkteBrennstoff = getProdukte("brennbar");
-
-		return produkteBrennstoff;
-	}
-
+	
 	public List<Produkt> getWarenkorb(String kundenNummer) {
 		List<Produkt> produkte = new ArrayList<Produkt>();
 		Connection conn = null;
@@ -508,16 +592,6 @@ public class Model extends Observable {
 		return produkte;
 
 	}
-
-	public Kunde getKunde() {
-
-		return kunde;
-	}
-
-	public Kunde logout() {
-		kunde = new Kunde();
-		return getKunde();
-	}
 	
 	public void aendereKundendaten(Kunde kunde){
 		Connection conn = null;
@@ -554,7 +628,7 @@ public class Model extends Observable {
 		}
 		
 	}
-
+	
 	public Kunde loginUeberpruefung(Kunde kunde) {
 
 		Connection conn = null;
@@ -579,8 +653,8 @@ public class Model extends Observable {
 				if (rs.getString("isAdmin").equals("ja")) {
 					isAdmin = true;
 				}
+				// instanziiert Kunden der aktuell eingeloggt ist
 				kundeLoggedIn = new Kunde(
-						// instanziiert Kunden der aktuell eingeloggt ist
 						rs.getString("kundenNummer"), rs.getString("vorname"),
 						rs.getString("anrede"), rs.getString("nachname"),
 						rs.getString("benutzername"), rs.getString("email"),
@@ -594,7 +668,7 @@ public class Model extends Observable {
 				System.out.println(getTime() + ": Added to HashMap: "
 						+ kundeLoggedIn.kundenNummer);
 
-				// Kunden
+				
 			} else {
 				System.out.println(getTime() + ": passwort nicht korrekt...");
 
@@ -624,7 +698,7 @@ public class Model extends Observable {
 		}
 		return kundeLoggedIn;
 	}
-
+	
 	public boolean addCustomer(Kunde kunde) throws NoSuchAlgorithmException {
 		Connection conn = null;
 		Statement stmtCheckKundeIsEmpty = null;
@@ -696,29 +770,7 @@ public class Model extends Observable {
 
 		return kundeAngelegt;
 	}
-
-	/*
-	 * Überprüfung der Einträge im Registrierungsformular. Durchführung im Code
-	 * und nicht in Java- skript, da JS deaktiviert werden kann...
-	 */
-
-	public boolean checkForValidRegistration(Kunde kunde) {
-		boolean registrationIsValid = true;
-
-		String regexEmail = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-		String regexStrasse = "\\D";
-
-		if (!kunde.email.matches(regexEmail)) {
-			registrationIsValid = false;
-		}
-		if (!kunde.strasse.matches(regexStrasse)) { // keine Hausnummer im
-													// Strassennamen
-			registrationIsValid = false;
-		}
-
-		return registrationIsValid;
-	}
-
+	
 	public String autovervollstaendigungSuche(String produkt) {
 		ArrayList<String> produktbezeichnungen = new ArrayList<>();
 		Connection conn = null;
@@ -787,28 +839,7 @@ public class Model extends Observable {
 		}
 		return ergebnis;
 	}
-
-	public void setKunde(Kunde kunde) {
-		this.kunde = kunde;
-	}
-
-	public static String verschluesselPW(String passwort) {
-		String passwortString = "";
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("SHA");
-			md.update(passwort.getBytes());
-
-			for (byte b : md.digest()) {
-				passwortString += Byte.toString(b);
-			}
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return passwortString;
-	}
-
+	
 	public String getProduktJson(String artikelNummer) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -854,22 +885,7 @@ public class Model extends Observable {
 
 		return menge.toString();
 	}
-
-	public static JSONArray convertToJson(ResultSet resultSet) throws Exception {
-		JSONArray jsonArray = new JSONArray();
-		while (resultSet.next()) {
-			int total_rows = resultSet.getMetaData().getColumnCount();
-			JSONObject obj = new JSONObject();
-			for (int i = 0; i < total_rows; i++) {
-				obj.put(resultSet.getMetaData().getColumnLabel(i + 1)
-						.toLowerCase(), resultSet.getObject(i + 1));
-			}
-			jsonArray.put(obj);
-		}
-		return jsonArray;
-
-	}
-
+	
 	public static JsonNode zeigeAktuelleMenge(JsonNode obj) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -921,7 +937,7 @@ public class Model extends Observable {
 
 		return jsonMenge;
 	}
-
+	
 	public void ausWarenkorbInBestellung(Produkt bestelltesProdukt, String kundenNummer) {
 
 		Connection conn = null;
@@ -1002,7 +1018,7 @@ public class Model extends Observable {
 			}
 		}
 	}
-
+	
 	public List<Produkt> bestellungenKunde(String kundenNummer) {
 		List<Produkt> bestellungenKunde = new ArrayList<>();
 		Connection conn = null;
@@ -1051,16 +1067,7 @@ public class Model extends Observable {
 
 		return bestellungenKunde;
 	}
-
-	public void bestellArtikelAusWarenkorb(String kundenNummer) {
-
-		for (Produkt produkt : getWarenkorb(kundenNummer)) {
-			ausWarenkorbInBestellung(produkt, kundenNummer);
-		}
-
-		warenkorbDatenbankLeeren(kundenNummer);
-	}
-
+	
 	public void warenkorbDatenbankLeeren(String kundenNummer) {
 
 		Connection conn = null;
