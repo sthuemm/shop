@@ -91,34 +91,33 @@
 	}
 	
 </script>
-
-
-<div id="divRegistrierungAussen" >
+<div>
+<div id="divRegistrierungAussen" style="top:200px;">
 <p id="p1Registrierung"> Sie sind bereits registriert?<br/>dann loggen Sie sich hier ein</p>
 <p id="p2Registrierung"><form id="p2Registrierung" method="LINK" action= /login><input type="submit" value="Jetzt Einloggen"></form>
 </div>
 
-<div id="divRegistrierungInnen">
+<div id="divRegistrierungInnen" style="top:200px;">
 		@helper.form(action = routes.Application.neuerUser(), 'id -> "userForm", 'class -> "control-group") {
 	
-		@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*", '_id -> "benutzername")
-		@helper.inputPassword(userForm("passwort"), '_label -> "Passwort*", '_id -> "passwort")
-		@helper.inputRadioGroup(userForm("anrede"), options = Seq("Herr" -> "Herr","Frau" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")
-		@helper.inputText(userForm("vorname"), '_label -> "Vorname*", '_id -> "vorname")
-		@helper.inputText(userForm("nachname"), '_label -> "Nachname*", '_id -> "nachname")
-		@helper.inputText(userForm("strasse"), '_label -> "Straße*", '_id -> "strasse")
-		@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer*", '_id -> "hausnummer")
-		@helper.inputText(userForm("plz"), '_label -> "Postleitzahl*", '_id -> "plz")
-		@helper.inputText(userForm("ort"), '_label -> "Ort*", '_id -> "ort")
-		@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse*", '_id -> "email")
-		@helper.inputText(userForm("telefon"), '_label -> "Telefonnummer", 'id -> "telefonnummerID")
+		<div style="float:left;">@helper.inputText(userForm("benutzername"), '_label -> "Benutzername*", '_id -> "benutzername") </div>
+		<div style="margin-left:200px;">@helper.inputPassword(userForm("passwort"), '_label -> "Passwort*", '_id -> "passwort")</div>
+		<div>@helper.inputRadioGroup(userForm("anrede"), options = Seq("Herr" -> "Herr","Frau" -> "Frau"), '_id -> "anrede", '_label -> "Anrede*")</div>
+		<div style="float:left;">@helper.inputText(userForm("vorname"), '_label -> "Vorname*", '_id -> "vorname")</div>
+		<div style="margin-left:200px;">@helper.inputText(userForm("nachname"), '_label -> "Nachname*", '_id -> "nachname")</div>
+		<div style="float:left;">@helper.inputText(userForm("strasse"), '_label -> "Straße*", '_id -> "strasse")</div>
+		<div style="margin-left:200px;">@helper.inputText(userForm("hausnummer"), '_label -> "Hausnummer*", '_id -> "hausnummer")</div>
+		<div style="float:left;">@helper.inputText(userForm("plz"), '_label -> "Postleitzahl*", '_id -> "plz")</div>
+		<div style="margin-left:200px;">@helper.inputText(userForm("ort"), '_label -> "Ort*", '_id -> "ort")</div>
+		<div style="float:left;">@helper.inputText(userForm("email"), '_label -> "E-Mail Adresse*", '_id -> "email")</div>
+		<div style="margin-left:200px">@helper.inputText(userForm("telefon"), '_label -> "Telefonnummer", 'id -> "telefonnummerID")</div>
 
 		<p><span> * Pflichtfeld</span></p>
 		<input type ="submit" value="senden" onmouseover="checkEmptyInputFields()" onmouseout="farbeStandard()">
 			
 		}
 </div>
-
+<div>
 }
 
 
